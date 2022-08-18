@@ -4,12 +4,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   String folderPath = '';
+  String selectedFolder = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,17 +29,55 @@ class _HomeState extends State<Home> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                OutlinedButton(
+                ButtonTheme(
+                  height: 50,
+                  minWidth: 200,
+                  child: OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectAFolder();
+                        });
+                      },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.fromLTRB(8, 10, 8, 10)),
+                        // minimumSize:
+                        //     MaterialStateProperty<Size>(const Size(200, 50)),
+                      ),
+                      child: const Text(
+                        'Select a folder',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  selectedFolder,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 22,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
                     onPressed: () {
-                      selectAFolder();
+                      Navigator.of(context)
+                          .pushNamed('/homeOption')
+                          .then((value) => setState(() {}));
                     },
+                    style: ElevatedButton.styleFrom(
+                      alignment: Alignment.center,
+                      minimumSize: const Size(200, 50),
+                    ),
                     child: const Text(
-                      'Select a folder',
+                      'Start',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                       ),
-                    )),
+                    ))
               ],
             )),
       ),
@@ -59,7 +101,11 @@ class _HomeState extends State<Home> {
       // User canceled the picker
     } else {
       folderPath = selectedDirectory; //.replaceAll('\\', '/')
-      print(folderPath);
+      selectedFolder = folderPath.split('\\').last; //.split('\').last;
+      //setState(() {});
+
+      //const HomeOption();
+      //print(folderPath);
     }
   }
 

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:student/home.dart';
+import 'package:student/secondHome.dart';
 
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/home',
     routes: {
-      '/home': (context) => Home(),
+      '/home': (context) => const Home(),
+      '/homeOption': (context) => const HomeOption(),
       // '/noun': (context) => Noun(),
       // '/nounForm': (context) => NounForm(), //NounForm(),
       // '/verb': (context) => Verb(),
