@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:student/globals.dart' as globals;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String folderPath = '';
+  //String folderPath = '';
   String selectedFolder = '';
 
   @override
@@ -100,8 +100,8 @@ class _HomeState extends State<Home> {
     if (selectedDirectory == null) {
       // User canceled the picker
     } else {
-      folderPath = selectedDirectory; //.replaceAll('\\', '/')
-      selectedFolder = folderPath.split('\\').last; //.split('\').last;
+      globals.folderPath = selectedDirectory; //.replaceAll('\\', '/')
+      selectedFolder = globals.folderPath.split('\\').last; //.split('\').last;
       //setState(() {});
 
       //const HomeOption();
