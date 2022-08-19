@@ -5,6 +5,7 @@ import 'package:student/Lesson/noun_list.dart';
 class FileReader {
   String filePath;
   List<NounList> nounList = [];
+  
   FileReader(this.filePath) {
     readFile();
   }
@@ -13,6 +14,7 @@ class FileReader {
     List<String> lines = File(filePath).readAsLinesSync();
     for (var line in lines) {
       NounList noun = NounList(line);
+      nounList.add(noun);
     }
   }
 }
