@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:student/Lesson/noun_list.dart';
+import 'package:student/Lesson/Noun/noun_list.dart';
 
 class FileReader {
   String filePath;

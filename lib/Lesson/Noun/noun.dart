@@ -1,17 +1,17 @@
 //https://pastebin.com/ZSgj4LU3
 import 'dart:io';
 import 'dart:math';
-import 'package:student/Lesson/noun_list.dart';
-import 'package:student/Lesson/noun_search.dart';
+import 'package:student/Lesson/Noun/noun_list.dart';
+import 'package:student/Lesson/Noun/noun_search.dart';
 import 'package:student/globals.dart' as globals;
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:student/Lesson/readFile.dart';
+import 'package:student/Lesson/Noun/readFile.dart';
 
 class Noun extends StatefulWidget {
   @override
@@ -194,6 +194,10 @@ class _NounState extends State<Noun> {
                         }
                       });
                     },
+                    style: ElevatedButton.styleFrom(
+                      alignment: Alignment.center,
+                      minimumSize: const Size(100, 42),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
@@ -207,10 +211,6 @@ class _NounState extends State<Noun> {
                         ),
                         Icon(Icons.navigate_next_rounded),
                       ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
                     ),
                   ),
                 ],

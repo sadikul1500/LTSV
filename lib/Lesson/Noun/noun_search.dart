@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student/Lesson/noun_list.dart';
+import 'package:student/Lesson/Noun/noun_list.dart';
 
 //import 'package:kids_learning_tool/Lessons/Nouns/noun.dart';
 //thanks Ryan

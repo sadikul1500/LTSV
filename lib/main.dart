@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student/Lesson/Noun/noun.dart';
 import 'package:student/home.dart';
 import 'package:student/secondHome.dart';
 
@@ -9,6 +10,7 @@ void main() {
     routes: {
       '/home': (context) => const Home(),
       '/homeOption': (context) => const HomeOption(),
+      '/noun': (context) =>Noun(),
       // '/noun': (context) => Noun(),
       // '/nounForm': (context) => NounForm(), //NounForm(),
       // '/verb': (context) => Verb(),
