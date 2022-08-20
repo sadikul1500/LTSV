@@ -1,6 +1,7 @@
 //https://pastebin.com/ZSgj4LU3
 import 'dart:io';
 import 'dart:math';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:student/Lesson/Noun/noun_list.dart';
 import 'package:student/Lesson/Noun/noun_search.dart';
 import 'package:student/globals.dart' as globals;
@@ -26,6 +27,7 @@ class _NounState extends State<Noun> {
   late int len;
   List<String> imageList = [];
   final AudioPlayer _audioPlayer = AudioPlayer();
+  final player = Player(id: 1003);
 
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
@@ -57,6 +59,13 @@ class _NounState extends State<Noun> {
     proxyInitState();
   }
 
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    player.dispose();
+    super.dispose();
+  }
+
   proxyInitState() {
     loadData();
     loadAudio().then((value) {
@@ -75,17 +84,19 @@ class _NounState extends State<Noun> {
   }
 
   Future loadAudio() async {
+    Media media = Media.file(File(names[_index].audio));
+    player.open(media, autoStart: false);
     //if (!mounted) return;
-    await _audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.file(names[_index].audio)),
-        initialPosition: Duration.zero,
-        preload: true);
+    // await _audioPlayer.setAudioSource(
+    //     AudioSource.uri(Uri.file(names[_index].audio)),
+    //     initialPosition: Duration.zero,
+    //     preload: true);
 
-    ///print('load audio function done');
-    _audioPlayer.setLoopMode(LoopMode.one);
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {});
-    });
+    // ///print('load audio function done');
+    // _audioPlayer.setLoopMode(LoopMode.one);
+    // _audioPlayer.playerStateStream.listen((state) {
+    //   setState(() {});
+    // });
     return _audioPlayer;
   }
 
@@ -258,7 +269,8 @@ class _NounState extends State<Noun> {
   }
 
   Future stop() async {
-    await _audioPlayer.stop();
+    // await _audioPlayer.stop();
+    player.stop();
     setState(() {
       _isPlaying = false;
       _isPaused = true;
@@ -267,7 +279,8 @@ class _NounState extends State<Noun> {
   }
 
   pause() {
-    _audioPlayer.pause();
+    // _audioPlayer.pause();
+    player.pause();
     setState(() {
       _isPaused = true;
       carouselAutoPlay = false;
@@ -275,7 +288,8 @@ class _NounState extends State<Noun> {
   }
 
   Future play() async {
-    _audioPlayer.play();
+    //_audioPlayer.play();
+    player.play();
 
     setState(() {
       _isPlaying = true;
