@@ -9,7 +9,7 @@ import 'package:student/globals.dart' as globals;
 import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:student/Lesson/Noun/readFile.dart';
@@ -38,6 +38,7 @@ class _NounState extends State<Noun> {
 
   Widget _nounCard() {
     if (imageList.isEmpty) {
+      // _nounCard
       loadData();
       return const CircularProgressIndicator();
     }
@@ -83,15 +84,24 @@ class _NounState extends State<Noun> {
     names = fileReader.nounList;
 
     len = names.length;
-    imageList = names[_index].getImagePath();
+
+    imageList = names[_index].imagePath; //getImagePath();
     print(imageList);
     print(imageList.length);
-    return imageList;
+    // if (imageList.length == 0) {
+    //   loadData();
+    // }
+    // _nounCard();
+    // await Future.delayed(const Duration(milliseconds: 500));
+    //setState(() {});
+    //return imageList;
   }
 
   loadAudio() {
     Media media = Media.file(File(names[_index].audio));
     player.open(media, autoStart: false);
+    print('load audio');
+    print(player.current);
     //if (!mounted) return;
     // await _audioPlayer.setAudioSource(
     //     AudioSource.uri(Uri.file(names[_index].audio)),

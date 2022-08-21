@@ -11,26 +11,60 @@ class NounList {
   List<String> imagePath = [];
   String audio = '';
   String line;
+  bool NoImages = false;
 
   NounList(this.line) {
     assignValues();
   }
   //split by "; "
-  void assignValues() {
+  void assignValues() async {
     List<String> values = line.split("; ");
     title = values[0];
     meaning = values[1];
-    print(values[3]);
+    //print(values[3]);
     setAudioPath(values[3].split('/').last);
 
-    setImagePaths(values[2].split('/').last).then((data) {
-      imagePath = data;
-    });
+    await setImagePaths(values[2].split('/').last);
+    // .then((data) {
+    //   imagePath = data;
+    // });
     print('noun_list..assignvalues..');
     print(imagePath.length);
   }
 
-  Future setImagePaths(String folderName) async {
+  // Future setImagePaths(String folderName) async {
+  //   String folderPath = '${globals.folderPath}/Lesson/Noun/$folderName';
+  //   //Future listDir(String folderPath) async {
+  //   var directory = Directory(folderPath);
+  //   //print(directory);
+
+  //   var exists = await directory.exists();
+  //   if (exists) {
+  //     //print('exists');
+  //     // var imageList = directory.list(recursive: false, followLinks: false);
+  //     // // if (await directory.list(recursive: false, followLinks: false).isEmpty) {}
+  //     // await for (var original in imageList) {
+  //     //   if (original is File) {
+  //     //     //print(10000);
+  //     //     print(original.path);
+  //     //     imagePath.add(original.path);
+  //     //     // await original
+  //     //     //     .copy('${newDir.path}/${original.path.split('\\').last}');
+  //     //   }
+  //     // }
+  //     directory
+  //         .list(recursive: true, followLinks: false)
+  //         .listen((FileSystemEntity entity) {
+  //       String path = entity.path.replaceAll('\\', '/');
+  //       imagePath.add(path);
+  //     });
+  //   }
+  //   // await Future.delayed(const Duration(milliseconds: 500));
+  //   return imagePath;
+  //   //}
+  // }
+
+  setImagePaths(String folderName) async {
     String folderPath = '${globals.folderPath}/Lesson/Noun/$folderName';
     //Future listDir(String folderPath) async {
     var directory = Directory(folderPath);
@@ -38,10 +72,13 @@ class NounList {
 
     var exists = await directory.exists();
     if (exists) {
-      print('exists');
-      await for (var original in directory.list(recursive: false)) {
+      //print('exists');
+      // var imageList = directory.list(recursive: false, followLinks: false);
+      // // if (await directory.list(recursive: false, followLinks: false).isEmpty) {}
+      await for (var original
+          in directory.list(recursive: false, followLinks: false)) {
         if (original is File) {
-          print(10000);
+          //print(10000);
           print(original.path);
           imagePath.add(original.path);
           // await original
@@ -53,10 +90,10 @@ class NounList {
       //     .listen((FileSystemEntity entity) {
       //   String path = entity.path.replaceAll('\\', '/');
       //   imagePath.add(path);
-      //});
+      // });
     }
-
-    return imagePath;
+    // await Future.delayed(const Duration(milliseconds: 500));
+    //return imagePath;
     //}
   }
 
@@ -65,6 +102,9 @@ class NounList {
   }
 
   List<String> getImagePath() {
+    // await setImagePaths(values[2].split('/').last);
+    print('get Method');
+    print(imagePath.length);
     return imagePath;
   }
 }
