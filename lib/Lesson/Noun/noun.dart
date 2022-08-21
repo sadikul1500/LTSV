@@ -26,7 +26,7 @@ class _NounState extends State<Noun> {
   int _index = 0;
   late int len;
   List<String> imageList = [];
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  // final AudioPlayer _audioPlayer = AudioPlayer();
   final player = Player(id: 1003);
 
   final CarouselController _controller = CarouselController();
@@ -40,11 +40,14 @@ class _NounState extends State<Noun> {
     if (imageList.isEmpty) {
       loadData();
       return const CircularProgressIndicator();
-    } else if (_audioPlayer.processingState != ProcessingState.ready) {
-      loadAudio();
+    }
+    // else if (_audioPlayer.processingState != ProcessingState.ready) {
+    //   loadAudio();
 
-      return const CircularProgressIndicator();
-    } else {
+    //   return const CircularProgressIndicator();
+    // }
+    else {
+      loadAudio();
       return nounCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
     }
   }
@@ -61,29 +64,32 @@ class _NounState extends State<Noun> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     player.dispose();
     super.dispose();
   }
 
   proxyInitState() {
     loadData();
-    loadAudio().then((value) {
-      //print('then2');
-      _nounCard();
-    });
+    loadAudio();
+    // _nounCard();
+    // loadAudio().then((value) {
+    //   //print('then2');
+    //   _nounCard();
+    // });
   }
 
   loadData() {
     names = fileReader.nounList;
 
     len = names.length;
-    imageList = names[_index].imagePath;
-
+    imageList = names[_index].getImagePath();
+    print(imageList);
+    print(imageList.length);
     return imageList;
   }
 
-  Future loadAudio() async {
+  loadAudio() {
     Media media = Media.file(File(names[_index].audio));
     player.open(media, autoStart: false);
     //if (!mounted) return;
@@ -97,7 +103,7 @@ class _NounState extends State<Noun> {
     // _audioPlayer.playerStateStream.listen((state) {
     //   setState(() {});
     // });
-    return _audioPlayer;
+    // return _audioPlayer;
   }
 
   @override

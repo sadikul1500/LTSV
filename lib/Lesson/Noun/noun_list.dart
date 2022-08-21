@@ -20,15 +20,17 @@ class NounList {
     List<String> values = line.split("; ");
     title = values[0];
     meaning = values[1];
+    print(values[3]);
+    setAudioPath(values[3].split('/').last);
 
-    getAudioPath(values[3].split('/').last);
-
-    getImagePaths(values[2].split('/').last).then((data) {
+    setImagePaths(values[2].split('/').last).then((data) {
       imagePath = data;
     });
+    print('noun_list..assignvalues..');
+    print(imagePath.length);
   }
 
-  Future getImagePaths(String folderName) async {
+  Future setImagePaths(String folderName) async {
     String folderPath = '${globals.folderPath}/Lesson/Noun/$folderName';
     //Future listDir(String folderPath) async {
     var directory = Directory(folderPath);
@@ -36,19 +38,33 @@ class NounList {
 
     var exists = await directory.exists();
     if (exists) {
-      directory
-          .list(recursive: true, followLinks: false)
-          .listen((FileSystemEntity entity) {
-        String path = entity.path.replaceAll('\\', '/');
-        imagePath.add(path);
-      });
+      print('exists');
+      await for (var original in directory.list(recursive: false)) {
+        if (original is File) {
+          print(10000);
+          print(original.path);
+          imagePath.add(original.path);
+          // await original
+          //     .copy('${newDir.path}/${original.path.split('\\').last}');
+        }
+      }
+      // directory
+      //     .list(recursive: true, followLinks: false)
+      //     .listen((FileSystemEntity entity) {
+      //   String path = entity.path.replaceAll('\\', '/');
+      //   imagePath.add(path);
+      //});
     }
 
     return imagePath;
     //}
   }
 
-  void getAudioPath(String file) {
+  void setAudioPath(String file) {
     audio = '${globals.folderPath}/Lesson/Noun/$file';
+  }
+
+  List<String> getImagePath() {
+    return imagePath;
   }
 }
