@@ -36,6 +36,12 @@ class _NounState extends State<Noun> {
   bool carouselAutoPlay = false;
   bool _isPaused = true;
 
+  CurrentState current = CurrentState();
+  PositionState position = PositionState();
+  PlaybackState playback = PlaybackState();
+  GeneralState general = GeneralState();
+  double bufferingProgress = 0.0;
+
   Widget _nounCard() {
     if (imageList.isEmpty) {
       // _nounCard
@@ -71,8 +77,43 @@ class _NounState extends State<Noun> {
   }
 
   proxyInitState() {
-    loadData();
+    loadData().then((data) {
+      if (data.isEmpty) {
+        loadData();
+      } else {
+        _nounCard();
+      }
+      setState(() {});
+    });
     loadAudio();
+    if (mounted) {
+      player.currentStream.listen((current) {
+        setState(() => this.current = current);
+      });
+      player.positionStream.listen((position) {
+        setState(() => this.position = position);
+      });
+      player.playbackStream.listen((playback) {
+        setState(() => this.playback = playback);
+      });
+      player.generalStream.listen((general) {
+        setState(() => this.general = general);
+      });
+
+      player.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          setState(() => this.bufferingProgress = bufferingProgress);
+        },
+      );
+      player.errorStream.listen((event) {
+        print('libvlc error.');
+      });
+      // this.devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      player.setEqualizer(equalizer);
+    }
     // _nounCard();
     // loadAudio().then((value) {
     //   //print('then2');
@@ -80,12 +121,12 @@ class _NounState extends State<Noun> {
     // });
   }
 
-  loadData() {
+  loadData() async {
     names = fileReader.nounList;
 
     len = names.length;
 
-    imageList = names[_index].imagePath; //getImagePath();
+    imageList = await names[_index].getImagePath(); //getImagePath();
     print(imageList);
     print(imageList.length);
     // if (imageList.length == 0) {
@@ -94,14 +135,14 @@ class _NounState extends State<Noun> {
     // _nounCard();
     // await Future.delayed(const Duration(milliseconds: 500));
     //setState(() {});
-    //return imageList;
+    return imageList;
   }
 
   loadAudio() {
     Media media = Media.file(File(names[_index].audio));
     player.open(media, autoStart: false);
     print('load audio');
-    print(player.current);
+    print(names[_index].audio);
     //if (!mounted) return;
     // await _audioPlayer.setAudioSource(
     //     AudioSource.uri(Uri.file(names[_index].audio)),

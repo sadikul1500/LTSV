@@ -11,6 +11,7 @@ class NounList {
   List<String> imagePath = [];
   String audio = '';
   String line;
+  List<String> values = [];
   bool NoImages = false;
 
   NounList(this.line) {
@@ -18,13 +19,13 @@ class NounList {
   }
   //split by "; "
   void assignValues() async {
-    List<String> values = line.split("; ");
+    values = line.split("; ");
     title = values[0];
     meaning = values[1];
     //print(values[3]);
-    setAudioPath(values[3].split('/').last);
-
-    await setImagePaths(values[2].split('/').last);
+    //setAudioPath(values[3].split('/').last);
+    audio = '${globals.folderPath}/Lesson/Noun/${values[3].split('/').last}}';
+    // await setImagePaths(values[2].split('/').last);
     // .then((data) {
     //   imagePath = data;
     // });
@@ -97,12 +98,13 @@ class NounList {
     //}
   }
 
-  void setAudioPath(String file) {
-    audio = '${globals.folderPath}/Lesson/Noun/$file';
-  }
+  // void setAudioPath(String file) {
+  //   audio = '${globals.folderPath}/Lesson/Noun/$file';
+  // }
 
-  List<String> getImagePath() {
-    // await setImagePaths(values[2].split('/').last);
+  Future<List<String>> getImagePath() async {
+    await setImagePaths(values[2].split('/').last);
+
     print('get Method');
     print(imagePath.length);
     return imagePath;
