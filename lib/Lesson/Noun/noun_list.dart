@@ -24,7 +24,7 @@ class NounList {
     meaning = values[1];
     //print(values[3]);
     //setAudioPath(values[3].split('/').last);
-    audio = '${globals.folderPath}/Lesson/Noun/${values[3].split('/').last}}';
+    audio = '${globals.folderPath}\\Lesson\\Noun\\${values[3].split('/').last}';
     // await setImagePaths(values[2].split('/').last);
     // .then((data) {
     //   imagePath = data;

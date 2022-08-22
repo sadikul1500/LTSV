@@ -32,9 +32,9 @@ class _NounState extends State<Noun> {
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
-  bool _isPlaying = false;
+  //bool _isPlaying = false;
   bool carouselAutoPlay = false;
-  bool _isPaused = true;
+  //bool _isPaused = true;
 
   CurrentState current = CurrentState();
   PositionState position = PositionState();
@@ -43,9 +43,26 @@ class _NounState extends State<Noun> {
   double bufferingProgress = 0.0;
 
   Widget _nounCard() {
+    // loadData().then((data) {
+    //   if (data.isEmpty) {
+    //     loadData();
+    //   } else {
+    //     return nounCardWidget();
+    //   }
+    //   //setState(() {});
+    // });
     if (imageList.isEmpty) {
       // _nounCard
-      loadData();
+      //loadData();
+      loadData().then((data) {
+        if (data.isEmpty) {
+          loadData();
+        } else {
+          loadAudio();
+          return nounCardWidget();
+        }
+        //setState(() {});
+      });
       return const CircularProgressIndicator();
     }
     // else if (_audioPlayer.processingState != ProcessingState.ready) {
@@ -54,7 +71,7 @@ class _NounState extends State<Noun> {
     //   return const CircularProgressIndicator();
     // }
     else {
-      loadAudio();
+      // loadAudio();
       return nounCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
     }
   }
@@ -77,6 +94,9 @@ class _NounState extends State<Noun> {
   }
 
   proxyInitState() {
+    names = fileReader.nounList;
+    len = names.length;
+
     loadData().then((data) {
       if (data.isEmpty) {
         loadData();
@@ -122,15 +142,15 @@ class _NounState extends State<Noun> {
   }
 
   loadData() async {
-    names = fileReader.nounList;
+    // names = fileReader.nounList;
 
-    len = names.length;
+    // len = names.length;
 
     imageList = await names[_index].getImagePath(); //getImagePath();
     print(imageList);
     print(imageList.length);
     // if (imageList.length == 0) {
-    //   loadData();
+    //   load..Data();
     // }
     // _nounCard();
     // await Future.delayed(const Duration(milliseconds: 500));
@@ -211,10 +231,11 @@ class _NounState extends State<Noun> {
                       stop();
 
                       setState(() {
-                        _isPlaying = false;
+                        //_isPlaying = false;
 
                         try {
                           _index = (_index - 1) % len;
+                          imageList.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -237,12 +258,13 @@ class _NounState extends State<Noun> {
                   ),
                   const SizedBox(width: 30),
                   IconButton(
-                      icon: (_isPaused)
+                      icon: (!playback.isPlaying) //_isPaused
                           ? const Icon(Icons.play_circle_outline)
                           : const Icon(Icons.pause_circle_filled),
                       iconSize: 40,
                       onPressed: () {
-                        if (!_isPaused) {
+                        if (!playback.isPlaying) {
+                          //!_isPaused
                           //print('---------is playing true-------');
                           pause(); //stop()
                         } else {
@@ -257,6 +279,7 @@ class _NounState extends State<Noun> {
                       setState(() {
                         try {
                           _index = (_index + 1) % len;
+                          imageList.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -325,12 +348,12 @@ class _NounState extends State<Noun> {
     );
   }
 
-  Future stop() async {
+  stop() {
     // await _audioPlayer.stop();
     player.stop();
     setState(() {
-      _isPlaying = false;
-      _isPaused = true;
+      //_isPlaying = false;
+      //_isPaused = true;
       carouselAutoPlay = false;
     });
   }
@@ -339,25 +362,26 @@ class _NounState extends State<Noun> {
     // _audioPlayer.pause();
     player.pause();
     setState(() {
-      _isPaused = true;
+      //_isPaused = true;
       carouselAutoPlay = false;
     });
   }
 
-  Future play() async {
+  play() {
     //_audioPlayer.play();
     player.play();
 
     setState(() {
-      _isPlaying = true;
-      _isPaused = false;
+      //_isPlaying = true;
+      //_isPaused = false;
       carouselAutoPlay = true;
     });
   }
 
   Widget nounCardWidget() {
     NounList name = names.elementAt(_index);
-    List<String> images = name.imagePath;
+    //loadAudio();
+    //List<String> images = name.imagePath;
 
     return Card(
       child: Padding(
@@ -372,7 +396,7 @@ class _NounState extends State<Noun> {
                   width: 600,
                   child: CarouselSlider.builder(
                     carouselController: _controller,
-                    itemCount: images.length,
+                    itemCount: imageList.length,
                     options: CarouselOptions(
                         height: 385.0,
                         initialPage: 0,
@@ -394,17 +418,19 @@ class _NounState extends State<Noun> {
                           });
                         }),
                     itemBuilder: (context, index, realIndex) {
-                      if (index >= images.length) {
+                      if (index >= imageList.length) {
                         index = 0;
                       }
-                      final img = images[index];
+                      final img = imageList[index]; //}catch(error){
+                      // print('eror');
+                      // }
 
                       return buildImage(img, index);
                     },
                   ),
                 ),
                 const SizedBox(height: 10),
-                buildIndicator(images),
+                buildIndicator(imageList),
               ],
             ),
             SizedBox(
