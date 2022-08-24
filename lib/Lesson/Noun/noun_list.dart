@@ -12,7 +12,7 @@ class NounList {
   String audio = '';
   String line;
   List<String> values = [];
-  bool NoImages = false;
+  // bool NoImages = false;
 
   NounList(this.line) {
     assignValues();
@@ -70,7 +70,7 @@ class NounList {
     //Future listDir(String folderPath) async {
     var directory = Directory(folderPath);
     //print(directory);
-
+    imagePath.clear();
     var exists = await directory.exists();
     if (exists) {
       //print('exists');
@@ -103,7 +103,9 @@ class NounList {
   // }
 
   Future<List<String>> getImagePath() async {
-    await setImagePaths(values[2].split('/').last);
+    if (imagePath.isEmpty) {
+      await setImagePaths(values[2].split('/').last);
+    }
 
     print('get Method');
     print(imagePath.length);

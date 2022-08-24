@@ -56,6 +56,8 @@ class _NounState extends State<Noun> {
       //loadData();
       loadData().then((data) {
         if (data.isEmpty) {
+          print('data empty _nounCard');
+          print(imageList.length);
           loadData();
         } else {
           loadAudio();
@@ -93,20 +95,24 @@ class _NounState extends State<Noun> {
     super.dispose();
   }
 
-  proxyInitState() {
+  proxyInitState() async {
     names = fileReader.nounList;
     len = names.length;
 
-    loadData().then((data) {
-      if (data.isEmpty) {
-        loadData();
-      } else {
-        _nounCard();
-      }
-      setState(() {});
-    });
-    loadAudio();
+    // await loadData().then((data) {
+    //   if (data.isEmpty) {
+    //     print('data empty proxy');
+    //     print(imageList.length);
+    //     loadData();
+    //   } else {
+    //     print('proxy--- not empty');
+    //     print(imageList.length);
+    //   }
+    //   //setState(() {});
+    // });
+    // loadAudio();
     if (mounted) {
+      print('mounted');
       player.currentStream.listen((current) {
         setState(() => this.current = current);
       });
@@ -145,8 +151,11 @@ class _NounState extends State<Noun> {
     // names = fileReader.nounList;
 
     // len = names.length;
-
-    imageList = await names[_index].getImagePath(); //getImagePath();
+    if (imageList.isEmpty) {
+      print('call get image Path');
+      imageList = await names[_index].getImagePath(); //getImagePath();
+    }
+    print('load  data noun.dart');
     print(imageList);
     print(imageList.length);
     // if (imageList.length == 0) {
