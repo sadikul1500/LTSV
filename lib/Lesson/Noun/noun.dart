@@ -168,7 +168,10 @@ class _NounState extends State<Noun> {
   }
 
   loadAudio() {
+    player.setPlaylistMode(PlaylistMode.repeat);
     Media media = Media.file(File(names[_index].audio));
+    // player.open(Playlist(medias: [media], playlistMode: PlaylistMode.repeat),
+    //     autoStart: false);
     player.open(media, autoStart: false);
     print('load audio');
     print(names[_index].audio);
@@ -267,12 +270,12 @@ class _NounState extends State<Noun> {
                   ),
                   const SizedBox(width: 30),
                   IconButton(
-                      icon: (!playback.isPlaying) //_isPaused
+                      icon: (!player.playback.isPlaying) //_isPaused
                           ? const Icon(Icons.play_circle_outline)
                           : const Icon(Icons.pause_circle_filled),
                       iconSize: 40,
                       onPressed: () {
-                        if (!playback.isPlaying) {
+                        if (player.playback.isPlaying) {
                           //!_isPaused
                           //print('---------is playing true-------');
                           pause(); //stop()
