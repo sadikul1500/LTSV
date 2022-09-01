@@ -22,31 +22,24 @@ class VerbList {
     title = values[0];
     meaning = values[1];
 
-    audio = '${globals.folderPath}\\Lesson\\Noun\\${values[3].split('/').last}';
+    audio = '${globals.folderPath}\\Lesson\\Verb\\${values[3].split('/').last}';
   }
 
-  
-
   setImagePaths(String folderName) async {
-    String folderPath = '${globals.folderPath}/Lesson/Noun/$folderName';
-    
+    String folderPath = '${globals.folderPath}/Lesson/Verb/$folderName';
+
     var directory = Directory(folderPath);
-    
+
     var exists = await directory.exists();
     if (exists) {
-     
       await for (var original
           in directory.list(recursive: false, followLinks: false)) {
         if (original is File) {
-         imagePath.add(original.path);          
+          imagePath.add(original.path);
         }
       }
-      
     }
-    
   }
-
-  
 
   Future<Set<String>> getImagePath() async {
     if (imagePath.isEmpty) {
