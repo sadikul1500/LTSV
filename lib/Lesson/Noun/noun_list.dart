@@ -8,7 +8,7 @@ import 'package:student/globals.dart' as globals;
 class NounList {
   String title = '';
   String meaning = '';
-  List<String> imagePath = [];
+  Set<String> imagePath = {};
   String audio = '';
   String line;
   List<String> values = [];
@@ -70,7 +70,7 @@ class NounList {
     //Future listDir(String folderPath) async {
     var directory = Directory(folderPath);
     //print(directory);
-    imagePath.clear();
+    // imagePath.clear();
     var exists = await directory.exists();
     if (exists) {
       //print('exists');
@@ -102,7 +102,7 @@ class NounList {
   //   audio = '${globals.folderPath}/Lesson/Noun/$file';
   // }
 
-  Future<List<String>> getImagePath() async {
+  Future<Set<String>> getImagePath() async {
     if (imagePath.isEmpty) {
       await setImagePaths(values[2].split('/').last);
     }

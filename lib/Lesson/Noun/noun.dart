@@ -25,7 +25,7 @@ class _NounState extends State<Noun> {
   List<NounList> names = [];
   int _index = 0;
   late int len;
-  List<String> imageList = [];
+  Set<String> imageList = {};
   // final AudioPlayer _audioPlayer = AudioPlayer();
   final player = Player(id: 1003);
 
@@ -42,6 +42,8 @@ class _NounState extends State<Noun> {
   GeneralState general = GeneralState();
   double bufferingProgress = 0.0;
 
+  int count = 0;
+
   Widget _nounCard() {
     // loadData().then((data) {
     //   if (data.isEmpty) {
@@ -53,10 +55,12 @@ class _NounState extends State<Noun> {
     // });
     if (imageList.isEmpty) {
       // _nounCard
-      //loadData();
+
+      print('calling from nouncard.. imageList empty');
       loadData().then((data) {
-        if (data.isEmpty) {
-          print('data empty _nounCard');
+        if (imageList.isEmpty) {
+          //data.isEmpty
+          print('calling from nouncard.. data empty');
           print(imageList.length);
           loadData();
         } else {
@@ -152,7 +156,8 @@ class _NounState extends State<Noun> {
 
     // len = names.length;
     if (imageList.isEmpty) {
-      print('call get image Path');
+      print('call get image path from load data $count ${imageList.length}');
+      count += 1;
       imageList = await names[_index].getImagePath(); //getImagePath();
     }
     print('load  data noun.dart');
@@ -247,6 +252,7 @@ class _NounState extends State<Noun> {
 
                         try {
                           _index = (_index - 1) % len;
+                          activateIndex = 0;
                           imageList.clear();
                         } catch (e) {
                           //print(e);
@@ -291,6 +297,7 @@ class _NounState extends State<Noun> {
                       setState(() {
                         try {
                           _index = (_index + 1) % len;
+                          activateIndex = 0;
                           imageList.clear();
                         } catch (e) {
                           //print(e);
@@ -363,11 +370,11 @@ class _NounState extends State<Noun> {
   stop() {
     // await _audioPlayer.stop();
     player.stop();
-    setState(() {
-      //_isPlaying = false;
-      //_isPaused = true;
-      carouselAutoPlay = false;
-    });
+    //setState(() {
+    //_isPlaying = false;
+    //_isPaused = true;
+    carouselAutoPlay = false;
+    //});
   }
 
   pause() {
@@ -433,11 +440,11 @@ class _NounState extends State<Noun> {
                       if (index >= imageList.length) {
                         index = 0;
                       }
-                      final img = imageList[index]; //}catch(error){
+                      final img = imageList.elementAt(index); //}catch(error){
                       // print('eror');
                       // }
 
-                      return buildImage(img, index);
+                      return buildImage(img);
                     },
                   ),
                 ),
@@ -555,7 +562,7 @@ class _NounState extends State<Noun> {
     );
   }
 
-  Widget buildImage(String img, int index) {
+  Widget buildImage(String img) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       color: Colors.grey,
@@ -567,7 +574,7 @@ class _NounState extends State<Noun> {
     );
   }
 
-  Widget buildIndicator(List<String> images) => AnimatedSmoothIndicator(
+  Widget buildIndicator(Set<String> images) => AnimatedSmoothIndicator(
         activeIndex: images.isEmpty
             ? 0
             : activateIndex % images.length, //== 0 ? 1 : images.length
