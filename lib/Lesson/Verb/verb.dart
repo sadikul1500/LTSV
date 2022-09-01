@@ -2,39 +2,36 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:student/Lesson/Noun/noun_list.dart';
-import 'package:student/Lesson/Noun/noun_search.dart';
+import 'package:student/Lesson/Verb/verb_list.dart';
+import 'package:student/Lesson/Verb/verb_search.dart';
 import 'package:student/globals.dart' as globals;
 
 import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
-// import 'package:just_audio/just_audio.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:student/Lesson/Noun/readFile.dart';
+import 'package:student/Lesson/Verb/readFile.dart';
 
-class Noun extends StatefulWidget {
+class Verb extends StatefulWidget {
   @override
-  State<Noun> createState() => _NounState();
+  State<Verb> createState() => _VerbState();
 }
 
-class _NounState extends State<Noun> {
-  NounFileReader fileReader =
-      NounFileReader('${globals.folderPath}/Lesson/Noun/noun.txt');
-  List<NounList> names = [];
+class _VerbState extends State<Verb> {
+  VerbFileReader fileReader =
+      VerbFileReader('${globals.folderPath}/Lesson/Verb/verb.txt');
+  List<VerbList> verbs = [];
   int _index = 0;
   late int len;
   Set<String> imageList = {};
-  // final AudioPlayer _audioPlayer = AudioPlayer();
+
   final player = Player(id: 1003);
 
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
-  //bool _isPlaying = false;
   bool carouselAutoPlay = false;
-  //bool _isPaused = true;
 
   CurrentState current = CurrentState();
   PositionState position = PositionState();
@@ -42,47 +39,23 @@ class _NounState extends State<Noun> {
   GeneralState general = GeneralState();
   double bufferingProgress = 0.0;
 
-  int count = 0;
-
-  Widget _nounCard() {
-    // loadData().then((data) {
-    //   if (data.isEmpty) {
-    //     loadData();
-    //   } else {
-    //     return nounCardWidget();
-    //   }
-    //   //setState(() {});
-    // });
+  Widget _verbCard() {
     if (imageList.isEmpty) {
-      // _nounCard
-
-      print('calling from nouncard.. imageList empty');
       loadData().then((data) {
         if (imageList.isEmpty) {
-          //data.isEmpty
-          print('calling from nouncard.. data empty');
-          print(imageList.length);
           loadData();
         } else {
           loadAudio();
-          return nounCardWidget();
+          return verbCardWidget();
         }
-        //setState(() {});
       });
       return const CircularProgressIndicator();
-    }
-    // else if (_audioPlayer.processingState != ProcessingState.ready) {
-    //   loadAudio();
-
-    //   return const CircularProgressIndicator();
-    // }
-    else {
-      // loadAudio();
-      return nounCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
+    } else {
+      return verbCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
     }
   }
 
-  _NounState() {
+  _VerbState() {
     _index = 0;
   }
 
@@ -94,29 +67,15 @@ class _NounState extends State<Noun> {
 
   @override
   void dispose() {
-    // _audioPlayer.dispose();
     player.dispose();
     super.dispose();
   }
 
   proxyInitState() async {
-    names = fileReader.nounList;
-    len = names.length;
+    verbs = fileReader.verbList;
+    len = verbs.length;
 
-    // await loadData().then((data) {
-    //   if (data.isEmpty) {
-    //     print('data empty proxy');
-    //     print(imageList.length);
-    //     loadData();
-    //   } else {
-    //     print('proxy--- not empty');
-    //     print(imageList.length);
-    //   }
-    //   //setState(() {});
-    // });
-    // loadAudio();
     if (mounted) {
-      print('mounted');
       player.currentStream.listen((current) {
         setState(() => this.current = current);
       });
@@ -138,60 +97,29 @@ class _NounState extends State<Noun> {
       player.errorStream.listen((event) {
         print('libvlc error.');
       });
-      // this.devices = Devices.all;
+
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
       player.setEqualizer(equalizer);
     }
-    // _nounCard();
-    // loadAudio().then((value) {
-    //   //print('then2');
-    //   _nounCard();
-    // });
   }
 
   loadData() async {
-    // names = fileReader.nounList;
-
-    // len = names.length;
     if (imageList.isEmpty) {
-      print('call get image path from load data $count ${imageList.length}');
-      count += 1;
-      imageList = await names[_index].getImagePath(); //getImagePath();
+      imageList = await verbs[_index].getImagePath(); //getImagePath();
     }
-    print('load  data noun.dart');
-    print(imageList);
-    print(imageList.length);
-    // if (imageList.length == 0) {
-    //   load..Data();
-    // }
-    // _nounCard();
-    // await Future.delayed(const Duration(milliseconds: 500));
-    //setState(() {});
+
     return imageList;
   }
 
   loadAudio() {
     player.setPlaylistMode(PlaylistMode.repeat);
-    Media media = Media.file(File(names[_index].audio));
-    // player.open(Playlist(medias: [media], playlistMode: PlaylistMode.repeat),
-    //     autoStart: false);
-    player.open(media, autoStart: false);
-    print('load audio');
-    print(names[_index].audio);
-    //if (!mounted) return;
-    // await _audioPlayer.setAudioSource(
-    //     AudioSource.uri(Uri.file(names[_index].audio)),
-    //     initialPosition: Duration.zero,
-    //     preload: true);
+    Media media = Media.file(File(verbs[_index].audio));
 
-    // ///print('load audio function done');
-    // _audioPlayer.setLoopMode(LoopMode.one);
-    // _audioPlayer.playerStateStream.listen((state) {
-    //   setState(() {});
-    // });
-    // return _audioPlayer;
+    player.open(media, autoStart: false);
+
+    print(verbs[_index].audio);
   }
 
   @override
@@ -203,7 +131,6 @@ class _NounState extends State<Noun> {
 
         Navigator.pop(context);
 
-        //we need to return a future
         return Future.value(true);
       },
       child: Scaffold(
@@ -221,11 +148,11 @@ class _NounState extends State<Noun> {
                   setState(() {});
                   var result = await showSearch<String>(
                     context: context,
-                    delegate: CustomDelegate(names),
+                    delegate: CustomDelegate(verbs),
                   );
                   setState(() {
                     _index = max(0,
-                        names.indexWhere((element) => element.title == result));
+                        verbs.indexWhere((element) => element.title == result));
                   });
                 }, //Navigator.pushNamed(context, '/searchPage'),
 
@@ -238,7 +165,7 @@ class _NounState extends State<Noun> {
             crossAxisAlignment: CrossAxisAlignment.center,
 
             children: <Widget>[
-              _nounCard(),
+              _verbCard(),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -248,14 +175,12 @@ class _NounState extends State<Noun> {
                       stop();
 
                       setState(() {
-                        //_isPlaying = false;
-
                         try {
                           _index = (_index - 1) % len;
                           activateIndex = 0;
                           imageList.clear();
                         } catch (e) {
-                          //print(e);
+                          throw Exception(e); //print(e);
                         }
                       });
                     },
@@ -282,11 +207,8 @@ class _NounState extends State<Noun> {
                       iconSize: 40,
                       onPressed: () {
                         if (player.playback.isPlaying) {
-                          //!_isPaused
-                          //print('---------is playing true-------');
                           pause(); //stop()
                         } else {
-                          //print('-------is playing false-------');
                           play();
                         }
                       }),
@@ -300,7 +222,7 @@ class _NounState extends State<Noun> {
                           activateIndex = 0;
                           imageList.clear();
                         } catch (e) {
-                          //print(e);
+                          throw Exception(e); //print(e);
                         }
                       });
                     },
@@ -328,79 +250,31 @@ class _NounState extends State<Noun> {
             ],
           ),
         ),
-        // floatingActionButton: Row(
-        //   children: [
-        //     const SizedBox(width: 25.0),
-        //     FloatingActionButton.extended(
-        //       heroTag: 'btn1',
-        //       onPressed: () {
-        //         stop();
-        //         teachStudent();
-        //       },
-        //       icon: const Icon(Icons.add),
-        //       label: const Text('Assign to student',
-        //           style: TextStyle(
-        //             fontSize: 18,
-        //           )),
-        //     ),
-        //     const Spacer(),
-        //     FloatingActionButton.extended(
-        //       heroTag: 'btn2',
-        //       onPressed: () {
-        //         stop();
-
-        //         Navigator.of(context)
-        //             .pushNamed('/nounForm')
-        //             .then((value) => setState(() {
-        //                   proxyInitState();
-        //                 }));
-        //       },
-        //       icon: const Icon(Icons.add),
-        //       label: const Text('Add a Noun',
-        //           style: TextStyle(
-        //             fontSize: 18,
-        //           )),
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
 
   stop() {
-    // await _audioPlayer.stop();
     player.stop();
-    //setState(() {
-    //_isPlaying = false;
-    //_isPaused = true;
     carouselAutoPlay = false;
-    //});
   }
 
   pause() {
-    // _audioPlayer.pause();
     player.pause();
     setState(() {
-      //_isPaused = true;
       carouselAutoPlay = false;
     });
   }
 
   play() {
-    //_audioPlayer.play();
     player.play();
-
     setState(() {
-      //_isPlaying = true;
-      //_isPaused = false;
       carouselAutoPlay = true;
     });
   }
 
-  Widget nounCardWidget() {
-    NounList name = names.elementAt(_index);
-    //loadAudio();
-    //List<String> images = name.imagePath;
+  Widget verbCardWidget() {
+    VerbList verb = verbs.elementAt(_index);
 
     return Card(
       child: Padding(
@@ -422,7 +296,6 @@ class _NounState extends State<Noun> {
                         enlargeCenterPage: true,
                         enlargeStrategy: CenterPageEnlargeStrategy.height,
                         autoPlay: carouselAutoPlay,
-                        //pageSnapping: false,
                         aspectRatio: 16 / 9,
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enableInfiniteScroll: true,
@@ -440,9 +313,7 @@ class _NounState extends State<Noun> {
                       if (index >= imageList.length) {
                         index = 0;
                       }
-                      final img = imageList.elementAt(index); //}catch(error){
-                      // print('eror');
-                      // }
+                      final img = imageList.elementAt(index);
 
                       return buildImage(img);
                     },
@@ -458,31 +329,6 @@ class _NounState extends State<Noun> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      // Checkbox(
-                      //     value: name.isSelected,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         name.isSelected = !name.isSelected;
-                      //         if (name.isSelected) {
-                      //           assignToStudent.add(names[_index]);
-                      //         } else {
-                      //           assignToStudent.remove(names[_index]);
-                      //         }
-                      //       });
-                      //     }),
-                      // IconButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         nameList.removeItem(name);
-                      //         names.remove(name);
-                      //       });
-                      //     },
-                      //     icon: const Icon(Icons.delete_forever_rounded)),
-                    ],
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -521,7 +367,6 @@ class _NounState extends State<Noun> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Card(
-                            //margin: const EdgeInsets.all(122.0),
                             color: Colors.blue[400],
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
@@ -530,7 +375,7 @@ class _NounState extends State<Noun> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Text(
-                                    name.title,
+                                    verb.title,
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600,
@@ -538,7 +383,7 @@ class _NounState extends State<Noun> {
                                     ),
                                   ),
                                   Text(
-                                    name.meaning,
+                                    verb.meaning,
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600,
@@ -580,7 +425,6 @@ class _NounState extends State<Noun> {
             : activateIndex % images.length, //== 0 ? 1 : images.length
         count: images.length,
         effect: const JumpingDotEffect(
-          //SwapEffect
           activeDotColor: Colors.blue,
           dotColor: Colors.black12,
           dotHeight: 10,
@@ -593,91 +437,7 @@ class _NounState extends State<Noun> {
     try {
       _controller.animateToPage(index);
     } catch (e) {
-      //print(e);
       throw Exception(e);
     }
   }
-
-  // Future teachStudent() async {
-  //   if (assignToStudent.isEmpty) {
-  //     //alert popup
-  //     _showMaterialDialog();
-  //   } else {
-  //     String? selectedDirectory = await FilePicker.platform
-  //         .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
-
-  //     if (selectedDirectory == null) {
-  //       // User canceled the picker
-  //     } else {
-  //       selectedDirectory.replaceAll('\\', '/');
-
-  //       File(selectedDirectory + '/Lesson/Noun/noun.txt')
-  //           .createSync(recursive: true);
-  //       _write(File(selectedDirectory + '/Lesson/Noun/noun.txt'));
-  //       copyImage(selectedDirectory + '/Lesson/Noun');
-  //       copyAudio(selectedDirectory + '/Lesson/Noun');
-  //     }
-  //   }
-  // }
-
-  // Future<void> copyAudio(String destination) async {
-  //   for (NounItem name in assignToStudent) {
-  //     File file = File(name.audio);
-  //     await file.copy(destination + '/${file.path.split('/').last}');
-  //   }
-  // }
-
-  // Future<void> copyImage(String destination) async {
-  //   for (NounItem name in assignToStudent) {
-  //     String folder = name.dir.split('/').last;
-  //     final newDir =
-  //         await Directory(destination + '/$folder').create(recursive: true);
-  //     final oldDir = Directory(name.dir);
-
-  //     await for (var original in oldDir.list(recursive: false)) {
-  //       if (original is File) {
-  //         await original
-  //             .copy('${newDir.path}/${original.path.split('\\').last}');
-  //       }
-  //     }
-  //   }
-  // }
-
-  // Future _write(File file) async {
-  //   for (NounItem name in assignToStudent) {
-  //     await file.writeAsString(
-  //         name.text +
-  //             '; ' +
-  //             name.meaning +
-  //             '; ' +
-  //             name.dir +
-  //             '; ' +
-  //             name.audio +
-  //             '\n',
-  //         mode: FileMode.append);
-  //   }
-  // }
-
-  // _dismissDialog() {
-  //   Navigator.pop(context);
-  // }
-
-  // void _showMaterialDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           title: const Text('No item was selected'),
-  //           content:
-  //               const Text('Please select at least one item before assigning'),
-  //           actions: <Widget>[
-  //             TextButton(
-  //                 onPressed: () {
-  //                   _dismissDialog();
-  //                 },
-  //                 child: const Text('Close')),
-  //           ],
-  //         );
-  //       });
-  // }
 }

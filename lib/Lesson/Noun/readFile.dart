@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:student/Lesson/Noun/noun_list.dart';
 
-class FileReader {
+class NounFileReader {
   String filePath;
   List<NounList> nounList = [];
 
-  FileReader(this.filePath) {
+  NounFileReader(this.filePath) {
     readFile();
   }
 
