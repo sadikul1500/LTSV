@@ -21,6 +21,6 @@ class ActivityList {
     meaning = values[1];
 
     video =
-        '${globals.folderPath}\\Lesson\\Activity\\${values[3].split('/').last}';
+        '${globals.folderPath}\\Lesson\\Activity\\${values[2].split('/').last}';
   }
 }

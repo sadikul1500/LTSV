@@ -9,7 +9,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:student/Lesson/Activity/activity_list.dart';
@@ -25,12 +24,12 @@ class Activity extends StatefulWidget {
 
 class _ActivityState extends State<Activity> {
   ActivityFileReader fileReader =
-      ActivityFileReader('${globals.folderPath}/Lesson/Verb/verb.txt');
+      ActivityFileReader('${globals.folderPath}/Lesson/Activity/activity.txt');
 
   // ActivityList activityList = ActivityList();
   // late List<ActivityItem> activities;
   List<ActivityList> activities = [];
- 
+
   int _index = 0;
   late Player videoPlayer;
   late int len;
@@ -43,9 +42,6 @@ class _ActivityState extends State<Activity> {
   PlaybackState playback = PlaybackState();
   GeneralState general = GeneralState();
   VideoDimensions videoDimensions = const VideoDimensions(0, 0);
-  // List<File> files = []; // screenshot files.......
-
-  final snapShotDirectory = 'D:/Sadi/spl3/assets/ActivitySnapShots/';
 
   _ActivityState() {
     _index = 0;
@@ -67,7 +63,6 @@ class _ActivityState extends State<Activity> {
     activities = fileReader.activityList;
     len = activities.length;
     createPlaylist();
-    //_activityCard();
 
     listenStreams();
   }
@@ -215,7 +210,7 @@ class _ActivityState extends State<Activity> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
+                                        children: const <Widget>[
                                           // Checkbox(
                                           //     value: activities
                                           //         .elementAt(_index)
@@ -451,6 +446,10 @@ class _ActivityState extends State<Activity> {
                         }
                       });
                     },
+                    style: ElevatedButton.styleFrom(
+                      alignment: Alignment.center,
+                      minimumSize: const Size(100, 42),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
@@ -464,10 +463,6 @@ class _ActivityState extends State<Activity> {
                         ),
                         Icon(Icons.navigate_next_rounded),
                       ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
                     ),
                   ),
                 ],
@@ -514,307 +509,29 @@ class _ActivityState extends State<Activity> {
     );
   }
 
-  // takeScreenShot() async {
-  //   Directory dir =
-  //       Directory(snapShotDirectory + '/' + activities[_index].text);
-  //   if (!await dir.exists()) {
-  //     await dir.create(recursive: true);
-  //   }
-  //   final now = DateTime.now()
-  //       .toIso8601String()
-  //       .replaceAll('.', '-')
-  //       .replaceAll(':', '-');
-  //   final name = 'screenshot_$now.png';
-  //   videoPlayer.takeSnapshot(File(dir.path + '/$name'), 600, 400);
-
-  //   //await listFiles(dir);
-  // }
-
-  // makeAquiz() async {
-  //   Directory dir =
-  //       Directory(snapShotDirectory + '/' + activities[_index].text);
-  //   if (!await dir.exists()) {
-  //     _showMaterialDialog('No screenshot found',
-  //         'Take screenshots before making questions'); //show a pop up box....//await dir.create(recursive: true);
-  //   } else {
-  //     await listFiles(dir).then((_) {
-  //       //print(files);
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //               builder: (context) => ShowCapturedWidget(files: files)));
-  //     });
-  //   }
-  // }
-
-  // Future<void> listFiles(Directory dir) async {
-  //   //var dir = Directory('tmp');
-  //   files.clear();
-  //   //print('called files clear');
-  //   try {
-  //     var dirList = dir.list();
-  //     await for (final FileSystemEntity f in dirList) {
-  //       if (f is File) {
-  //         files.add(f); //print('Found file ${f.path}');
-  //       } //else if (f is Directory) {
-  //       //print('Found dir ${f.path}');
-  //       //}
-  //     }
-  //   } catch (e) {
-  //     //print(e.toString());
-  //   }
-  // }
-
-  // Widget buildListItem(File imageFile) {
-  //   return SizedBox(
-  //       height: 250,
-  //       child: Image.file(
-  //         imageFile,
-  //         fit: BoxFit.contain,
-  //       ));
-
-  //   //return const Text('');
-  // }
-
   Future stop() async {
     videoPlayer.stop();
   }
 
-  // Widget activityVideoWidgetCard() {
-  //   ActivityItem activity = activities.elementAt(_index);
-
-  //   return Card(
-  //     shape: RoundedRectangleBorder(
-  //       side: const BorderSide(color: Colors.white70, width: .1),
-  //       borderRadius: BorderRadius.circular(10),
-  //     ),
-  //     child: Padding(
-  //         padding: const EdgeInsets.all(12.0),
-  //         child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: <Widget>[
-  //               Column(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                 children: <Widget>[
-  //                   const SizedBox(height: 15),
-  //                   getVideoCard(),
-  //                   const SizedBox(height: 15),
-  //                 ],
-  //               ),
-  //               rightSidePanel(activity)
-  //             ])),
-  //   );
+  // _dismissDialog() {
+  //   Navigator.pop(context);
   // }
 
-  // Widget getVideoCard() {
-  //   return SizedBox(
-  //     height: 420,
-  //     width: 620,
-  //     child: NativeVideo(
-  //       player: videoPlayer,
-  //       width: 620, //640,
-  //       height: 420, //360,
-  //       volumeThumbColor: Colors.blue,
-  //       volumeActiveColor: Colors.blue,
-  //       showControls: true, //!isPhone
-  //       //fit: BoxFit.contain,
-  //     ),
-  //   );
-  // }
-
-  // Widget rightSidePanel(ActivityList activity) {
-  //   return SizedBox(
-  //     width: 500,
-  //     height: 250,
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //       children: <Widget>[
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //           children: <Widget>[
-  //             Checkbox(
-  //                 value: activity.isSelected,
-  //                 onChanged: (value) {
-  //                   setState(() {
-  //                     videoPlayer.playOrPause();
-  //                     activity.isSelected = !activity.isSelected;
-  //                     if (activity.isSelected) {
-  //                       assignToStudent.add(activities[_index]);
-  //                     } else {
-  //                       assignToStudent.remove(activities[_index]);
-  //                     }
-  //                   });
-  //                 }),
-  //             IconButton(
+  // void _showMaterialDialog(String title, String content) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           title: Text(title),
+  //           content: Text(content),
+  //           actions: <Widget>[
+  //             TextButton(
   //                 onPressed: () {
-  //                   setState(() {
-  //                     activityList.removeItem(activity);
-  //                   });
+  //                   _dismissDialog();
   //                 },
-  //                 tooltip: 'Remove this item',
-  //                 icon: const Icon(Icons.delete_forever_rounded)),
+  //                 child: const Text('Close')),
   //           ],
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //           children: <Widget>[
-  //             Column(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: <Widget>[
-  //                 Card(
-  //                   color: Colors.white70,
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.all(20.0),
-  //                     child: Column(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                       children: const <Widget>[
-  //                         Text(
-  //                           'Title: ',
-  //                           style: TextStyle(
-  //                             fontSize: 24,
-  //                             fontWeight: FontWeight.w600,
-  //                           ),
-  //                         ),
-  //                         Text(
-  //                           'Meaning:',
-  //                           style: TextStyle(
-  //                             fontSize: 24,
-  //                             fontWeight: FontWeight.w600,
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //             Column(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: <Widget>[
-  //                 Card(
-  //                   //margin: const EdgeInsets.all(122.0),
-  //                   color: Colors.blue[400],
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.all(18.0),
-  //                     child: Column(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                       children: <Widget>[
-  //                         Text(
-  //                           activity.text,
-  //                           style: const TextStyle(
-  //                             fontSize: 24,
-  //                             fontWeight: FontWeight.w600,
-  //                             color: Colors.white,
-  //                           ),
-  //                         ),
-  //                         const SizedBox(height: 5),
-  //                         Text(
-  //                           activity.meaning,
-  //                           style: const TextStyle(
-  //                             fontSize: 24,
-  //                             fontWeight: FontWeight.w600,
-  //                             color: Colors.white,
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //             ElevatedButton(
-  //               style: ButtonStyle(
-  //                   fixedSize: MaterialStateProperty.all(const Size(150, 40)),
-  //                   padding: MaterialStateProperty.all(
-  //                       const EdgeInsets.fromLTRB(0, 10, 0, 10))),
-  //               onPressed: () {
-  //                 makeAquiz(); //show captured widget
-  //               },
-  //               child: const Text(
-  //                 'Make a quiz',
-  //                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-  //               ),
-  //               // style: ElevatedButton.styleFrom(
-  //               //   alignment: Alignment.center,
-  //               //   minimumSize: const Size(100, 42),
-  //               // ),
-  //             )
-  //           ],
-  //         )
-  //       ],
-  //     ),
-  //   );
+  //         );
+  //       });
   // }
-
-  // Future teachStudent() async {
-  //   if (assignToStudent.isEmpty) {
-  //     //alert popup
-  //     _showMaterialDialog('No item was selected',
-  //         'Please select at least one item before assigning');
-  //   } else {
-  //     String? selectedDirectory = await FilePicker.platform
-  //         .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
-
-  //     if (selectedDirectory == null) {
-  //       // User canceled the picker
-  //     } else {
-  //       selectedDirectory.replaceAll('\\', '/');
-
-  //       File(selectedDirectory + '/Lesson/Activity/activity.txt')
-  //           .createSync(recursive: true);
-  //       _write(File(selectedDirectory + '/Lesson/Activity/activity.txt'));
-
-  //       copyVideo(selectedDirectory + '/Lesson/Activity');
-  //     }
-  //   }
-  // }
-
-  // Future<void> copyVideo(String destination) async {
-  //   for (ActivityItem activity in assignToStudent) {
-  //     if (activity.video.isNotEmpty) {
-  //       File file = File(activity.video);
-  //       await file.copy(destination + '/${file.path.split('/').last}');
-  //     }
-  //   }
-  // }
-
-  // Future _write(File file) async {
-  //   for (ActivityItem activity in assignToStudent) {
-  //     await file.writeAsString(
-  //         activity.text +
-  //             '; ' +
-  //             activity.meaning +
-  //             '; ' +
-  //             activity.video +
-  //             '\n',
-  //         mode: FileMode.append);
-  //   }
-  // }
-
-  _dismissDialog() {
-    Navigator.pop(context);
-  }
-
-  void _showMaterialDialog(String title, String content) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(title),
-            content: Text(content),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    _dismissDialog();
-                  },
-                  child: const Text('Close')),
-            ],
-          );
-        });
-  }
 }
