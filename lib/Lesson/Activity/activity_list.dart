@@ -1,7 +1,7 @@
 //read from folder /files and store here
 //array of title, meaning, video
 //start.....
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:student/globals.dart' as globals;
 
@@ -10,8 +10,7 @@ class ActivityList {
   String meaning = '';
   String video = '';
   String line;
-  // List<String> values = [];
-  
+
   ActivityList(this.line) {
     assignValues();
   }
@@ -20,9 +19,8 @@ class ActivityList {
     List<String> values = line.split("; ");
     title = values[0];
     meaning = values[1];
-    
-    video = '${globals.folderPath}\\Lesson\\Activity\\${values[3].split('/').last}';
-    
-    
+
+    video =
+        '${globals.folderPath}\\Lesson\\Activity\\${values[3].split('/').last}';
   }
 }
