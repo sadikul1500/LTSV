@@ -4,14 +4,16 @@ import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+// import 'package:just_audio/just_audio.dart';
 import 'package:student/Lesson/Association/association_search.dart';
 import 'package:student/Lesson/Association/association_video.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:student/Lesson/Association/association_list.dart';
+import 'package:student/Lesson/Association/readFile.dart';
+import 'package:student/globals.dart' as globals;
 
 class Association extends StatefulWidget {
   @override
@@ -19,15 +21,17 @@ class Association extends StatefulWidget {
 }
 
 class _AssociationState extends State<Association> {
-  AssociationList associationList = AssociationList();
-  late List<AssociationItem> associations;
+  AssociationFileReader fileReader =
+      AssociationFileReader('${globals.folderPath}/Lesson/Verb/verb.txt');
+  List<AssociationList> associations = [];
+
   late AssociationVideoCard associationVideoCard;
-  List<AssociationItem> assignToStudent = [];
+
   int _index = 0;
   late Player videoPlayer;
   late int len;
-  List<String> imageList = [];
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  Set<String> imageList = {};
+  final Player _audioPlayer = Player(id: 19);
 
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
@@ -35,6 +39,18 @@ class _AssociationState extends State<Association> {
   bool _isPlaying = false;
   bool carouselAutoPlay = false;
   bool _isPaused = true;
+
+  MediaType mediaType = MediaType.file;
+  CurrentState current = CurrentState();
+  PositionState position = PositionState();
+  PlaybackState playback = PlaybackState();
+  GeneralState general = GeneralState();
+
+  List<Media> medias = <Media>[];
+
+  double bufferingProgress = 0.0;
+  Media? metasMedia;
+  List<File> files = [];
 
   Widget _associationCard() {
     if (associations.isEmpty) {
@@ -52,14 +68,14 @@ class _AssociationState extends State<Association> {
     } else {
       loadData();
     }
-    if (imageList.isEmpty) {
+    if (imageList.isEmpty && associations[_index].audio == '') {
       return associationVideoWidgetCard();
     } else {
-      if (_audioPlayer.processingState != ProcessingState.ready) {
-        loadAudio();
+      // if (_audioPlayer.processingState != ProcessingState.ready) {
+      loadAudio();
 
-        return const CircularProgressIndicator();
-      }
+      //   return const CircularProgressIndicator();
+      // }
 
       return associationCardWidget();
     }
@@ -68,7 +84,7 @@ class _AssociationState extends State<Association> {
   _AssociationState() {
     _index = 0;
     videoPlayer = Player(
-      id: 0,
+      id: 91,
       //videoDimensions: VideoDimensions(640, 360),
       registerTexture: false,
     );
@@ -81,13 +97,49 @@ class _AssociationState extends State<Association> {
   }
 
   proxyInitState() {
-    associations = associationList.getList();
+    associations = fileReader.associationList;
     len = associations.length;
-    loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
-    if (imageList.isNotEmpty) {
-      loadAudio().then((value) {
-        _associationCard();
+
+    // loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
+    // if (imageList.isNotEmpty) {
+    //   loadAudio().then((value) {
+    //     _associationCard();
+    //   });
+    // }
+    if (associations[_index].audio != '') {
+      listenStreams();
+    }
+  }
+
+  void listenStreams() {
+    if (mounted) {
+      _audioPlayer.currentStream.listen((current) {
+        this.current = current;
       });
+      _audioPlayer.positionStream.listen((position) {
+        this.position = position;
+      });
+      _audioPlayer.playbackStream.listen((playback) {
+        this.playback = playback;
+      });
+      _audioPlayer.generalStream.listen((general) {
+        general = general;
+      });
+
+      _audioPlayer.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          bufferingProgress = bufferingProgress;
+        },
+      );
+      _audioPlayer.errorStream.listen((event) {
+        throw Error(); //'libvlc error.'
+      });
+      //devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      _audioPlayer.setEqualizer(equalizer);
+      _audioPlayer.open(Playlist(medias: medias), autoStart: false);
     }
   }
 
@@ -97,27 +149,26 @@ class _AssociationState extends State<Association> {
     super.dispose();
   }
 
-  List<String> loadData() {
+  loadData() async {
     if (associations.isEmpty) {
       return []; //await loadData();
     }
 
-    imageList = associations[_index].imgList;
+    if (imageList.isEmpty && associations[_index].audio != '') {
+      imageList = await associations[_index].getImagePath(); //getImagePath();
+    }
+    // imageList = associations[_index].imgList;
 
     return imageList;
   }
 
-  Future loadAudio() async {
-    await _audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.file(associations[_index].audio)),
-        initialPosition: Duration.zero,
-        preload: true);
+  loadAudio() {
+    _audioPlayer.setPlaylistMode(PlaylistMode.repeat);
+    Media media = Media.file(File(associations[_index].audio));
 
-    _audioPlayer.setLoopMode(LoopMode.one);
-    _audioPlayer.playerStateStream.listen((state) {
-      setState(() {});
-    });
-    return _audioPlayer;
+    _audioPlayer.open(media, autoStart: false);
+
+    // print(associations[_index].audio);
   }
 
   @override
@@ -146,13 +197,13 @@ class _AssociationState extends State<Association> {
                   setState(() {});
                   var result = await showSearch<String>(
                     context: context,
-                    delegate: AssociationSearch(associations),
+                    delegate: CustomDelegate(associations),
                   );
                   setState(() {
                     _index = max(
                         0,
                         associations
-                            .indexWhere((element) => element.text == result));
+                            .indexWhere((element) => element.title == result));
                   });
                 },
                 icon: const SafeArea(child: Icon(Icons.search_sharp)))
@@ -199,12 +250,12 @@ class _AssociationState extends State<Association> {
                   const SizedBox(width: 30),
                   imageList.isNotEmpty
                       ? IconButton(
-                          icon: (_isPaused)
+                          icon: (!_audioPlayer.playback.isPlaying) //_isPaused
                               ? const Icon(Icons.play_circle_outline)
                               : const Icon(Icons.pause_circle_filled),
                           iconSize: 40,
                           onPressed: () {
-                            if (!_isPaused) {
+                            if (_audioPlayer.playback.isPlaying) {
                               //print('---------is playing true-------');
                               pause(); //stop()
                             } else {
@@ -225,6 +276,10 @@ class _AssociationState extends State<Association> {
                         }
                       });
                     },
+                    style: ElevatedButton.styleFrom(
+                      alignment: Alignment.center,
+                      minimumSize: const Size(100, 42),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const <Widget>[
@@ -239,63 +294,20 @@ class _AssociationState extends State<Association> {
                         Icon(Icons.navigate_next_rounded),
                       ],
                     ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
                   ),
                 ],
               )
             ],
           ),
         ),
-        floatingActionButton: Row(
-          children: [
-            const SizedBox(width: 25.0),
-            FloatingActionButton.extended(
-              heroTag: 'btn1',
-              onPressed: () {
-                stop();
-                teachStudent();
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Assign to student',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
-            ),
-            const Spacer(),
-            FloatingActionButton.extended(
-              heroTag: 'btn2',
-              onPressed: () async {
-                stop();
-
-                await Navigator.of(context)
-                    .pushNamed('/associationForm')
-                    .then((value) => setState(() {
-                          proxyInitState();
-                        }));
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Add an Association',
-                  style: TextStyle(
-                    fontSize: 18,
-                  )),
-            ),
-          ],
-        ),
       ),
     );
   }
 
-  Future stop() async {
+  stop() {
     if (imageList.isNotEmpty) {
-      await _audioPlayer.stop();
-      setState(() {
-        _isPlaying = false;
-        _isPaused = true;
-        carouselAutoPlay = false;
-      });
+      _audioPlayer.stop();
+      carouselAutoPlay = false;
     } else {
       videoPlayer.stop();
     }
@@ -303,25 +315,17 @@ class _AssociationState extends State<Association> {
 
   pause() {
     _audioPlayer.pause();
-    setState(() {
-      _isPaused = true;
-      carouselAutoPlay = false;
-    });
+    carouselAutoPlay = false;
   }
 
-  Future play() async {
+  play() {
     _audioPlayer.play();
 
-    setState(() {
-      _isPlaying = true;
-      _isPaused = false;
-      carouselAutoPlay = true;
-    });
-    //}
+    carouselAutoPlay = true;
   }
 
   Widget associationVideoWidgetCard() {
-    AssociationItem association = associations.elementAt(_index);
+    AssociationList association = associations.elementAt(_index);
     associationVideoCard =
         AssociationVideoCard(associations[_index].video, videoPlayer);
     return Card(
@@ -348,8 +352,9 @@ class _AssociationState extends State<Association> {
   }
 
   Widget associationCardWidget() {
-    AssociationItem association = associations.elementAt(_index);
-    List<String> images = association.getImgList();
+    AssociationList association = associations.elementAt(_index);
+
+    Set<String> images = imageList;
 
     return Card(
       child: Padding(
@@ -389,7 +394,7 @@ class _AssociationState extends State<Association> {
                       if (index >= images.length) {
                         index = 0;
                       }
-                      final img = images[index];
+                      final img = images.elementAt(index);
 
                       return buildImage(img, index);
                     },
@@ -406,39 +411,13 @@ class _AssociationState extends State<Association> {
     );
   }
 
-  Widget rightSidePanel(AssociationItem association) {
+  Widget rightSidePanel(AssociationList association) {
     return SizedBox(
       width: 500,
       height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Checkbox(
-                  value: association.isSelected,
-                  onChanged: (value) {
-                    //setState(() {
-                    association.isSelected = !association.isSelected;
-                    if (association.isSelected) {
-                      assignToStudent.add(associations[_index]);
-                    } else {
-                      assignToStudent.remove(associations[_index]);
-                    }
-                    //});
-                  }),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      associationList.removeItem(association);
-                      proxyInitState();
-                    });
-                  },
-                  tooltip: 'Remove this item',
-                  icon: const Icon(Icons.delete_forever_rounded)),
-            ],
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -484,7 +463,7 @@ class _AssociationState extends State<Association> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Text(
-                            association.text,
+                            association.title,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
@@ -525,7 +504,7 @@ class _AssociationState extends State<Association> {
     );
   }
 
-  Widget buildIndicator(List<String> images) => AnimatedSmoothIndicator(
+  Widget buildIndicator(Set<String> images) => AnimatedSmoothIndicator(
         activeIndex: activateIndex % images.length,
         count: images.length,
         effect: const JumpingDotEffect(
@@ -545,104 +524,5 @@ class _AssociationState extends State<Association> {
       //print(e);
       throw Exception(e);
     }
-  }
-
-  Future teachStudent() async {
-    if (assignToStudent.isEmpty) {
-      //alert popup
-      _showMaterialDialog();
-    } else {
-      String? selectedDirectory = await FilePicker.platform
-          .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
-
-      if (selectedDirectory == null) {
-        // User canceled the picker
-      } else {
-        selectedDirectory.replaceAll('\\', '/');
-
-        File(selectedDirectory + '/Lesson/Association/association.txt')
-            .createSync(recursive: true);
-        _write(File(selectedDirectory + '/Lesson/Association/association.txt'));
-        copyImage(selectedDirectory + '/Lesson/Association');
-        copyAudio(selectedDirectory + '/Lesson/Association');
-        copyVideo(selectedDirectory + '/Lesson/Association');
-      }
-    }
-  }
-
-  Future<void> copyAudio(String destination) async {
-    for (AssociationItem association in assignToStudent) {
-      if (association.audio.isNotEmpty) {
-        File file = File(association.audio);
-        await file.copy(destination + '/${file.path.split('/').last}');
-      }
-    }
-  }
-
-  Future<void> copyVideo(String destination) async {
-    for (AssociationItem association in assignToStudent) {
-      if (association.video.isNotEmpty) {
-        File file = File(association.video);
-        await file.copy(destination + '/${file.path.split('/').last}');
-      }
-    }
-  }
-
-  Future<void> copyImage(String destination) async {
-    for (AssociationItem association in assignToStudent) {
-      if (association.dir.isNotEmpty) {
-        String folder = association.dir.split('/').last;
-        final newDir =
-            await Directory(destination + '/$folder').create(recursive: true);
-        final oldDir = Directory(association.dir);
-
-        await for (var original in oldDir.list(recursive: false)) {
-          if (original is File) {
-            await original
-                .copy('${newDir.path}/${original.path.split('\\').last}');
-          }
-        }
-      }
-    }
-  }
-
-  Future _write(File file) async {
-    for (AssociationItem association in assignToStudent) {
-      await file.writeAsString(
-          association.text +
-              '; ' +
-              association.meaning +
-              '; ' +
-              association.dir +
-              '; ' +
-              association.audio +
-              '; ' +
-              association.video +
-              '\n',
-          mode: FileMode.append);
-    }
-  }
-
-  _dismissDialog() {
-    Navigator.pop(context);
-  }
-
-  void _showMaterialDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('No item was selected'),
-            content:
-                const Text('Please select at least one item before assigning'),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    _dismissDialog();
-                  },
-                  child: const Text('Close')),
-            ],
-          );
-        });
   }
 }

@@ -27,7 +27,7 @@ class _NounState extends State<Noun> {
   late int len;
   Set<String> imageList = {};
   // final AudioPlayer _audioPlayer = AudioPlayer();
-  final player = Player(id: 1003);
+  final player = Player(id: 61007);
 
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;

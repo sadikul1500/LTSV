@@ -1,20 +1,20 @@
 import 'dart:io';
 
-import 'package:student/Lesson/Activity/activity_list.dart';
+import 'package:student/Lesson/Association/association_list.dart';
 
-class ActivityFileReader {
+class AssociationFileReader {
   String filePath;
-  List<ActivityList> activityList = [];
+  List<AssociationList> associationList = [];
 
-  ActivityFileReader(this.filePath) {
+  AssociationFileReader(this.filePath) {
     readFile();
   }
 
   readFile() {
     List<String> lines = File(filePath).readAsLinesSync();
     for (var line in lines) {
-      ActivityList activity = ActivityList(line);
-      activityList.add(activity);
+      AssociationList association = AssociationList(line);
+      associationList.add(association);
     }
   }
 }
