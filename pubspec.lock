@@ -126,7 +126,7 @@ packages:
     source: hosted
     version: "2.0.1"
   flutter_native_view:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_native_view
       url: "https://pub.dartlang.org"
@@ -386,12 +386,12 @@ packages:
     source: hosted
     version: "2.6.1"
   window_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: window_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.6"
+    version: "0.2.7"
   xdg_directories:
     dependency: transitive
     description:
