@@ -21,8 +21,8 @@ class Association extends StatefulWidget {
 }
 
 class _AssociationState extends State<Association> {
-  AssociationFileReader fileReader =
-      AssociationFileReader('${globals.folderPath}/Lesson/Verb/verb.txt');
+  AssociationFileReader fileReader = AssociationFileReader(
+      '${globals.folderPath}/Lesson/Association/association.txt');
   List<AssociationList> associations = [];
 
   late AssociationVideoCard associationVideoCard;
@@ -36,9 +36,9 @@ class _AssociationState extends State<Association> {
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
-  bool _isPlaying = false;
+  // bool _isPlaying = false;
   bool carouselAutoPlay = false;
-  bool _isPaused = true;
+  // bool _isPaused = true;
 
   MediaType mediaType = MediaType.file;
   CurrentState current = CurrentState();
@@ -49,36 +49,53 @@ class _AssociationState extends State<Association> {
   List<Media> medias = <Media>[];
 
   double bufferingProgress = 0.0;
-  Media? metasMedia;
-  List<File> files = [];
+  // Media? metasMedia;
+  // List<File> files = [];
 
   Widget _associationCard() {
-    if (associations.isEmpty) {
-      return const SizedBox(
-        height: 400,
-        child: Center(
-          child: Text(
-            'No Data Found!!!',
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-        ),
-      );
-    } else {
-      loadData();
-    }
-    if (imageList.isEmpty && associations[_index].audio == '') {
+    if (associations[_index].audio == '') {
       return associationVideoWidgetCard();
     } else {
-      // if (_audioPlayer.processingState != ProcessingState.ready) {
-      loadAudio();
-
-      //   return const CircularProgressIndicator();
-      // }
-
-      return associationCardWidget();
+      if (imageList.isEmpty) {
+        loadData().then((data) {
+          if (imageList.isEmpty) {
+            loadData();
+          } else {
+            loadAudio();
+            return associationCardWidget();
+          }
+        });
+        return const CircularProgressIndicator();
+      } else {
+        return associationCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
+      }
     }
+    // if (associations.isEmpty) {
+    //   return const SizedBox(
+    //     height: 400,
+    //     child: Center(
+    //       child: Text(
+    //         'No Data Found!!!',
+    //         textAlign: TextAlign.center,
+    //         overflow: TextOverflow.ellipsis,
+    //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+    //       ),
+    //     ),
+    //   );
+    // } else {
+    //   loadData();
+    // }
+    // if (imageList.isEmpty && associations[_index].audio == '') {
+    //   return associationVideoWidgetCard();
+    // } else {
+    //   // if (_audioPlayer.processingState != ProcessingState.ready) {
+    //   loadAudio();
+
+    //   //   return const CircularProgressIndicator();
+    //   // }
+
+    //   return associationCardWidget();
+    // }
   }
 
   _AssociationState() {
@@ -114,21 +131,21 @@ class _AssociationState extends State<Association> {
   void listenStreams() {
     if (mounted) {
       _audioPlayer.currentStream.listen((current) {
-        this.current = current;
+        setState(() => this.current = current);
       });
       _audioPlayer.positionStream.listen((position) {
-        this.position = position;
+        setState(() => this.position = position);
       });
       _audioPlayer.playbackStream.listen((playback) {
-        this.playback = playback;
+        setState(() => this.playback = playback);
       });
       _audioPlayer.generalStream.listen((general) {
-        general = general;
+        setState(() => this.general = general);
       });
 
       _audioPlayer.bufferingProgressStream.listen(
         (bufferingProgress) {
-          bufferingProgress = bufferingProgress;
+          setState(() => this.bufferingProgress = bufferingProgress);
         },
       );
       _audioPlayer.errorStream.listen((event) {
@@ -139,13 +156,14 @@ class _AssociationState extends State<Association> {
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
       _audioPlayer.setEqualizer(equalizer);
-      _audioPlayer.open(Playlist(medias: medias), autoStart: false);
+      // _audioPlayer.open(Playlist(medias: medias), autoStart: false);
     }
   }
 
   @override
   void dispose() {
     videoPlayer.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -168,7 +186,7 @@ class _AssociationState extends State<Association> {
 
     _audioPlayer.open(media, autoStart: false);
 
-    // print(associations[_index].audio);
+    print('load audio association ${associations[_index].audio}');
   }
 
   @override
@@ -223,10 +241,12 @@ class _AssociationState extends State<Association> {
                       stop();
 
                       setState(() {
-                        _isPlaying = false;
+                        // _isPlaying = false;
 
                         try {
                           _index = (_index - 1) % len;
+                          activateIndex = 0;
+                          imageList.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -271,6 +291,8 @@ class _AssociationState extends State<Association> {
                       setState(() {
                         try {
                           _index = (_index + 1) % len;
+                          activateIndex = 0;
+                          imageList.clear();
                         } catch (e) {
                           //print(e);
                         }
@@ -354,7 +376,9 @@ class _AssociationState extends State<Association> {
   Widget associationCardWidget() {
     AssociationList association = associations.elementAt(_index);
 
-    Set<String> images = imageList;
+    // Set<String> images = imageList;
+    print('called');
+    // print(images.length);
 
     return Card(
       child: Padding(
@@ -369,7 +393,7 @@ class _AssociationState extends State<Association> {
                   width: 600,
                   child: CarouselSlider.builder(
                     carouselController: _controller,
-                    itemCount: images.length,
+                    itemCount: imageList.length,
                     options: CarouselOptions(
                         height: 385.0,
                         initialPage: 0,
@@ -391,17 +415,17 @@ class _AssociationState extends State<Association> {
                           });
                         }),
                     itemBuilder: (context, index, realIndex) {
-                      if (index >= images.length) {
+                      if (index >= imageList.length) {
                         index = 0;
                       }
-                      final img = images.elementAt(index);
+                      final img = imageList.elementAt(index);
 
-                      return buildImage(img, index);
+                      return buildImage(img);
                     },
                   ),
                 ),
                 const SizedBox(height: 10),
-                buildIndicator(images),
+                buildIndicator(imageList),
               ],
             ),
             rightSidePanel(association)
@@ -492,7 +516,7 @@ class _AssociationState extends State<Association> {
     );
   }
 
-  Widget buildImage(String img, int index) {
+  Widget buildImage(String img) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       color: Colors.grey,
@@ -505,7 +529,7 @@ class _AssociationState extends State<Association> {
   }
 
   Widget buildIndicator(Set<String> images) => AnimatedSmoothIndicator(
-        activeIndex: activateIndex % images.length,
+        activeIndex: images.isEmpty ? 0 : activateIndex % images.length,
         count: images.length,
         effect: const JumpingDotEffect(
           //SwapEffect

@@ -188,6 +188,7 @@ class _ActivityState extends State<Activity> {
                                       height: 420,
                                       width: 620,
                                       child: NativeVideo(
+                                        //native video
                                         player: videoPlayer,
                                         width: 620, //640,
                                         height: 420, //360,

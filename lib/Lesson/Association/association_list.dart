@@ -25,21 +25,21 @@ class AssociationList {
     title = values[0];
     meaning = values[1];
     // imagePath = values[2];
-    audio = values[3];
-    video = values[4];
+    // audio = values[3];
+    // video = values[4];
 
     if (values[3] == '') {
       //audioPath = values[3]
+      video =
+          '${globals.folderPath}\\Lesson\\Association\\${values[4].split('/').last}';
+    } else {
       audio =
           '${globals.folderPath}\\Lesson\\Association\\${values[3].split('/').last}';
-    } else {
-      video =
-          '${globals.folderPath}\\Lesson\\Activity\\${values[3].split('/').last}';
     }
   }
 
   setImagePaths(String folderName) async {
-    String folderPath = '${globals.folderPath}/Lesson/Verb/$folderName';
+    String folderPath = '${globals.folderPath}/Lesson/Association/$folderName';
 
     var directory = Directory(folderPath);
 
