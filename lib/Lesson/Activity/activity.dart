@@ -42,6 +42,7 @@ class _ActivityState extends State<Activity> {
   PlaybackState playback = PlaybackState();
   GeneralState general = GeneralState();
   VideoDimensions videoDimensions = const VideoDimensions(0, 0);
+  double bufferingProgress = 0.0;
 
   _ActivityState() {
     _index = 0;
@@ -58,34 +59,33 @@ class _ActivityState extends State<Activity> {
     super.initState();
     if (mounted) {
       videoPlayer.currentStream.listen((current) {
-        this.current = current;
+        setState(() => this.current = current);
       });
       videoPlayer.positionStream.listen((position) {
-        this.position = position;
+        setState(() => this.position = position);
       });
       videoPlayer.playbackStream.listen((playback) {
-        this.playback = playback;
+        setState(() => this.playback = playback);
       });
       videoPlayer.generalStream.listen((general) {
-        general = general;
+        setState(() => this.general = general);
       });
       videoPlayer.videoDimensionsStream.listen((videoDimensions) {
-        videoDimensions = videoDimensions;
+        setState(() => this.videoDimensions = videoDimensions);
       });
       videoPlayer.bufferingProgressStream.listen(
         (bufferingProgress) {
-          bufferingProgress = bufferingProgress;
+          setState(() => this.bufferingProgress = bufferingProgress);
         },
       );
       videoPlayer.errorStream.listen((event) {
-        throw Error(); //'libvlc error.'
+        print('libvlc error.');
       });
-      //devices = Devices.all;
+      // devices = Devices.all;
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
       videoPlayer.setEqualizer(equalizer);
-      // videoPlayer.open(Playlist(medias: medias), autoStart: false);
     }
     proxyInitState();
   }
@@ -142,6 +142,7 @@ class _ActivityState extends State<Activity> {
     //   medias.add(Media.file(File(activity.video)));
     // }
     medias = [Media.file(File(activities[index].video))];
+    print(medias.length);
     videoPlayer.open(Playlist(medias: medias), autoStart: false);
   }
 
