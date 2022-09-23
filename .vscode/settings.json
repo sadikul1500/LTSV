@@ -8,6 +8,14 @@
         "xstring": "cpp",
         "map": "cpp",
         "list": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "algorithm": "cpp",
+        "chrono": "cpp",
+        "iterator": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "xiosbase": "cpp",
+        "limits": "cpp",
+        "random": "cpp"
     }
 }

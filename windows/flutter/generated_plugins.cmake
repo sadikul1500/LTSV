@@ -5,8 +5,6 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   dart_vlc
   flutter_native_view
-  just_audio_windows
-  screen_retriever
   window_manager
 )
 

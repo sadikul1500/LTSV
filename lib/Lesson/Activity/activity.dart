@@ -56,15 +56,45 @@ class _ActivityState extends State<Activity> {
   @override
   initState() {
     super.initState();
+    if (mounted) {
+      videoPlayer.currentStream.listen((current) {
+        this.current = current;
+      });
+      videoPlayer.positionStream.listen((position) {
+        this.position = position;
+      });
+      videoPlayer.playbackStream.listen((playback) {
+        this.playback = playback;
+      });
+      videoPlayer.generalStream.listen((general) {
+        general = general;
+      });
+      videoPlayer.videoDimensionsStream.listen((videoDimensions) {
+        videoDimensions = videoDimensions;
+      });
+      videoPlayer.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          bufferingProgress = bufferingProgress;
+        },
+      );
+      videoPlayer.errorStream.listen((event) {
+        throw Error(); //'libvlc error.'
+      });
+      //devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      videoPlayer.setEqualizer(equalizer);
+      // videoPlayer.open(Playlist(medias: medias), autoStart: false);
+    }
     proxyInitState();
   }
 
   proxyInitState() {
     activities = fileReader.activityList;
     len = activities.length;
-    createPlaylist();
-
-    listenStreams();
+    // listenStreams();
+    createPlaylist(_index);
   }
 
   void listenStreams() {
@@ -97,7 +127,7 @@ class _ActivityState extends State<Activity> {
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
       videoPlayer.setEqualizer(equalizer);
-      videoPlayer.open(Playlist(medias: medias), autoStart: false);
+      // videoPlayer.open(Playlist(medias: medias), autoStart: false);
     }
   }
 
@@ -107,10 +137,12 @@ class _ActivityState extends State<Activity> {
     super.dispose();
   }
 
-  void createPlaylist() {
-    for (ActivityList activity in activities) {
-      medias.add(Media.file(File(activity.video)));
-    }
+  void createPlaylist(int index) {
+    // for (ActivityList activity in activities) {
+    //   medias.add(Media.file(File(activity.video)));
+    // }
+    medias = [Media.file(File(activities[index].video))];
+    videoPlayer.open(Playlist(medias: medias), autoStart: false);
   }
 
   @override
@@ -380,9 +412,10 @@ class _ActivityState extends State<Activity> {
                       stop();
 
                       setState(() {
-                        videoPlayer.previous();
+                        // videoPlayer.previous();
                         try {
                           _index = (_index - 1) % len;
+                          createPlaylist(_index);
                           //files.clear();
                         } catch (e) {
                           //print(e);
@@ -438,9 +471,10 @@ class _ActivityState extends State<Activity> {
                     onPressed: () {
                       stop();
                       setState(() {
-                        videoPlayer.next();
+                        // videoPlayer.next();
                         try {
                           _index = (_index + 1) % len;
+                          createPlaylist(_index);
                           //files.clear();
                         } catch (e) {
                           //print(e);
