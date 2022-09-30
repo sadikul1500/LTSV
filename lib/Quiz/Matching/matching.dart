@@ -32,7 +32,8 @@ class _MatchingState extends State<Matching> {
   List<MatchingList> matchinges = [];
 
   int _index = 0;
-  int wrong_tries = 0;
+  // int wrong_tries = 0;
+  int score = 0;
 
   late Timer _timer;
   int _start = 0;
@@ -225,8 +226,9 @@ class _MatchingState extends State<Matching> {
                                                         'Wooha!!!! You have given correct answer');
                                                   });
                                                 } else {
+                                                  // wrong_tries += 1;
                                                   popup('Wrong answer',
-                                                      'You have selected the wrong option');
+                                                      'You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -262,7 +264,6 @@ class _MatchingState extends State<Matching> {
                                           height: 50.0,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              _timer.cancel();
                                               if (!hasAnswered) {
                                                 hasPressed[1] = true;
                                                 hasAnswered = true;
@@ -274,8 +275,9 @@ class _MatchingState extends State<Matching> {
                                                         'Wooha!!!! You have given correct answer');
                                                   });
                                                 } else {
+                                                  // wrong_tries += 1;
                                                   popup('Wrong answer',
-                                                      'You have selected the wrong option');
+                                                      'You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -329,8 +331,9 @@ class _MatchingState extends State<Matching> {
                                                         'Wooha!!!! You have given correct answer');
                                                   });
                                                 } else {
+                                                  // wrong_tries += 1;
                                                   popup('Wrong answer',
-                                                      'You have selected the wrong option');
+                                                      'You have selected the wrong option $_start ');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -378,8 +381,9 @@ class _MatchingState extends State<Matching> {
                                                         'Wooha!!!! You have given correct answer');
                                                   });
                                                 } else {
+                                                  // wrong_tries += 1;
                                                   popup('Wrong answer',
-                                                      'You have selected the wrong option');
+                                                      'You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
