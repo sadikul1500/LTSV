@@ -34,6 +34,7 @@ dependencies:
   #just_audio_windows: ^0.1.0
   smooth_page_indicator: ^1.0.0+2
   dart_vlc: ^0.3.0
+  flutter_animated_dialog: ^2.0.1
   #dart_vlc_ffi: ^0.1.8
   #ffi: ^2.0.1
   #flutter_native_view: ^0.0.2
