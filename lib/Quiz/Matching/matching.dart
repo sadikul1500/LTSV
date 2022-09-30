@@ -32,6 +32,7 @@ class _MatchingState extends State<Matching> {
   List<MatchingList> matchinges = [];
 
   int _index = 0;
+  int wrong_tries = 0;
 
   late Timer _timer;
   int _start = 0;
@@ -218,6 +219,7 @@ class _MatchingState extends State<Matching> {
                                                 if (matchinges[_index].answer ==
                                                     'A') {
                                                   setState(() {
+                                                    _timer.cancel();
                                                     isCorrect[0] = true;
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
