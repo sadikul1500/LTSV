@@ -5,7 +5,7 @@ import 'dart:io';
 
 import 'package:student/globals.dart' as globals;
 
-class AssociationList {
+class RewardList {
   String title = '';
   // String meaning = '';
   String video = '';
@@ -17,7 +17,7 @@ class AssociationList {
   // Set<String> imagePath = {};
   List<String> values = [];
 
-  AssociationList(this.line) {
+  RewardList(this.line) {
     assignValues();
   }
   //split by "; "
