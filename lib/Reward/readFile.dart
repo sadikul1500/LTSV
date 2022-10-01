@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:student/Reward/reward_list.dart';
+// import 'package:student/main.dart';
 
 class RewardFileReader {
   String filePath;
@@ -17,4 +18,8 @@ class RewardFileReader {
       rewardList.add(reward);
     }
   }
+
+  // trial() {
+  //   final x = reward;
+  // }
 }
