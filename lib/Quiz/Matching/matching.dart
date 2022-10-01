@@ -106,22 +106,6 @@ class _MatchingState extends State<Matching> {
   //   print(medias.length);
   //   videoPlayer.open(Playlist(medias: medias), autoStart: false);
   // }
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _start++;
-      });
-    });
-  }
-
-  void reset() {
-    hasAnswered = false;
-    for (int i = 0; i < 4; i++) {
-      hasPressed[i] = false;
-      isCorrect[i] = false;
-    }
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +113,7 @@ class _MatchingState extends State<Matching> {
       onWillPop: () {
         // stop();
         _timer.cancel();
+        // print('this cancel called');
         setState(() {});
 
         Navigator.pop(context);
@@ -219,7 +204,7 @@ class _MatchingState extends State<Matching> {
                                           height: 50.0,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              _timer.cancel();
+                                              // _timer.cancel();
                                               if (!hasAnswered) {
                                                 hasPressed[0] = true;
                                                 hasAnswered = true;
@@ -242,8 +227,8 @@ class _MatchingState extends State<Matching> {
                                                           .codeUnits[0] -
                                                       'A'.codeUnits[0];
                                                   setState(() {
-                                                    isCorrect[index] = true;
-                                                    hasPressed[index] = true;
+                                                    // isCorrect[index] = true;
+                                                    // hasPressed[index] = true;
                                                   });
                                                 }
                                               }
@@ -293,8 +278,8 @@ class _MatchingState extends State<Matching> {
                                                           .codeUnits[0] -
                                                       'A'.codeUnits[0];
                                                   setState(() {
-                                                    isCorrect[index] = true;
-                                                    hasPressed[index] = true;
+                                                    // isCorrect[index] = true;
+                                                    // hasPressed[index] = true;
                                                   });
                                                 }
                                               }
@@ -329,7 +314,7 @@ class _MatchingState extends State<Matching> {
                                           height: 50.0,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              _timer.cancel();
+                                              // _timer.cancel();
                                               if (!hasAnswered) {
                                                 hasPressed[2] = true;
                                                 hasAnswered = true;
@@ -351,8 +336,8 @@ class _MatchingState extends State<Matching> {
                                                           .codeUnits[0] -
                                                       'A'.codeUnits[0];
                                                   setState(() {
-                                                    isCorrect[index] = true;
-                                                    hasPressed[index] = true;
+                                                    // isCorrect[index] = true;
+                                                    // hasPressed[index] = true;
                                                   });
                                                 }
                                               }
@@ -381,7 +366,7 @@ class _MatchingState extends State<Matching> {
                                           height: 50.0,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              _timer.cancel();
+                                              // _timer.cancel();
                                               if (!hasAnswered) {
                                                 hasPressed[3] = true;
                                                 hasAnswered = true;
@@ -405,8 +390,8 @@ class _MatchingState extends State<Matching> {
                                                       'A'.codeUnits[0];
                                                   setState(() {
                                                     //isCorrect[3] = false;
-                                                    isCorrect[index] = true;
-                                                    hasPressed[index] = true;
+                                                    // isCorrect[index] = true;
+                                                    // hasPressed[index] = true;
                                                   });
                                                 }
                                               }
@@ -441,73 +426,73 @@ class _MatchingState extends State<Matching> {
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // stop();
+                // children: <Widget>[
+                  // ElevatedButton.icon(
+                  //   onPressed: () {
+                  //     // stop();
 
-                      setState(() {
-                        // videoPlayer.previous();
-                        try {
-                          _index = (_index - 1) % len;
-                          // createPlaylist(_index);
-                          //files.clear();
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    label: const Text(
-                      'Prev',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.navigate_before,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                  ),
-                  const SizedBox(width: 30),
-                  const SizedBox(width: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      // stop();
-                      setState(() {
-                        // videoPlayer.next();
-                        try {
-                          _index = (_index + 1) % len;
-                          // createPlaylist(_index);
-                          //files.clear();
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[
-                        Text('Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.navigate_next_rounded),
-                      ],
-                    ),
-                  ),
-                ],
+                  //     setState(() {
+                  //       // videoPlayer.previous();
+                  //       try {
+                  //         _index = (_index - 1) % len;
+                  //         // createPlaylist(_index);
+                  //         //files.clear();
+                  //       } catch (e) {
+                  //         //print(e);
+                  //       }
+                  //     });
+                  //   },
+                  //   label: const Text(
+                  //     'Prev',
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       fontSize: 17,
+                  //     ),
+                  //   ),
+                  //   icon: const Icon(
+                  //     Icons.navigate_before,
+                  //   ),
+                  //   style: ElevatedButton.styleFrom(
+                  //     alignment: Alignment.center,
+                  //     minimumSize: const Size(100, 42),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 30),
+                  // const SizedBox(width: 30),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // stop();
+                  //     setState(() {
+                  //       // videoPlayer.next();
+                  //       try {
+                  //         _index = (_index + 1) % len;
+                  //         // createPlaylist(_index);
+                  //         //files.clear();
+                  //       } catch (e) {
+                  //         //print(e);
+                  //       }
+                  //     });
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     alignment: Alignment.center,
+                  //     minimumSize: const Size(100, 42),
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: const <Widget>[
+                  //       Text('Next',
+                  //           style: TextStyle(
+                  //             fontWeight: FontWeight.bold,
+                  //             fontSize: 17,
+                  //           )),
+                  //       SizedBox(
+                  //         width: 5,
+                  //       ),
+                  //       Icon(Icons.navigate_next_rounded),
+                  //     ],
+                  //   ),
+                  // ),
+                // ],
               )
             ],
           ),
@@ -517,18 +502,27 @@ class _MatchingState extends State<Matching> {
   }
 
   void popup(String title, String content) {
+    bool manuallyClosed = false;
+    Future.delayed(const Duration(seconds: 3)).then((_) {
+      if (!manuallyClosed) {
+        reset();
+        Navigator.of(context).pop();
+      }
+    });
     showAnimatedDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return ClassicGeneralDialogWidget(
           titleText: title,
           contentText: content,
           onPositiveClick: () {
+            manuallyClosed = true;
             reset();
             Navigator.of(context).pop();
           },
           onNegativeClick: () {
+            manuallyClosed = true;
             reset();
             Navigator.of(context).pop();
           },
@@ -551,7 +545,25 @@ class _MatchingState extends State<Matching> {
     }
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _start++;
+      });
+    });
+  }
+
+  void reset() {
+    hasAnswered = false;
+    for (int i = 0; i < 4; i++) {
+      hasPressed[i] = false;
+      isCorrect[i] = false;
+    }
+    setState(() {});
+  }
+
   // Future stop() async {
   //   videoPlayer.stop();
   // }
+
 }
