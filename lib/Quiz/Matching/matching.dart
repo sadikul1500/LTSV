@@ -41,14 +41,6 @@ class _MatchingState extends State<Matching> {
   List<bool> isCorrect = [false, false, false, false];
   bool hasAnswered = false;
 
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _start++;
-      });
-    });
-  }
-
   late int len;
 
   _MatchingState() {
@@ -67,7 +59,6 @@ class _MatchingState extends State<Matching> {
     len = matchinges.length;
     startTimer();
     // listenStreams();
-    // createPlaylist(_index);
   }
 
   void listenStreams() {
@@ -115,6 +106,22 @@ class _MatchingState extends State<Matching> {
   //   print(medias.length);
   //   videoPlayer.open(Playlist(medias: medias), autoStart: false);
   // }
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _start++;
+      });
+    });
+  }
+
+  void reset() {
+    hasAnswered = false;
+    for (int i = 0; i < 4; i++) {
+      hasPressed[i] = false;
+      isCorrect[i] = false;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,6 +229,7 @@ class _MatchingState extends State<Matching> {
                                                   setState(() {
                                                     _timer.cancel();
                                                     isCorrect[0] = true;
+                                                    score += 1;
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
                                                   });
@@ -270,7 +278,9 @@ class _MatchingState extends State<Matching> {
                                                 if (matchinges[_index].answer ==
                                                     'B') {
                                                   setState(() {
+                                                    score += 1;
                                                     isCorrect[1] = true;
+                                                    _timer.cancel();
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
                                                   });
@@ -327,6 +337,8 @@ class _MatchingState extends State<Matching> {
                                                     'C') {
                                                   setState(() {
                                                     isCorrect[2] = true;
+                                                    _timer.cancel();
+                                                    score += 1;
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
                                                   });
@@ -377,8 +389,11 @@ class _MatchingState extends State<Matching> {
                                                     'D') {
                                                   setState(() {
                                                     isCorrect[3] = true;
+                                                    score += 1;
+                                                    _timer.cancel();
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
+                                                    nextStep();
                                                   });
                                                 } else {
                                                   // wrong_tries += 1;
@@ -510,9 +525,11 @@ class _MatchingState extends State<Matching> {
           titleText: title,
           contentText: content,
           onPositiveClick: () {
+            reset();
             Navigator.of(context).pop();
           },
           onNegativeClick: () {
+            reset();
             Navigator.of(context).pop();
           },
         );
@@ -521,6 +538,17 @@ class _MatchingState extends State<Matching> {
       curve: Curves.fastOutSlowIn,
       duration: const Duration(seconds: 1),
     );
+  }
+
+  void nextStep() {
+    if (score == len) {
+      //give reward
+    } else {
+      setState(() {
+        reset();
+        _index = (_index + 1) % len;
+      });
+    }
   }
 
   // Future stop() async {
