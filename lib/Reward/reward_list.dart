@@ -25,17 +25,11 @@ class RewardList {
     values = line.split("; ");
     title = values[0];
     category = values[3];
-    
 
     if (values[1] == '') {
-      
-      video =
-          '${globals.folderPath}\\Lesson\\Association\\${values[2].split('/').last}';
+      video = '${globals.folderPath}\\Reward\\${values[2].split('/').last}';
     } else {
-      imagePath =
-          '${globals.folderPath}\\Lesson\\Association\\${values[1].split('/').last}';
+      imagePath = '${globals.folderPath}\\Reward\\${values[1].split('/').last}';
     }
   }
-
-  
 }

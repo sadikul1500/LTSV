@@ -17,6 +17,7 @@ class RewardFileReader {
       RewardList reward = RewardList(line);
       rewardList.add(reward);
     }
+    // print('file reader ${rewardList.length}');
   }
 
   // trial() {

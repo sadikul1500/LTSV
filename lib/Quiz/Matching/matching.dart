@@ -17,6 +17,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:student/Quiz/Matching/matching_list.dart';
 // import 'package:student/Lesson/Activity/activity_search.dart';
 import 'package:student/Quiz/Matching/readFile.dart';
+import 'package:student/Reward/rewardInterface.dart';
 
 import 'package:student/globals.dart' as globals;
 
@@ -217,6 +218,12 @@ class _MatchingState extends State<Matching> {
                                                     score += 1;
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
+                                                    Future.delayed(
+                                                            const Duration(
+                                                                seconds: 3))
+                                                        .then((_) {
+                                                      nextStep();
+                                                    });
                                                   });
                                                 } else {
                                                   // wrong_tries += 1;
@@ -268,6 +275,12 @@ class _MatchingState extends State<Matching> {
                                                     _timer.cancel();
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
+                                                    Future.delayed(
+                                                            const Duration(
+                                                                seconds: 3))
+                                                        .then((_) {
+                                                      nextStep();
+                                                    });
                                                   });
                                                 } else {
                                                   // wrong_tries += 1;
@@ -326,6 +339,12 @@ class _MatchingState extends State<Matching> {
                                                     score += 1;
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
+                                                    Future.delayed(
+                                                            const Duration(
+                                                                seconds: 3))
+                                                        .then((_) {
+                                                      nextStep();
+                                                    });
                                                   });
                                                 } else {
                                                   // wrong_tries += 1;
@@ -378,7 +397,12 @@ class _MatchingState extends State<Matching> {
                                                     _timer.cancel();
                                                     popup('Congratulations',
                                                         'Wooha!!!! You have given correct answer');
-                                                    nextStep();
+                                                    Future.delayed(
+                                                            const Duration(
+                                                                seconds: 3))
+                                                        .then((_) {
+                                                      nextStep();
+                                                    });
                                                   });
                                                 } else {
                                                   // wrong_tries += 1;
@@ -427,71 +451,71 @@ class _MatchingState extends State<Matching> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 // children: <Widget>[
-                  // ElevatedButton.icon(
-                  //   onPressed: () {
-                  //     // stop();
+                // ElevatedButton.icon(
+                //   onPressed: () {
+                //     // stop();
 
-                  //     setState(() {
-                  //       // videoPlayer.previous();
-                  //       try {
-                  //         _index = (_index - 1) % len;
-                  //         // createPlaylist(_index);
-                  //         //files.clear();
-                  //       } catch (e) {
-                  //         //print(e);
-                  //       }
-                  //     });
-                  //   },
-                  //   label: const Text(
-                  //     'Prev',
-                  //     style: TextStyle(
-                  //       fontWeight: FontWeight.bold,
-                  //       fontSize: 17,
-                  //     ),
-                  //   ),
-                  //   icon: const Icon(
-                  //     Icons.navigate_before,
-                  //   ),
-                  //   style: ElevatedButton.styleFrom(
-                  //     alignment: Alignment.center,
-                  //     minimumSize: const Size(100, 42),
-                  //   ),
-                  // ),
-                  // const SizedBox(width: 30),
-                  // const SizedBox(width: 30),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     // stop();
-                  //     setState(() {
-                  //       // videoPlayer.next();
-                  //       try {
-                  //         _index = (_index + 1) % len;
-                  //         // createPlaylist(_index);
-                  //         //files.clear();
-                  //       } catch (e) {
-                  //         //print(e);
-                  //       }
-                  //     });
-                  //   },
-                  //   style: ElevatedButton.styleFrom(
-                  //     alignment: Alignment.center,
-                  //     minimumSize: const Size(100, 42),
-                  //   ),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //     children: const <Widget>[
-                  //       Text('Next',
-                  //           style: TextStyle(
-                  //             fontWeight: FontWeight.bold,
-                  //             fontSize: 17,
-                  //           )),
-                  //       SizedBox(
-                  //         width: 5,
-                  //       ),
-                  //       Icon(Icons.navigate_next_rounded),
-                  //     ],
-                  //   ),
-                  // ),
+                //     setState(() {
+                //       // videoPlayer.previous();
+                //       try {
+                //         _index = (_index - 1) % len;
+                //         // createPlaylist(_index);
+                //         //files.clear();
+                //       } catch (e) {
+                //         //print(e);
+                //       }
+                //     });
+                //   },
+                //   label: const Text(
+                //     'Prev',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 17,
+                //     ),
+                //   ),
+                //   icon: const Icon(
+                //     Icons.navigate_before,
+                //   ),
+                //   style: ElevatedButton.styleFrom(
+                //     alignment: Alignment.center,
+                //     minimumSize: const Size(100, 42),
+                //   ),
+                // ),
+                // const SizedBox(width: 30),
+                // const SizedBox(width: 30),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // stop();
+                //     setState(() {
+                //       // videoPlayer.next();
+                //       try {
+                //         _index = (_index + 1) % len;
+                //         // createPlaylist(_index);
+                //         //files.clear();
+                //       } catch (e) {
+                //         //print(e);
+                //       }
+                //     });
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     alignment: Alignment.center,
+                //     minimumSize: const Size(100, 42),
+                //   ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: const <Widget>[
+                //       Text('Next',
+                //           style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 17,
+                //           )),
+                //       SizedBox(
+                //         width: 5,
+                //       ),
+                //       Icon(Icons.navigate_next_rounded),
+                //     ],
+                //   ),
+                // ),
                 // ],
               )
             ],
@@ -536,7 +560,10 @@ class _MatchingState extends State<Matching> {
 
   void nextStep() {
     if (score == len) {
-      //give reward
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RewardInterface('matching')),
+      );
     } else {
       setState(() {
         reset();

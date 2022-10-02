@@ -14,7 +14,7 @@ import 'package:student/Reward/reward_list.dart';
 import 'package:student/home.dart';
 import 'package:student/secondHome.dart';
 
-Reward reward = Reward();
+final List<RewardList> rewardds = Reward().rewards;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

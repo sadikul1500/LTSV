@@ -79,7 +79,8 @@ class _ActivityState extends State<Activity> {
         },
       );
       videoPlayer.errorStream.listen((event) {
-        print('libvlc error.');
+        // print('libvlc error.');
+        throw Error();
       });
       // devices = Devices.all;
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
@@ -142,7 +143,7 @@ class _ActivityState extends State<Activity> {
     //   medias.add(Media.file(File(activity.video)));
     // }
     medias = [Media.file(File(activities[index].video))];
-    print(medias.length);
+    // print(medias.length);
     videoPlayer.open(Playlist(medias: medias), autoStart: false);
   }
 

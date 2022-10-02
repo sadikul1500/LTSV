@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
-// import 'package:student/Reward/reward_list.dart';
+import 'package:student/Reward/reward_list.dart';
+import 'package:student/Reward/reward.dart';
 // import 'package:student/globals.dart' as globals;
 import 'package:student/main.dart';
 
 class RewardInterface extends StatefulWidget {
-  final rewardd = reward;
+  // final List<RewardList> rewards = rewardds;
+  // final List<RewardList> rewardds = Reward().rewards;
   String category;
 
   RewardInterface(this.category, {super.key});
@@ -17,6 +19,8 @@ class RewardInterface extends StatefulWidget {
 
 class _RewardInterfaceState extends State<RewardInterface> {
   var rewardd;
+  String category = '';
+  final List<RewardList> rewardds = Reward().rewards;
   bool isImage = false;
 
   Player player = Player(
@@ -41,6 +45,7 @@ class _RewardInterfaceState extends State<RewardInterface> {
 
   @override
   void initState() {
+    category = widget.category;
     super.initState();
     if (!isImage) {
       if (mounted) {
@@ -65,7 +70,7 @@ class _RewardInterfaceState extends State<RewardInterface> {
           },
         );
         player.errorStream.listen((event) {
-          print('libvlc error.');
+          throw Error(); //print('libvlc error.');
         });
 
         Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
@@ -78,8 +83,9 @@ class _RewardInterfaceState extends State<RewardInterface> {
   }
 
   void fixReward() {
-    for (var x in widget.rewardd.rewards) {
-      if (x.category == widget.category) {
+    // print(rewardds.length);
+    for (var x in rewardds) {
+      if (x.category == category) {
         rewardd = x;
         break;
       } else if (x.category == 'all') {
@@ -134,22 +140,22 @@ class _RewardInterfaceState extends State<RewardInterface> {
                         height: 300,
                         width: 400,
                         child: Image.file(
-                          File(rewardd.image),
+                          File(rewardd.imagePath),
                           fit: BoxFit.fill,
                           filterQuality: FilterQuality.high,
                         ),
                       )
                     : SizedBox(
-                  height: 420,
-                  width: 620,
-                  child: NativeVideo(
-                    player: player,
-                    width: 620, //,isPhone ? 320 : 640,
-                    height: 420, //isPhone ? 180 : 360,
-                    volumeThumbColor: Colors.blue,
-                    volumeActiveColor: Colors.blue,
-                    showControls: true, //!isPhone,
-                  ),
-                ))));
+                        height: 420,
+                        width: 620,
+                        child: NativeVideo(
+                          player: player,
+                          width: 620, //,isPhone ? 320 : 640,
+                          height: 420, //isPhone ? 180 : 360,
+                          volumeThumbColor: Colors.blue,
+                          volumeActiveColor: Colors.blue,
+                          showControls: true, //!isPhone,
+                        ),
+                      ))));
   }
 }
