@@ -33,7 +33,7 @@ class _MatchingState extends State<Matching> {
   List<MatchingList> matchinges = [];
 
   int _index = 0;
-  // int wrong_tries = 0;
+  int wrong_tries = 0;
   int score = 0;
 
   late Timer _timer;
@@ -43,6 +43,7 @@ class _MatchingState extends State<Matching> {
   bool hasAnswered = false;
 
   late int len;
+  // late File file;
 
   _MatchingState() {
     _index = 0;
@@ -56,6 +57,7 @@ class _MatchingState extends State<Matching> {
   }
 
   proxyInitState() {
+    File(globals.logFilePath).createSync(recursive: true);
     matchinges = fileReader.matchingList;
     len = matchinges.length;
     startTimer();
@@ -226,7 +228,7 @@ class _MatchingState extends State<Matching> {
                                                     });
                                                   });
                                                 } else {
-                                                  // wrong_tries += 1;
+                                                  wrong_tries += 1;
                                                   popup('Wrong answer',
                                                       'You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
@@ -283,7 +285,7 @@ class _MatchingState extends State<Matching> {
                                                     });
                                                   });
                                                 } else {
-                                                  // wrong_tries += 1;
+                                                  wrong_tries += 1;
                                                   popup('Wrong answer',
                                                       'You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
@@ -347,7 +349,7 @@ class _MatchingState extends State<Matching> {
                                                     });
                                                   });
                                                 } else {
-                                                  // wrong_tries += 1;
+                                                  wrong_tries += 1;
                                                   popup('Wrong answer',
                                                       'You have selected the wrong option $_start ');
                                                   int index = matchinges[_index]
@@ -405,7 +407,7 @@ class _MatchingState extends State<Matching> {
                                                     });
                                                   });
                                                 } else {
-                                                  // wrong_tries += 1;
+                                                  wrong_tries += 1;
                                                   popup('Wrong answer',
                                                       'You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
@@ -560,6 +562,7 @@ class _MatchingState extends State<Matching> {
 
   void nextStep() {
     if (score == len) {
+      writeInFile('matching', _start, wrong_tries);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => RewardInterface('matching')),
@@ -587,6 +590,13 @@ class _MatchingState extends State<Matching> {
       isCorrect[i] = false;
     }
     setState(() {});
+  }
+
+  void writeInFile(String quizType, int time, int wrongTries) async {
+    File file = File(globals.logFilePath);
+    final dateTime = DateTime.now();
+    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime\n',
+        mode: FileMode.append);
   }
 
   // Future stop() async {

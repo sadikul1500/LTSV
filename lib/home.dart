@@ -102,6 +102,8 @@ class _HomeState extends State<Home> {
     } else {
       globals.folderPath = selectedDirectory; //.replaceAll('\\', '/')
       selectedFolder = globals.folderPath.split('\\').last; //.split('\').last;
+      globals.logFilePath = '$selectedDirectory/log.txt';
+      // File(loFile).createSync(recursive: true);
       //setState(() {});
 
       //const HomeOption();

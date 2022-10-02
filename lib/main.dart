@@ -9,12 +9,12 @@ import 'package:student/Lesson/Noun/noun.dart';
 import 'package:student/Lesson/Verb/verb.dart';
 import 'package:student/Quiz/Matching/matching.dart';
 import 'package:student/Quiz/quizOptionpage.dart';
-import 'package:student/Reward/reward.dart';
-import 'package:student/Reward/reward_list.dart';
+// import 'package:student/Reward/reward.dart';
+// import 'package:student/Reward/reward_list.dart';
 import 'package:student/home.dart';
 import 'package:student/secondHome.dart';
 
-final List<RewardList> rewardds = Reward().rewards;
+// final List<RewardList> rewardds = Reward().rewards;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
