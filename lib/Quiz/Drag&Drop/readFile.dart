@@ -11,16 +11,19 @@ class DragQuestionFileReader {
     readFile();
   }
 
-  Future<void> readFile() async {
+  void readFile() {
     File file = File(filePath);
-    String contents = await file.readAsString();
-    var jsonResponse = jsonDecode(contents);
+    String contents = file.readAsStringSync();
+    final jsonResponse = jsonDecode(jsonEncode(contents));
+    print(jsonResponse);
 
-    for (var p in jsonResponse) {
-      DragQuestion question = DragQuestion(
-          p['files'], p['values'], p['valuesRight'], p['question']);
+    for (var x in jsonResponse) {
+      var p = DragQuestion.fromJson(x);
+      DragQuestion question =
+          DragQuestion(p.files, p.values, p.valuesRight, p.question);
       dragQuestions.add(question);
     }
+    print('reader ${dragQuestions.length}');
   }
 
   // readFile() {

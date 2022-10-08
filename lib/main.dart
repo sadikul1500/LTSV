@@ -7,6 +7,7 @@ import 'package:student/Lesson/Activity/activity.dart';
 import 'package:student/Lesson/Association/association.dart';
 import 'package:student/Lesson/Noun/noun.dart';
 import 'package:student/Lesson/Verb/verb.dart';
+import 'package:student/Quiz/Drag&Drop/drag.dart';
 import 'package:student/Quiz/Matching/matching.dart';
 import 'package:student/Quiz/quizOptionpage.dart';
 // import 'package:student/Reward/reward.dart';
@@ -35,7 +36,8 @@ Future<void> main() async {
       '/association': (context) => Association(),
       '/verb': (context) => Verb(),
       '/quiz': (context) => Quiz(),
-      '/matching': (context) => Matching()
+      '/matching': (context) => Matching(),
+      '/drag': (context) => Drag()
     },
   ));
 }

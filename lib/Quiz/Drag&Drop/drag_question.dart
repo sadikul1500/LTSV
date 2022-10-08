@@ -29,13 +29,13 @@ class DragQuestion {
     question = json['question'];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   data['files'] = files;
-  //   data['values'] = values;
-  //   data['valuesRight'] = valuesRight;
-  //   data['question'] = question;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['files'] = files;
+    data['values'] = values;
+    data['valuesRight'] = valuesRight;
+    data['question'] = question;
 
-  //   return data;
-  // }
+    return data;
+  }
 }
