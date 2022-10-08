@@ -1,20 +1,33 @@
 import 'dart:io';
+import 'dart:convert';
+// import 'package:student/Lesson/Association/association_list.dart';
+import 'package:student/Quiz/Drag&Drop/drag_question.dart';
 
-import 'package:student/Lesson/Association/association_list.dart';
-
-class AssociationFileReader {
+class DragQuestionFileReader {
   String filePath;
-  List<AssociationList> associationList = [];
+  List<DragQuestion> dragQuestions = [];
 
-  AssociationFileReader(this.filePath) {
+  DragQuestionFileReader(this.filePath) {
     readFile();
   }
 
-  readFile() {
-    List<String> lines = File(filePath).readAsLinesSync();
-    for (var line in lines) {
-      AssociationList association = AssociationList(line);
-      associationList.add(association);
+  Future<void> readFile() async {
+    File file = File(filePath);
+    String contents = await file.readAsString();
+    var jsonResponse = jsonDecode(contents);
+
+    for (var p in jsonResponse) {
+      DragQuestion question = DragQuestion(
+          p['files'], p['values'], p['valuesRight'], p['question']);
+      dragQuestions.add(question);
     }
   }
+
+  // readFile() {
+  //   List<String> lines = File(filePath).readAsLinesSync();
+  //   for (var line in lines) {
+  //     AssociationList association = AssociationList(line);
+  //     associationList.add(association);
+  //   }
+  // }
 }
