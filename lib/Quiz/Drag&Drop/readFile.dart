@@ -13,22 +13,22 @@ class DragQuestionFileReader {
 
   void readFile() {
     File file = File(filePath);
-    String contents = file.readAsStringSync();
+    String contents = '[${file.readAsStringSync()}]';
     final jsonResponse = jsonDecode(contents);
-    print(jsonResponse);
+    // print(jsonResponse);
 
     for (var p in jsonResponse) {
-      print(11);
-      // print(x);
-      print(123);
+      // print(11);
+      // // print(x);
+      // print(123);
 
       // DragQuestion p = DragQuestion.fromJson(x);
-      print(p.runtimeType);
+      // print(p.runtimeType);
       // DragQuestion question = DragQuestion(
       //     p['files'], p['values'], p['valuesRight'], p['question']);
       dragQuestions.add(DragQuestion.fromJson(p));
     }
-    print('reader ${dragQuestions.length}');
+    // print('reader ${dragQuestions.length}');
   }
 
   // readFile() {

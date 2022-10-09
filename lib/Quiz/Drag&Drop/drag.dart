@@ -27,7 +27,7 @@ class _DragState extends State<Drag> {
 
   List<DragQuestion> dragQuestions = [];
 
-  int _index = 0;
+  int _index = 0, total_solved = 0, len = 0;
   int wrong_tries = 0;
   int score = 0;
 
@@ -38,6 +38,12 @@ class _DragState extends State<Drag> {
   List<ItemModel> items1 = [];
   List<ItemModel> items2 = [];
   String question = '';
+
+  _DragState() {
+    dragQuestions = fileReader.dragQuestions;
+    len = dragQuestions.length;
+    startTimer();
+  }
 
   @override
   void initState() {
@@ -53,8 +59,8 @@ class _DragState extends State<Drag> {
   initDrag() {
     score = 0;
     gameOver = false;
-    dragQuestions = fileReader.dragQuestions;
-    print(dragQuestions.length);
+
+    // print(dragQuestions.length);
     prepareQuestion();
 
     items1.shuffle();
@@ -62,13 +68,6 @@ class _DragState extends State<Drag> {
   }
 
   void prepareQuestion() {
-    print('prepare.. ${dragQuestions.length}');
-    if (dragQuestions.isEmpty) {
-      print('waiting');
-      Future.delayed(const Duration(milliseconds: 700), () {
-        dragQuestions = fileReader.dragQuestions;
-      });
-    }
     for (int i = 0; i < dragQuestions[_index].values.length; i++) {
       String filePath =
           '${globals.folderPath}/Quiz/DragDrop/${dragQuestions[_index].files[i]}';
@@ -83,9 +82,25 @@ class _DragState extends State<Drag> {
     question = dragQuestions[_index].question;
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _start++;
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     if (score == items1.length + score) {
-      gameOver = true;
+      total_solved += 1;
+      if (total_solved == len) {
+        gameOver = true;
+      } else {
+        setState(() {
+          score = 0;
+          _index = (_index + 1) % len;
+        });
+      }
       // _confettiController.play();
     }
     return Scaffold(
@@ -215,6 +230,7 @@ class _DragState extends State<Drag> {
                                     setState(() {
                                       //score -= 1;
                                       item.accepting = false;
+                                      wrong_tries += 1;
                                       // playConfetti = false;
                                     });
                                   }
