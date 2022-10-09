@@ -23,9 +23,9 @@ class DragQuestion {
   // }
 
   DragQuestion.fromJson(Map<String, dynamic> json) {
-    files = json['files'];
-    values = json['values'];
-    valuesRight = json['valuesRight'];
+    files = json['files'].cast<String>();
+    values = json['values'].cast<String>();
+    valuesRight = json['valuesRight'].cast<String>();
     question = json['question'];
   }
 
