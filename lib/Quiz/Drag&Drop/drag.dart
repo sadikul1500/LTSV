@@ -46,12 +46,24 @@ class _DragState extends State<Drag> {
 
   final player = Player(id: 6600);
 
+  // MediaType mediaType = MediaType.file;
+  CurrentState current = CurrentState();
+  PositionState position = PositionState();
+  PlaybackState playback = PlaybackState();
+  GeneralState general = GeneralState();
+
+  // List<Media> medias = <Media>[];
+  // List<Device> devices = <Device>[];
+
+  double bufferingProgress = 0.0;
+  // List<File> files = [];
+
   _DragState() {
     dragQuestions = fileReader.dragQuestions;
     len = dragQuestions.length;
 
-    final media = Media.asset('assets/Audios/win.wav');
-    player.open(media, autoStart: false);
+    // final media = Media.asset('assets/Audios/win.wav');
+    // player.open(media, autoStart: false);
 
     startTimer();
   }
@@ -59,6 +71,40 @@ class _DragState extends State<Drag> {
   @override
   void initState() {
     super.initState();
+    if (mounted) {
+      player.currentStream.listen((current) {
+        this.current = current;
+      });
+      player.positionStream.listen((position) {
+        this.position = position;
+      });
+      player.playbackStream.listen((playback) {
+        this.playback = playback;
+      });
+      player.generalStream.listen((general) {
+        general = general;
+      });
+      // player.videoDimensionsStream.listen((videoDimensions) {
+      //   videoDimensions = videoDimensions;
+      // });
+      player.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          setState(() {
+            this.bufferingProgress = bufferingProgress;
+          });
+        },
+      );
+      player.errorStream.listen((event) {
+        throw Error(); //'libvlc error.'
+      });
+      // devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      player.setEqualizer(equalizer);
+      player.open(Media.file(File('D:/Sadi/Student/student/assets/Audios/win.wav')),
+          autoStart: false); //'assets/Audios/win.wav'//asset file did not work
+    }
     initDrag();
   }
 
