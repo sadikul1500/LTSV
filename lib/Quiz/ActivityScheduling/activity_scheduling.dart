@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:student/Quiz/ActivityScheduling/activity_list.dart';
 
 import 'package:student/Quiz/ActivityScheduling/readFile.dart';
+import 'package:student/Reward/rewardInterface.dart';
 import 'package:student/globals.dart' as globals;
 
 class ItemModel {
@@ -27,26 +30,92 @@ class _ActivityDragState extends State<ActivityScheduling> {
   List<ItemModel> values = []; //drag target
   List<ItemModel> items = []; //draggable
 
+  int wrong_tries = 0, score = 0, _start = 0, len = 0;
+  late Timer _timer;
+
+  final player = Player(id: 7711);
+
+  CurrentState current = CurrentState();
+  PositionState position = PositionState();
+  PlaybackState playback = PlaybackState();
+  GeneralState general = GeneralState();
+  double bufferingProgress = 0.0;
+
   _ActivityDragState() {
-    activityList = fileReader.activityList.cast<ActivityList>();
+    activityList = fileReader.activityList;
+    startTimer();
   }
   @override
   initState() {
-    final len = activityList.length;
+    super.initState();
+    if (mounted) {
+      player.currentStream.listen((current) {
+        this.current = current;
+      });
+      player.positionStream.listen((position) {
+        this.position = position;
+      });
+      player.playbackStream.listen((playback) {
+        this.playback = playback;
+      });
+      player.generalStream.listen((general) {
+        general = general;
+      });
+
+      player.bufferingProgressStream.listen(
+        (bufferingProgress) {
+          setState(() {
+            this.bufferingProgress = bufferingProgress;
+          });
+        },
+      );
+      player.errorStream.listen((event) {
+        throw Error(); //'libvlc error.'
+      });
+      // devices = Devices.all;
+      Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
+      equalizer.setPreAmp(10.0);
+      equalizer.setBandAmp(31.25, 10.0);
+      player.setEqualizer(equalizer);
+      player.open(
+          Media.file(File('D:/Sadi/Student/student/assets/Audios/win.wav')),
+          autoStart: false); //'assets/Audios/win.wav'//asset file did not work
+    }
+    proxyInitState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    player.dispose();
+    super.dispose();
+  }
+
+  void proxyInitState() {
+    len = activityList.length;
     //widget.items.shuffle();
     //var values = List<int>.generate(widget.items.length, (i) => i);
     for (int i = 0; i < len; i++) {
       values.add(ItemModel(i.toString()));
-      items.add(ItemModel(
-          '${globals.folderPath}/Quiz/Activity_Scheduling/${activityList[i].image} space $i'));
+      items.add(ItemModel('${activityList[i].image} space $i'));
     }
     //print(items[0].value);
     items.shuffle();
-    super.initState();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _start++;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (score == len) {
+      nextStep();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Activity Quiz'),
@@ -121,16 +190,11 @@ class _ActivityDragState extends State<ActivityScheduling> {
                         if (item.value ==
                             receivedItem.value.split(' space ').last) {
                           setState(() {
-                            // playConfetti = true;
-                            // _smallConfettiController.play();
-                            // _confettiRightController.play();
-                            // _confettiLeftController.play();
-
                             items.remove(receivedItem);
-                            // widget.items2.remove(item);
-                            //dispose();
-                            // score += 1;
-                            //item = receivedItem;
+
+                            score += 1;
+                            player.play();
+
                             item.accepting = false;
                             item.isSuccessful = true;
                             item.value = receivedItem.value;
@@ -140,13 +204,8 @@ class _ActivityDragState extends State<ActivityScheduling> {
                           //await audioPlay();
                         } else {
                           setState(() {
-                            //score -= 1;
-                            // print('*' +
-                            //     item.value +
-                            //     '*aaa*' +
-                            //     receivedItem.value.split(' space ').last +
-                            //     "*");
                             item.accepting = false;
+                            wrong_tries += 1;
                             //playConfetti = false;
                           });
                         }
@@ -195,5 +254,27 @@ class _ActivityDragState extends State<ActivityScheduling> {
             ],
           )),
     );
+  }
+
+  void nextStep() {
+    setState(() {
+      // gameOver = true;
+      _timer.cancel();
+    });
+    writeInFile('activity scheduling', _start, wrong_tries);
+    Future.delayed(const Duration(milliseconds: 200)).then((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RewardInterface('activity scheduling')),
+      );
+    });
+  }
+
+  void writeInFile(String quizType, int time, int wrongTries) async {
+    File file = File(globals.logFilePath);
+    final dateTime = DateTime.now();
+    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime\n',
+        mode: FileMode.append);
   }
 }

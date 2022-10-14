@@ -18,6 +18,6 @@ class ActivityList {
   }
   //split by "; "
   void assignValues() async {
-    image = '${globals.folderPath}\\Quiz\\Matching\\$line';
+    image = '${globals.folderPath}/Quiz/Activity_Scheduling/$line';
   }
 }
