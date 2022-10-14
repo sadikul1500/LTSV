@@ -7,6 +7,7 @@ import 'package:student/Lesson/Activity/activity.dart';
 import 'package:student/Lesson/Association/association.dart';
 import 'package:student/Lesson/Noun/noun.dart';
 import 'package:student/Lesson/Verb/verb.dart';
+import 'package:student/Quiz/ActivityScheduling/activity_scheduling.dart';
 import 'package:student/Quiz/Drag&Drop/drag.dart';
 import 'package:student/Quiz/Matching/matching.dart';
 import 'package:student/Quiz/quizOptionpage.dart';
@@ -17,8 +18,8 @@ import 'package:student/secondHome.dart';
 
 // final List<RewardList> rewardds = Reward().rewards;
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  //WidgetsFlutterBinding.ensureInitialized();
   // await FlutterNativeView.ensureInitialized();
   await DartVLC.initialize(
       useFlutterNativeView: true); //useFlutterNativeView: true
@@ -37,7 +38,8 @@ Future<void> main() async {
       '/verb': (context) => Verb(),
       '/quiz': (context) => Quiz(),
       '/matching': (context) => Matching(),
-      '/drag': (context) => Drag()
+      '/drag': (context) => Drag(),
+      '/activityScheduling': (context) => ActivityScheduling()
     },
   ));
 }

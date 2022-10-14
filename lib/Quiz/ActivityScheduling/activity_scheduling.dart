@@ -15,11 +15,6 @@ class ItemModel {
 }
 
 class ActivityScheduling extends StatefulWidget {
-  // final List<File> files;
-  //List<ItemModel> values = [];
-  //final List<ItemModel> items2;
-  //final String question;
-  // const ActivityDrag(); //this.items2, this.question this.files
   @override
   State<ActivityScheduling> createState() => _ActivityDragState();
 }
@@ -42,7 +37,8 @@ class _ActivityDragState extends State<ActivityScheduling> {
     //var values = List<int>.generate(widget.items.length, (i) => i);
     for (int i = 0; i < len; i++) {
       values.add(ItemModel(i.toString()));
-      items.add(ItemModel('${activityList[i].image} space $i'));
+      items.add(ItemModel(
+          '${globals.folderPath}/Quiz/Activity_Scheduling/${activityList[i].image} space $i'));
     }
     //print(items[0].value);
     items.shuffle();

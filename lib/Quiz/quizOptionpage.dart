@@ -66,14 +66,9 @@ class _QuizState extends State<Quiz> {
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(300, 60), elevation: 3),
                     onPressed: () {
-                      // Navigator.of(context).push(
-                      //   // With MaterialPageRoute, you can pass data between pages,
-                      //   // but if you have a more complex app, you will quickly get lost.
-                      //   MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           // ActivityOptions() //ActivityOptions(), //JigsawImageSelection(),
-                      //       ),
-                      // );
+                      Navigator.of(context)
+                          .pushNamed('/activityScheduling')
+                          .then((value) => setState(() {}));
                     },
                     child: const Text(
                       'Activity Scheduling',
