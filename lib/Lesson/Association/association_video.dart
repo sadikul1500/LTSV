@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 
-
 class AssociationVideoCard {
-  
   late Player player; //= Player(
-  
+
   MediaType mediaType = MediaType.file;
   CurrentState current = CurrentState();
   PositionState position = PositionState();
@@ -40,7 +38,7 @@ class AssociationVideoCard {
     });
     player.bufferingProgressStream.listen(
       (bufferingProgress) {
-        bufferingProgress = bufferingProgress;
+        this.bufferingProgress = bufferingProgress;
       },
     );
     player.errorStream.listen((event) {
@@ -66,7 +64,6 @@ class AssociationVideoCard {
         volumeThumbColor: Colors.blue,
         volumeActiveColor: Colors.blue,
         showControls: true, //!isPhone
-        
       ),
     );
   }

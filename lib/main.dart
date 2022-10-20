@@ -4,6 +4,7 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_native_view/flutter_native_view.dart';
 import 'package:student/Lesson/Activity/activity.dart';
+import 'package:student/Lesson/Activity/video.dart';
 import 'package:student/Lesson/Association/association.dart';
 import 'package:student/Lesson/Noun/noun.dart';
 import 'package:student/Lesson/Verb/verb.dart';
@@ -19,7 +20,7 @@ import 'package:student/secondHome.dart';
 // final List<RewardList> rewardds = Reward().rewards;
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // await FlutterNativeView.ensureInitialized();
   await DartVLC.initialize(
       useFlutterNativeView: true); //useFlutterNativeView: true
@@ -33,7 +34,7 @@ void main() async {
       '/home': (context) => const Home(),
       '/homeOption': (context) => const HomeOption(),
       '/noun': (context) => Noun(),
-      '/activity': (context) => Activity(),
+      '/activity': (context) => DartVLCExample(), //Activity(), //Activity(),
       '/association': (context) => Association(),
       '/verb': (context) => Verb(),
       '/quiz': (context) => Quiz(),

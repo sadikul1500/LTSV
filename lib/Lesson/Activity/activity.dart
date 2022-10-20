@@ -48,7 +48,7 @@ class _ActivityState extends State<Activity> {
   // _index = 0;
 
   Player videoPlayer = Player(
-    id: 11910,
+    id: 0,
     //videoDimensions: VideoDimensions(640, 360),
     registerTexture: false,
   );
@@ -110,7 +110,7 @@ class _ActivityState extends State<Activity> {
     // for (ActivityList activity in activities) {
     //   medias.add(Media.file(File(activity.video)));
     // }
-    medias = [Media.file(File(activities[index].video))];
+    medias = [Media.file(File('D:/puppy.mp4'))]; //activities[index].video
     // print(medias.length);
     videoPlayer.open(Playlist(medias: medias), autoStart: false);
   }
