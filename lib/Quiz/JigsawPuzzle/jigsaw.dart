@@ -18,9 +18,6 @@ class ItemModel {
 }
 
 class Jigsaw extends StatefulWidget {
-  // late List<File> files;
-
-  // JigsawPreview(this.files);
   @override
   State<Jigsaw> createState() => _JigsawState();
 }
@@ -121,6 +118,7 @@ class _JigsawState extends State<Jigsaw> {
   }
 
   void piecePuzzle(int index) {
+    print('puzzle piece.....');
     final object = PuzzlePiece(
         File(jigsawList[index].image), int.parse(jigsawList[index].level));
     puzzlePieces = object.splitImage();

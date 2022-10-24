@@ -18,7 +18,7 @@ class JigsawList {
     List<String> values = line.split("; ");
     // category = values[0];
     image = '${globals.folderPath}\\Quiz\\jigsaw\\${values[0].split('/').last}';
-    print('jigsaw list.... ');
+    print('jigsaw list.... $image');
     // question = values[2];
     // for (int i = 3; i < 3 + 4; i++) {
     //   options.add(values[i]);
