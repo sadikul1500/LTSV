@@ -10,6 +10,7 @@ import 'package:student/Lesson/Noun/noun.dart';
 import 'package:student/Lesson/Verb/verb.dart';
 import 'package:student/Quiz/ActivityScheduling/activity_scheduling.dart';
 import 'package:student/Quiz/Drag&Drop/drag.dart';
+import 'package:student/Quiz/JigsawPuzzle/jigsaw.dart';
 import 'package:student/Quiz/Matching/matching.dart';
 import 'package:student/Quiz/quizOptionpage.dart';
 // import 'package:student/Reward/reward.dart';
@@ -40,7 +41,8 @@ void main() async {
       '/quiz': (context) => Quiz(),
       '/matching': (context) => Matching(),
       '/drag': (context) => Drag(),
-      '/activityScheduling': (context) => ActivityScheduling()
+      '/activityScheduling': (context) => ActivityScheduling(),
+      '/jigsaw': (context) => Jigsaw()
     },
   ));
 }
