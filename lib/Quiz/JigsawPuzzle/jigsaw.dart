@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:student/Quiz/JigsawPuzzle/jigsaw_list.dart';
 import 'package:student/Quiz/JigsawPuzzle/puzzlePiece.dart';
 import 'package:student/Quiz/JigsawPuzzle/readFile.dart';
+import 'package:student/Reward/rewardInterface.dart';
 import 'package:student/globals.dart' as globals;
 
 //2X2 puzzle
@@ -32,7 +34,7 @@ class _JigsawState extends State<Jigsaw> {
   double? width = 400;
   List<ItemModel> draggableObjects = [];
   List<ItemModel> dragTargetObjects = [];
-  List<bool> selected = [];
+  // List<bool> selected = [];
   List<File> assignToStudent = [];
 
   final player = Player(id: 7311);
@@ -45,9 +47,16 @@ class _JigsawState extends State<Jigsaw> {
 
   int currentIndex = 0;
   int len = 0;
+  int level = 0, total_solved = 0;
+  int wrong_tries = 0, score = 0;
+
+  late Timer _timer;
+  int _start = 0;
 
   _JigsawState() {
     jigsawList = fileReader.jigsawList;
+    len = jigsawList.length;
+    startTimer();
   }
 
   @override
@@ -90,23 +99,32 @@ class _JigsawState extends State<Jigsaw> {
   }
 
   void proxyInitState() {
-    print('init state');
-    len = jigsawList.length;
-    for (int i = 0; i < len; i++) {
-      selected.add(false);
-    }
+    // print('init state');
+
+    // for (int i = 0; i < len; i++) {
+    //   selected.add(false);
+    // }
     loadPuzzlePiece();
     // loadAudio();
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _start++;
+      });
+    });
+  }
+
   @override
   void dispose() {
+    _timer.cancel();
     player.dispose();
     super.dispose();
   }
 
   void loadPuzzlePiece() {
-    print('load puzzle piece');
+    // print('load puzzle piece');
     piecePuzzle(currentIndex);
     dragTargetObjects.clear();
     draggableObjects.clear();
@@ -121,9 +139,8 @@ class _JigsawState extends State<Jigsaw> {
   }
 
   void piecePuzzle(int index) {
-    print('puzzle piece.....');
-    final object = PuzzlePiece(
-        File(jigsawList[index].image), int.parse(jigsawList[index].level));
+    level = int.parse(jigsawList[index].level);
+    final object = PuzzlePiece(File(jigsawList[index].image), level);
     puzzlePieces = object.splitImage();
     try {
       height = Image.memory(puzzlePieces[0]).height;
@@ -133,61 +150,53 @@ class _JigsawState extends State<Jigsaw> {
     }
   }
 
+  void nextStep() {
+    setState(() {
+      // gameOver = true;
+      _timer.cancel();
+    });
+    writeInFile('jigsaw puzzle', _start, wrong_tries);
+    Future.delayed(const Duration(milliseconds: 200)).then((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RewardInterface('drag & drop')),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (score == level * 2) {
+      score = 0;
+      total_solved += 1;
+
+      if (total_solved == len) {
+        nextStep();
+      } else {
+        setState(() {
+          // score = 0;
+          currentIndex = (currentIndex + 1) % len;
+          proxyInitState();
+        });
+      }
+    }
     //loadPuzzlePiece();
     return Scaffold(
-      appBar: AppBar(title: const Text('Jigsaw Puzzle')),
+      appBar: AppBar(centerTitle: true, title: const Text('Jigsaw Puzzle')),
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // SizedBox(
-                //   width: 400,
-                //   child: Row(
-                //     //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     children: <Widget>[
-                //       Checkbox(
-                //           value: selected[currentIndex],
-                //           onChanged: (value) {
-                //             setState(() {
-                //               selected[currentIndex] =
-                //                   !selected[currentIndex];
-                //               if (selected[currentIndex]) {
-                //                 assignToStudent
-                //                     .add(widget.files[currentIndex]);
-                //               } else {
-                //                 assignToStudent
-                //                     .remove(widget.files[currentIndex]);
-                //               }
-                //             });
-                //           }),
-                //       const Spacer(),
-                //       IconButton(
-                //           onPressed: () {
-                //             setState(() {
-                //               widget.files.removeAt(currentIndex);
-                //               selected.removeAt(currentIndex);
-                //               len -= 1;
-                //             });
-                //           },
-                //           icon: const Icon(Icons.delete_forever_rounded)),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(height: 15),
                 Container(
                     constraints: const BoxConstraints(
                         minHeight: 350,
                         maxHeight: 400,
                         minWidth: 500,
                         maxWidth: 550),
-                    // width: 550,
-                    // height: 400,
                     color: Colors.grey[300],
                     child: Center(
                       child: Wrap(
@@ -202,11 +211,13 @@ class _JigsawState extends State<Jigsaw> {
                                   item.accepting = false;
                                   item.isSuccessful = true;
                                   draggableObjects.remove(receivedItem);
+                                  score += 1;
                                 });
                                 player.play(); // await audioPlay();
                               } else {
                                 setState(() {
                                   item.accepting = false;
+                                  wrong_tries += 1;
                                 });
                               }
                             },
@@ -248,81 +259,10 @@ class _JigsawState extends State<Jigsaw> {
                         }).toList(),
                       ),
                     )),
-
-                // const SizedBox(height: 20),
-                // SizedBox(
-                //   width: 400,
-                //   child: Row(
-                //     //mainAxisAlignment: MainAxisAlignment.center,
-                //     children: <Widget>[
-                //       ElevatedButton.icon(
-                //         onPressed: () {
-                //           //stop();
-
-                //           setState(() {
-                //             //_isPlaying = false;
-
-                //             try {
-                //               currentIndex = (currentIndex - 1) % len;
-                //               loadPuzzlePiece();
-                //             } catch (e) {
-                //               //print(e);
-                //             }
-                //           });
-                //         },
-                //         label: const Text(
-                //           'Prev',
-                //           style: TextStyle(
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 17,
-                //           ),
-                //         ),
-                //         icon: const Icon(
-                //           Icons.navigate_before,
-                //         ),
-                //         style: ElevatedButton.styleFrom(
-                //           alignment: Alignment.center,
-                //           minimumSize: const Size(100, 42),
-                //         ),
-                //       ),
-                //       const Spacer(),
-                //       ElevatedButton(
-                //         onPressed: () {
-                //           //stop();
-                //           setState(() {
-                //             try {
-                //               currentIndex = (currentIndex + 1) % len;
-                //               loadPuzzlePiece();
-                //             } catch (e) {
-                //               //print(e);
-                //             }
-                //           });
-                //         },
-                //         style: ElevatedButton.styleFrom(
-                //           alignment: Alignment.center,
-                //           minimumSize: const Size(100, 42),
-                //         ),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //           children: const <Widget>[
-                //             Text('Next',
-                //                 style: TextStyle(
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 17,
-                //                 )),
-                //             SizedBox(
-                //               width: 5,
-                //             ),
-                //             Icon(Icons.navigate_next_rounded),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // )
               ],
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
                     constraints: const BoxConstraints(
@@ -330,8 +270,6 @@ class _JigsawState extends State<Jigsaw> {
                         maxHeight: 400,
                         minWidth: 500,
                         maxWidth: 550),
-                    // width: 300,
-                    //height: 600,
                     color: draggableObjects.isNotEmpty
                         ? Colors.grey[300]
                         : Colors.transparent,
@@ -375,111 +313,16 @@ class _JigsawState extends State<Jigsaw> {
                     )))
               ],
             )
-            // Container(
-            //     constraints: const BoxConstraints(maxHeight: 550),
-            //     width: 300,
-            //     //height: 600,
-            //     color: draggableObjects.isNotEmpty
-            //         ? Colors.grey[300]
-            //         : Colors.transparent,
-            //     child: SingleChildScrollView(
-            //         padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-            //         child: Center(
-            //             child: Wrap(
-            //           spacing: 10,
-            //           direction: Axis.vertical,
-            //           children: draggableObjects.map((item) {
-            //             return Draggable<ItemModel>(
-            //               data: item,
-            //               childWhenDragging: Container(
-            //                   alignment: Alignment.center,
-            //                   height: height,
-            //                   width: width,
-            //                   child: Image.memory(item.bytes,
-            //                       fit: BoxFit.contain,
-            //                       filterQuality: FilterQuality.high,
-            //                       colorBlendMode: BlendMode.modulate,
-            //                       color: Colors.white.withOpacity(0.4))),
-            //               feedback: SizedBox(
-            //                   //child that I drop....
-            //                   height: height,
-            //                   width: width,
-            //                   child: Image.memory(
-            //                     item.bytes,
-            //                     fit: BoxFit.contain,
-            //                     filterQuality: FilterQuality.high,
-            //                   )),
-            //               child: SizedBox(
-            //                   height: height,
-            //                   width: width,
-            //                   //alignment: Alignment.center,
-            //                   child: Image.memory(
-            //                     item.bytes,
-            //                     fit: BoxFit.contain,
-            //                     filterQuality: FilterQuality.high,
-            //                   )),
-            //             );
-            //           }).toList(),
-            //         ))))
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {
-      //     if (assignToStudent.isNotEmpty) {
-      //       assignContentToStudent();
-      //     } else {
-      //       showMaterialDialog();
-      //     }
-      //   },
-      //   icon: const Icon(Icons.add),
-      //   label: const Text('Assign to student',
-      //       style: TextStyle(
-      //         fontSize: 14,
-      //       )),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 
-  // Future assignContentToStudent() async {
-  //   String? selectedDirectory = await FilePicker.platform
-  //       .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
-
-  //   if (selectedDirectory == null) {
-  //     // User canceled the picker
-  //   } else {
-  //     selectedDirectory.replaceAll('\\', '/');
-
-  //     copyImage(selectedDirectory);
-  //   }
-  //   // }
-  // }
-
-  // Future<void> copyImage(String destination) async {
-  //   final newDir =
-  //       await Directory(destination + '/Quiz/Jigsaw').create(recursive: true);
-  //   for (File file in assignToStudent) {
-  //     file.copy('${newDir.path}/${file.path.split("\\").last}');
-  //   }
-  // }
-
-  // void showMaterialDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           title: const Text('No item was selected'),
-  //           content:
-  //               const Text('Please select at least one item before assigning'),
-  //           actions: <Widget>[
-  //             TextButton(
-  //                 onPressed: () {
-  //                   Navigator.pop(context);
-  //                 },
-  //                 child: const Text('Close')),
-  //           ],
-  //         );
-  //       });
-  // }
+  void writeInFile(String quizType, int time, int wrongTries) async {
+    File file = File(globals.logFilePath);
+    final dateTime = DateTime.now();
+    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime\n',
+        mode: FileMode.append);
+  }
 }
