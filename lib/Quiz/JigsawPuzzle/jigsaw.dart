@@ -284,7 +284,7 @@ class _JigsawState extends State<Jigsaw> {
                           childWhenDragging: Container(
                               alignment: Alignment.center,
                               height: height,
-                              width: width,
+                              width: 150,
                               child: Image.memory(item.bytes,
                                   fit: BoxFit.contain,
                                   filterQuality: FilterQuality.high,
