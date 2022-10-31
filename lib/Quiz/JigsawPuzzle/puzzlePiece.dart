@@ -10,11 +10,12 @@ class PuzzlePiece {
   late Uint8List bytes;
   List<Uint8List> splitImages = [];
   List<imglib.Image> parts = <imglib.Image>[];
+  late int width, height;
 
   PuzzlePiece(this.file, this.level) {
     bytes = file.readAsBytesSync();
     image = imglib.decodeImage(bytes)!;
-    print('puzzle piece ${file.path}');
+    // print('puzzle piece ${file.path}');
   }
 
   List<Uint8List> getSplitImages() {
@@ -27,8 +28,8 @@ class PuzzlePiece {
   }
 
   imglib.Image resizeImage() {
-    int imageHeight = image.height > 350
-        ? 350
+    int imageHeight = image.height > 380
+        ? 380
         : image.height < 300
             ? 300
             : image.height;
@@ -38,7 +39,8 @@ class PuzzlePiece {
             ? 400
             : image.width;
 
-    return imglib.copyResize(image, height: imageHeight, width: imageWidth);
+    return imglib.copyResize(image,
+        width: imageWidth, height: imageHeight); //height: imageHeight,
   }
 
   List<Uint8List> splitImage() {
@@ -56,8 +58,8 @@ class PuzzlePiece {
 
     image = resizeImage();
     // imglib.copyResize(image, height: imageHeight, width: imageWidth);
-    int width = (image.width / 2).floor();
-    int height = (image.height / 2).floor();
+    width = (image.width / 2).floor();
+    height = (image.height / 2).floor();
 
     // List<imglib.Image> parts = <imglib.Image>[];
     for (int i = 0; i < 2; i++) {
@@ -77,8 +79,8 @@ class PuzzlePiece {
 
     image = resizeImage();
     // imglib.copyResize(image, height: imageHeight, width: imageWidth);
-    int width = (image.width / 3).floor();
-    int height = (image.height / 2).floor();
+    width = (image.width / 3).floor();
+    height = (image.height / 2).floor();
 
     // List<imglib.Image> parts = <imglib.Image>[];
     for (int i = 0; i < 2; i++) {

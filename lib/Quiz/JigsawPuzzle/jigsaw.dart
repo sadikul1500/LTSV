@@ -52,6 +52,7 @@ class _JigsawState extends State<Jigsaw> {
 
   late Timer _timer;
   int _start = 0;
+  late int childWhenDraggingHeight, childWhenDraggingWidth;
 
   _JigsawState() {
     jigsawList = fileReader.jigsawList;
@@ -142,6 +143,8 @@ class _JigsawState extends State<Jigsaw> {
     level = int.parse(jigsawList[index].level);
     final object = PuzzlePiece(File(jigsawList[index].image), level);
     puzzlePieces = object.splitImage();
+    childWhenDraggingHeight = object.height;
+    childWhenDraggingWidth = object.width;
     try {
       height = Image.memory(puzzlePieces[0]).height;
       width = Image.memory(puzzlePieces[0]).width;
@@ -283,8 +286,8 @@ class _JigsawState extends State<Jigsaw> {
                           data: item,
                           childWhenDragging: Container(
                               alignment: Alignment.center,
-                              height: height,
-                              width: 150,
+                              height: childWhenDraggingHeight * .99,
+                              width: childWhenDraggingWidth * .99,
                               child: Image.memory(item.bytes,
                                   fit: BoxFit.contain,
                                   filterQuality: FilterQuality.high,
