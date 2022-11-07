@@ -45,7 +45,7 @@ class PuzzlePiece {
 
   List<Uint8List> splitImage() {
     if (level == 2) {
-      print('level2');
+      // print('level2');
       return splitImage2();
     } else {
       return splitImage3();

@@ -28,8 +28,8 @@ class DartVLCExampleState extends State<DartVLCExample> {
   double bufferingProgress = 0.0;
 
   // DartVLCExampleState() {
-  ActivityFileReader fileReader =
-      ActivityFileReader('${globals.folderPath}/Lesson/Activity/activity.txt');
+  // ActivityFileReader fileReader =
+  //     ActivityFileReader('${globals.folderPath}/Lesson/Activity/activity.txt');
   // }
   List<ActivityList> activities = [];
 
@@ -76,15 +76,21 @@ class DartVLCExampleState extends State<DartVLCExample> {
   }
 
   void proxyInitState() {
-    activities = fileReader.activityList;
-    len = activities.length;
-    print(len);
-    createPlaylist(_index);
+    // activities = fileReader.activityList;
+    // len = activities.length;
+    // print(len);
+    // createPlaylist(_index);
+    medias = [Media.file(File('D:/puppy.mp4'))]; //activities[index].video
+    player.open(
+        Playlist(
+          medias: medias,
+        ),
+        autoStart: false);
   }
 
   void createPlaylist(int index) {
-    print(activities[index].video);
-    medias = [Media.file(File(activities[index].video))];
+    // print(activities[index].video);
+    medias = [Media.file(File('D:/puppy.mp4'))]; //activities[index].video
     player.open(
         Playlist(
           medias: medias,
@@ -100,119 +106,132 @@ class DartVLCExampleState extends State<DartVLCExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('dart_vlc'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(4.0),
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 420,
-                width: 620,
-                child: NativeVideo(
-                  player: player,
-                  width: 620, //,isPhone ? 320 : 640,
-                  height: 420, //isPhone ? 180 : 360,
-                  volumeThumbColor: Colors.blue,
-                  volumeActiveColor: Colors.blue,
-                  showControls: true, //!isPhone,
-                ),
-              ),
-              SizedBox(
-                width: 500,
-                height: 250,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Card(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: const <Widget>[
-                                    Text(
-                                      'Title: ',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Meaning:',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Card(
-                              //margin: const EdgeInsets.all(122.0),
-                              color: Colors.blue[400],
-                              child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Text(
-                                      activities.elementAt(_index).title,
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      activities.elementAt(_index).meaning,
-                                      style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+    // proxyInitState();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('dart_vlc'),
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
-        ],
+        ),
+        body: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(4.0),
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 420,
+                  width: 620,
+                  child: NativeVideo(
+                    player: player,
+                    width: 620, //,isPhone ? 320 : 640,
+                    height: 420, //isPhone ? 180 : 360,
+                    volumeThumbColor: Colors.blue,
+                    volumeActiveColor: Colors.blue,
+                    showControls: true, //!isPhone,
+                  ),
+                ),
+                // SizedBox(
+                //   width: 500,
+                //   height: 250,
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: <Widget>[
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: const <Widget>[],
+                //       ),
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //         children: <Widget>[
+                //           Column(
+                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //             children: <Widget>[
+                //               Card(
+                //                 color: Colors.white70,
+                //                 child: Padding(
+                //                   padding: const EdgeInsets.all(20.0),
+                //                   child: Column(
+                //                     mainAxisAlignment:
+                //                         MainAxisAlignment.spaceEvenly,
+                //                     children: const <Widget>[
+                //                       Text(
+                //                         'Title: ',
+                //                         style: TextStyle(
+                //                           fontSize: 24,
+                //                           fontWeight: FontWeight.w600,
+                //                         ),
+                //                       ),
+                //                       Text(
+                //                         'Meaning:',
+                //                         style: TextStyle(
+                //                           fontSize: 24,
+                //                           fontWeight: FontWeight.w600,
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //           Column(
+                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //             children: <Widget>[
+                //               Card(
+                //                 //margin: const EdgeInsets.all(122.0),
+                //                 color: Colors.blue[400],
+                //                 child: Padding(
+                //                   padding: const EdgeInsets.all(18.0),
+                //                   child: Column(
+                //                     mainAxisAlignment:
+                //                         MainAxisAlignment.spaceEvenly,
+                //                     children: <Widget>[
+                //                       const Text(
+                //                         'Test', // activities.elementAt(_index).title,
+                //                         style: const TextStyle(
+                //                           fontSize: 24,
+                //                           fontWeight: FontWeight.w600,
+                //                           color: Colors.white,
+                //                         ),
+                //                       ),
+                //                       const SizedBox(height: 5),
+                //                       Text(
+                //                         'Test m', //activities.elementAt(_index).meaning,
+                //                         style: const TextStyle(
+                //                           fontSize: 24,
+                //                           fontWeight: FontWeight.w600,
+                //                           color: Colors.white,
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // )
+              ],
+            ),
+          ],
+        ),
       ),
     );
     // );
