@@ -17,7 +17,8 @@ class DartVLCExampleState extends State<DartVLCExample> {
     id: 0,
     registerTexture: false,
   );
-
+  ActivityFileReader fileReader =
+      ActivityFileReader('${globals.folderPath}/Lesson/Activity/activity.txt');
   CurrentState current = CurrentState();
   PositionState position = PositionState();
   PlaybackState playback = PlaybackState();
@@ -27,10 +28,10 @@ class DartVLCExampleState extends State<DartVLCExample> {
 
   double bufferingProgress = 0.0;
 
-  // DartVLCExampleState() {
-  // ActivityFileReader fileReader =
-  //     ActivityFileReader('${globals.folderPath}/Lesson/Activity/activity.txt');
-  // }
+  DartVLCExampleState() {
+    activities = fileReader.activityList;
+    len = activities.length;
+  }
   List<ActivityList> activities = [];
 
   int _index = 0;
@@ -76,11 +77,12 @@ class DartVLCExampleState extends State<DartVLCExample> {
   }
 
   void proxyInitState() {
-    // activities = fileReader.activityList;
-    // len = activities.length;
     // print(len);
     // createPlaylist(_index);
-    medias = [Media.file(File('D:/puppy.mp4'))]; //activities[index].video
+    print("proxy initstate called");
+    medias = [
+      Media.file(File(activities[_index].video))
+    ]; //activities[index].video
     player.open(
         Playlist(
           medias: medias,
@@ -88,15 +90,15 @@ class DartVLCExampleState extends State<DartVLCExample> {
         autoStart: false);
   }
 
-  void createPlaylist(int index) {
-    // print(activities[index].video);
-    medias = [Media.file(File('D:/puppy.mp4'))]; //activities[index].video
-    player.open(
-        Playlist(
-          medias: medias,
-        ),
-        autoStart: false);
-  }
+  // void createPlaylist(int index) {
+  //   // print(activities[index].video);
+  //   medias = [Media.file(File('D:/puppy.mp4'))]; //activities[index].video
+  //   player.open(
+  //       Playlist(
+  //         medias: medias,
+  //       ),
+  //       autoStart: false);
+  // }
 
   @override
   void dispose() {
@@ -106,7 +108,6 @@ class DartVLCExampleState extends State<DartVLCExample> {
 
   @override
   Widget build(BuildContext context) {
-    // proxyInitState();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

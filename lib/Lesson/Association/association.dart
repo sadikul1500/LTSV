@@ -4,9 +4,7 @@ import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_vlc/dart_vlc.dart';
-// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-// import 'package:just_audio/just_audio.dart';
 import 'package:student/Lesson/Association/association_search.dart';
 import 'package:student/Lesson/Association/association_video.dart';
 
@@ -36,9 +34,7 @@ class _AssociationState extends State<Association> {
   final CarouselController _controller = CarouselController();
   int activateIndex = 0;
 
-  // bool _isPlaying = false;
   bool carouselAutoPlay = false;
-  // bool _isPaused = true;
 
   MediaType mediaType = MediaType.file;
   CurrentState current = CurrentState();
@@ -49,60 +45,11 @@ class _AssociationState extends State<Association> {
   List<Media> medias = <Media>[];
 
   double bufferingProgress = 0.0;
-  // Media? metasMedia;
-  // List<File> files = [];
-
-  Widget _associationCard() {
-    if (associations[_index].audio == '') {
-      return associationVideoWidgetCard();
-    } else {
-      if (imageList.isEmpty) {
-        loadData().then((data) {
-          if (imageList.isEmpty) {
-            loadData();
-          } else {
-            loadAudio();
-            return associationCardWidget();
-          }
-        });
-        return const CircularProgressIndicator();
-      } else {
-        return associationCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
-      }
-    }
-    // if (associations.isEmpty) {
-    //   return const SizedBox(
-    //     height: 400,
-    //     child: Center(
-    //       child: Text(
-    //         'No Data Found!!!',
-    //         textAlign: TextAlign.center,
-    //         overflow: TextOverflow.ellipsis,
-    //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-    //       ),
-    //     ),
-    //   );
-    // } else {
-    //   loadData();
-    // }
-    // if (imageList.isEmpty && associations[_index].audio == '') {
-    //   return associationVideoWidgetCard();
-    // } else {
-    //   // if (_audioPlayer.processingState != ProcessingState.ready) {
-    //   loadAudio();
-
-    //   //   return const CircularProgressIndicator();
-    //   // }
-
-    //   return associationCardWidget();
-    // }
-  }
 
   _AssociationState() {
     _index = 0;
     videoPlayer = Player(
       id: 91,
-      //videoDimensions: VideoDimensions(640, 360),
       registerTexture: false,
     );
   }
@@ -117,45 +64,42 @@ class _AssociationState extends State<Association> {
     associations = fileReader.associationList;
     len = associations.length;
 
-    // loadData(); //check if it is image and audio //.then((List<String> value) {    //   if (value.isNotEmpty)
-    // if (imageList.isNotEmpty) {
-    //   loadAudio().then((value) {
-    //     _associationCard();
-    //   });
-    // }
     if (associations[_index].audio != '') {
-      listenStreams();
+      listenStreams(_audioPlayer);
+    } else {
+      listenStreams(videoPlayer);
+      checkVideo();
     }
   }
 
-  void listenStreams() {
+  void listenStreams(Player player) {
     if (mounted) {
-      _audioPlayer.currentStream.listen((current) {
+      player.currentStream.listen((current) {
         setState(() => this.current = current);
       });
-      _audioPlayer.positionStream.listen((position) {
+      player.positionStream.listen((position) {
         setState(() => this.position = position);
       });
-      _audioPlayer.playbackStream.listen((playback) {
+      player.playbackStream.listen((playback) {
         setState(() => this.playback = playback);
       });
-      _audioPlayer.generalStream.listen((general) {
+      player.generalStream.listen((general) {
         setState(() => this.general = general);
       });
 
-      _audioPlayer.bufferingProgressStream.listen(
+      player.bufferingProgressStream.listen(
         (bufferingProgress) {
           setState(() => this.bufferingProgress = bufferingProgress);
         },
       );
-      _audioPlayer.errorStream.listen((event) {
+      player.errorStream.listen((event) {
         throw Error(); //'libvlc error.'
       });
       //devices = Devices.all;
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
-      _audioPlayer.setEqualizer(equalizer);
+      player.setEqualizer(equalizer);
       // _audioPlayer.open(Playlist(medias: medias), autoStart: false);
     }
   }
@@ -189,18 +133,34 @@ class _AssociationState extends State<Association> {
     print('load audio association ${associations[_index].audio}');
   }
 
+  checkVideo() {
+    if (associations[_index].video != '') {
+      medias = [
+        Media.file(File(associations[_index].video))
+      ]; //activities[index].video
+      videoPlayer.open(
+          Playlist(
+            medias: medias,
+          ),
+          autoStart: false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        stop();
-        setState(() {});
+    // checkVideo();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      //WillPopScope
+      // onWillPop: () {
+      //   stop();
+      //   setState(() {});
 
-        Navigator.pop(context);
+      //   Navigator.pop(context);
 
-        return Future.value(true);
-      },
-      child: Scaffold(
+      //   return Future.value(true);
+      // },
+      home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
@@ -208,6 +168,15 @@ class _AssociationState extends State<Association> {
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
           actions: [
             IconButton(
                 onPressed: () async {
@@ -231,7 +200,42 @@ class _AssociationState extends State<Association> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _associationCard(),
+              associations[_index].audio != ''
+                  ? _associationCard()
+                  : Card(
+                      shape: RoundedRectangleBorder(
+                        side:
+                            const BorderSide(color: Colors.white70, width: .1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    const SizedBox(height: 15),
+                                    SizedBox(
+                                      height: 420,
+                                      width: 600,
+                                      child: NativeVideo(
+                                        player: videoPlayer,
+                                        width: 600, //640,
+                                        height: 420, //360,
+                                        volumeThumbColor: Colors.blue,
+                                        volumeActiveColor: Colors.blue,
+                                        showControls: true, //!isPhone
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                  ],
+                                ),
+                                rightSidePanel(associations.elementAt(_index))
+                              ])),
+                    ),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -239,10 +243,8 @@ class _AssociationState extends State<Association> {
                   ElevatedButton.icon(
                     onPressed: () {
                       stop();
-
                       setState(() {
-                        // _isPlaying = false;
-
+                        checkVideo();
                         try {
                           _index = (_index - 1) % len;
                           activateIndex = 0;
@@ -289,6 +291,7 @@ class _AssociationState extends State<Association> {
                     onPressed: () {
                       stop();
                       setState(() {
+                        checkVideo();
                         try {
                           _index = (_index + 1) % len;
                           activateIndex = 0;
@@ -346,6 +349,26 @@ class _AssociationState extends State<Association> {
     carouselAutoPlay = true;
   }
 
+  Widget _associationCard() {
+    // if (associations[_index].audio == '') {
+    //   return associationVideoWidgetCard();
+    // } else {
+    if (imageList.isEmpty) {
+      loadData().then((data) {
+        if (imageList.isEmpty) {
+          loadData();
+        } else {
+          loadAudio();
+          return associationCardWidget();
+        }
+      });
+      return const CircularProgressIndicator();
+    } else {
+      return associationCardWidget(); //NounCard(names.elementAt(_index), _audioPlayer);
+    }
+    // }
+  }
+
   Widget associationVideoWidgetCard() {
     AssociationList association = associations.elementAt(_index);
     associationVideoCard =
@@ -376,10 +399,6 @@ class _AssociationState extends State<Association> {
   Widget associationCardWidget() {
     AssociationList association = associations.elementAt(_index);
 
-    // Set<String> images = imageList;
-    print('called');
-    // print(images.length);
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -400,7 +419,6 @@ class _AssociationState extends State<Association> {
                         enlargeCenterPage: true,
                         enlargeStrategy: CenterPageEnlargeStrategy.height,
                         autoPlay: carouselAutoPlay,
-                        //pageSnapping: false,
                         aspectRatio: 16 / 9,
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enableInfiniteScroll: true,
