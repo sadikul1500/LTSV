@@ -132,15 +132,15 @@ class _AssociationState extends State<Association> {
 
     _audioPlayer.open(media, autoStart: false);
 
-    print('load audio association ${associations[_index].audio}');
+    // print('load audio association ${associations[_index].audio}');
   }
 
   checkVideo() {
-    print('came to check video function....');
-    print(associations[_index].video);
-    print("audio shoud be empty ${associations[_index].audio} ok");
+    // print('came to check video function....');
+    // print(associations[_index].video);
+    // print("audio shoud be empty ${associations[_index].audio} ok");
     if (associations[_index].video != '') {
-      print('came to check video if condition....');
+      // print('came to check video if condition....');
       medias = [
         Media.file(File(associations[_index].video))
       ]; //activities[index].video

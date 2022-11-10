@@ -14,7 +14,7 @@ class DartVLCExample extends StatefulWidget {
 
 class DartVLCExampleState extends State<DartVLCExample> {
   Player player = Player(
-    id: 0,
+    id: 107,
     registerTexture: false,
   );
   ActivityFileReader fileReader =
@@ -38,7 +38,7 @@ class DartVLCExampleState extends State<DartVLCExample> {
 
   late int len;
 
-  int activateIndex = 0;
+  // int activateIndex = 0;
 
   @override
   void initState() {
@@ -56,16 +56,16 @@ class DartVLCExampleState extends State<DartVLCExample> {
       player.generalStream.listen((general) {
         setState(() => this.general = general);
       });
-      player.videoDimensionsStream.listen((videoDimensions) {
-        setState(() => this.videoDimensions = videoDimensions);
-      });
+      // player.videoDimensionsStream.listen((videoDimensions) {
+      //   setState(() => this.videoDimensions = videoDimensions);
+      // });
       player.bufferingProgressStream.listen(
         (bufferingProgress) {
           setState(() => this.bufferingProgress = bufferingProgress);
         },
       );
       player.errorStream.listen((event) {
-        print('libvlc error.');
+        throw Error(); //print('libvlc error.');
       });
 
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
@@ -79,7 +79,7 @@ class DartVLCExampleState extends State<DartVLCExample> {
   void proxyInitState() {
     // print(len);
     // createPlaylist(_index);
-    print("proxy initstate called");
+    // print("proxy initstate called");
     medias = [
       Media.file(File(activities[_index].video))
     ]; //activities[index].video
@@ -111,8 +111,9 @@ class DartVLCExampleState extends State<DartVLCExample> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text('dart_vlc'),
+          title: const Text('Activity'),
           centerTitle: true,
           leading: InkWell(
             onTap: () {
@@ -124,9 +125,10 @@ class DartVLCExampleState extends State<DartVLCExample> {
             ),
           ),
         ),
-        body: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.all(4.0),
+        body: Column(
+          // shrinkWrap: true,
+          // padding: const EdgeInsets.all(4.0),
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -145,92 +147,163 @@ class DartVLCExampleState extends State<DartVLCExample> {
                     showControls: true, //!isPhone,
                   ),
                 ),
-                // SizedBox(
-                //   width: 500,
-                //   height: 250,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     children: <Widget>[
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: const <Widget>[],
-                //       ),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //         children: <Widget>[
-                //           Column(
-                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //             children: <Widget>[
-                //               Card(
-                //                 color: Colors.white70,
-                //                 child: Padding(
-                //                   padding: const EdgeInsets.all(20.0),
-                //                   child: Column(
-                //                     mainAxisAlignment:
-                //                         MainAxisAlignment.spaceEvenly,
-                //                     children: const <Widget>[
-                //                       Text(
-                //                         'Title: ',
-                //                         style: TextStyle(
-                //                           fontSize: 24,
-                //                           fontWeight: FontWeight.w600,
-                //                         ),
-                //                       ),
-                //                       Text(
-                //                         'Meaning:',
-                //                         style: TextStyle(
-                //                           fontSize: 24,
-                //                           fontWeight: FontWeight.w600,
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //           Column(
-                //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //             children: <Widget>[
-                //               Card(
-                //                 //margin: const EdgeInsets.all(122.0),
-                //                 color: Colors.blue[400],
-                //                 child: Padding(
-                //                   padding: const EdgeInsets.all(18.0),
-                //                   child: Column(
-                //                     mainAxisAlignment:
-                //                         MainAxisAlignment.spaceEvenly,
-                //                     children: <Widget>[
-                //                       const Text(
-                //                         'Test', // activities.elementAt(_index).title,
-                //                         style: const TextStyle(
-                //                           fontSize: 24,
-                //                           fontWeight: FontWeight.w600,
-                //                           color: Colors.white,
-                //                         ),
-                //                       ),
-                //                       const SizedBox(height: 5),
-                //                       Text(
-                //                         'Test m', //activities.elementAt(_index).meaning,
-                //                         style: const TextStyle(
-                //                           fontSize: 24,
-                //                           fontWeight: FontWeight.w600,
-                //                           color: Colors.white,
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // )
+                SizedBox(
+                  width: 500,
+                  height: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const <Widget>[],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Card(
+                                color: Colors.white70,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: const <Widget>[
+                                      Text(
+                                        'Title: ',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Meaning:',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Card(
+                                //margin: const EdgeInsets.all(122.0),
+                                color: Colors.blue[400],
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Text(
+                                        activities.elementAt(_index).title,
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        activities.elementAt(_index).meaning,
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton.icon(
+                  onPressed: () {
+                    player.stop();
+
+                    setState(() {
+                      // videoPlayer.previous();
+                      try {
+                        _index = (_index - 1) % len;
+                        proxyInitState();
+                        //files.clear();
+                      } catch (e) {
+                        //print(e);
+                      }
+                    });
+                  },
+                  label: const Text(
+                    'Prev',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.navigate_before,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
+                  ),
+                ),
+                const SizedBox(width: 30),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    player.stop();
+                    setState(() {
+                      // videoPlayer.next();
+                      try {
+                        _index = (_index + 1) % len;
+                        proxyInitState();
+                        //files.clear();
+                      } catch (e) {
+                        //print(e);
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    alignment: Alignment.center,
+                    minimumSize: const Size(100, 42),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const <Widget>[
+                      Text('Next',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          )),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Icon(Icons.navigate_next_rounded),
+                    ],
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
