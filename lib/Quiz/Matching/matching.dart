@@ -595,7 +595,7 @@ class _MatchingState extends State<Matching> {
   void writeInFile(String quizType, int time, int wrongTries) async {
     File file = File(globals.logFilePath);
     final dateTime = DateTime.now();
-    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime\n',
+    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime; ${matchinges[0].topic}\n',
         mode: FileMode.append);
   }
 

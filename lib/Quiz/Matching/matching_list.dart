@@ -12,6 +12,7 @@ class MatchingList {
   List<String> options = [];
   String answer = '';
   String line;
+  String topic = '';
 
   MatchingList(this.line) {
     assignValues();
@@ -27,6 +28,7 @@ class MatchingList {
       options.add(values[i]);
     }
     answer = values[7];
+    topic = values[8];
     // video =
     //     '${globals.folderPath}\\Lesson\\Activity\\${values[2].split('/').last}';
   }

@@ -325,7 +325,7 @@ class _JigsawState extends State<Jigsaw> {
   void writeInFile(String quizType, int time, int wrongTries) async {
     File file = File(globals.logFilePath);
     final dateTime = DateTime.now();
-    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime\n',
+    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime; ${jigsawList[0].topic}\n',
         mode: FileMode.append);
   }
 }
