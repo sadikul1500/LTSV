@@ -24,7 +24,7 @@ class JigsawList {
     // for (int i = 3; i < 3 + 4; i++) {
     //   options.add(values[i]);
     // }
-    level = values[1];
+    level = values[1]; //2 or 3
     topic = values[2];
     // video =
     //     '${globals.folderPath}\\Lesson\\Activity\\${values[2].split('/').last}';

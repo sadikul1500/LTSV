@@ -130,7 +130,7 @@ class _JigsawState extends State<Jigsaw> {
     dragTargetObjects.clear();
     draggableObjects.clear();
 
-    int numberOfPiece = int.parse(jigsawList[currentIndex].level) * 2;
+    int numberOfPiece = level * 2;
 
     for (int i = 0; i < numberOfPiece; i++) {
       draggableObjects.add(ItemModel(puzzlePieces[i]));
@@ -162,7 +162,7 @@ class _JigsawState extends State<Jigsaw> {
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RewardInterface('drag & drop')),
+        MaterialPageRoute(builder: (context) => RewardInterface('jigsaw puzzle')), //drag & drop
       );
     });
   }
@@ -324,8 +324,10 @@ class _JigsawState extends State<Jigsaw> {
 
   void writeInFile(String quizType, int time, int wrongTries) async {
     File file = File(globals.logFilePath);
+    // String puzzleLevel = jigsawList[currentIndex].level.split('X').last;
     final dateTime = DateTime.now();
-    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime; ${jigsawList[0].topic}\n',
+    await file.writeAsString(
+        '$quizType; $time; $wrongTries; ${level-1} $dateTime; ${jigsawList[0].topic}\n',
         mode: FileMode.append);
   }
 }
