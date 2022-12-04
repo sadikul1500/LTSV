@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learning Tool'),
+        title: const Text('শিখন টুল'), //'Learning Tool'
         backgroundColor: Colors.amberAccent[800],
         centerTitle: true,
         elevation: 0,
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
                         //     MaterialStateProperty<Size>(const Size(200, 50)),
                       ),
                       child: const Text(
-                        'Select a folder',
+                        'একটি ফোল্ডার নির্বাচন করুন',//'Select a folder',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                       minimumSize: const Size(200, 50),
                     ),
                     child: const Text(
-                      'Start',
+                      'শুরু করুন',//'Start',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           exit(0);
         },
-        label: const Text('Exit',
+        label: const Text('প্রস্থান',//'Exit',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         icon: const Icon(Icons.close),
       ),
@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
 
   void selectAFolder() async {
     String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose student\'s folder');
+        .getDirectoryPath(dialogTitle: 'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন');//'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker

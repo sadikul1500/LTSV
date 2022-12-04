@@ -95,7 +95,7 @@ class _VerbState extends State<Verb> {
         },
       );
       player.errorStream.listen((event) {
-        print('libvlc error.');
+        // print('libvlc error.');
       });
 
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
@@ -119,7 +119,7 @@ class _VerbState extends State<Verb> {
 
     player.open(media, autoStart: false);
 
-    print(verbs[_index].audio);
+    // print(verbs[_index].audio);
   }
 
   @override
@@ -137,8 +137,8 @@ class _VerbState extends State<Verb> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Noun',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+            'ক্রিয়া শিখন', //'Noun',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
           ),
           centerTitle: true,
           actions: [
@@ -170,35 +170,35 @@ class _VerbState extends State<Verb> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      stop();
+                  // ElevatedButton.icon(
+                  //   onPressed: () {
+                  //     stop();
 
-                      setState(() {
-                        try {
-                          _index = (_index - 1) % len;
-                          activateIndex = 0;
-                          imageList.clear();
-                        } catch (e) {
-                          throw Exception(e); //print(e);
-                        }
-                      });
-                    },
-                    label: const Text(
-                      'Prev',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.navigate_before,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                  ),
+                  //     setState(() {
+                  //       try {
+                  //         _index = (_index - 1) % len;
+                  //         activateIndex = 0;
+                  //         imageList.clear();
+                  //       } catch (e) {
+                  //         throw Exception(e); //print(e);
+                  //       }
+                  //     });
+                  //   },
+                  //   label: const Text(
+                  //     'Prev',
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       fontSize: 17,
+                  //     ),
+                  //   ),
+                  //   icon: const Icon(
+                  //     Icons.navigate_before,
+                  //   ),
+                  //   style: ElevatedButton.styleFrom(
+                  //     alignment: Alignment.center,
+                  //     minimumSize: const Size(100, 42),
+                  //   ),
+                  // ),
                   const SizedBox(width: 30),
                   IconButton(
                       icon: (!player.playback.isPlaying) //_isPaused
@@ -213,38 +213,38 @@ class _VerbState extends State<Verb> {
                         }
                       }),
                   const SizedBox(width: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      stop();
-                      setState(() {
-                        try {
-                          _index = (_index + 1) % len;
-                          activateIndex = 0;
-                          imageList.clear();
-                        } catch (e) {
-                          throw Exception(e); //print(e);
-                        }
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[
-                        Text('Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.navigate_next_rounded),
-                      ],
-                    ),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     stop();
+                  //     setState(() {
+                  //       try {
+                  //         _index = (_index + 1) % len;
+                  //         activateIndex = 0;
+                  //         imageList.clear();
+                  //       } catch (e) {
+                  //         throw Exception(e); //print(e);
+                  //       }
+                  //     });
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     alignment: Alignment.center,
+                  //     minimumSize: const Size(100, 42),
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: const <Widget>[
+                  //       Text('Next',
+                  //           style: TextStyle(
+                  //             fontWeight: FontWeight.bold,
+                  //             fontSize: 17,
+                  //           )),
+                  //       SizedBox(
+                  //         width: 5,
+                  //       ),
+                  //       Icon(Icons.navigate_next_rounded),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               )
             ],
@@ -344,17 +344,17 @@ class _VerbState extends State<Verb> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: const <Widget>[
                                   Text(
-                                    'Noun: ',
+                                    'ইংরেজিতে : ', //'Noun: ',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   Text(
-                                    'Meaning:',
+                                    'বাংলায় : ', //'Meaning:',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],

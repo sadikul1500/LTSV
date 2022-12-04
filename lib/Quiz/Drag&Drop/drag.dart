@@ -102,7 +102,8 @@ class _DragState extends State<Drag> {
       equalizer.setPreAmp(10.0);
       equalizer.setBandAmp(31.25, 10.0);
       player.setEqualizer(equalizer);
-      player.open(Media.file(File('D:/Sadi/Student/student/assets/Audios/win.wav')),
+      player.open(
+          Media.file(File('D:/Sadi/Student/student/assets/Audios/win.wav')),
           autoStart: false); //'assets/Audios/win.wav'//asset file did not work
     }
     initDrag();
@@ -182,7 +183,7 @@ class _DragState extends State<Drag> {
           centerTitle: true,
           title: Text.rich(TextSpan(children: [
             const TextSpan(
-                text: 'Score: ',
+                text: 'স্কোর : ', //'Score: ',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
             TextSpan(
                 text: '$score / ${items1.length + score}',
@@ -196,7 +197,7 @@ class _DragState extends State<Drag> {
           child: Column(
             children: <Widget>[
               Text(
-                'Q. $question',
+                'প্রশ্ন. $question',
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),

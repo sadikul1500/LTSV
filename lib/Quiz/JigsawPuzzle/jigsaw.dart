@@ -149,7 +149,8 @@ class _JigsawState extends State<Jigsaw> {
       height = Image.memory(puzzlePieces[0]).height;
       width = Image.memory(puzzlePieces[0]).width;
     } on Exception catch (_) {
-      print('empty puzzle list');
+      throw Exception();
+      // print('empty puzzle list');
     }
   }
 
@@ -162,7 +163,9 @@ class _JigsawState extends State<Jigsaw> {
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RewardInterface('jigsaw puzzle')), //drag & drop
+        MaterialPageRoute(
+            builder: (context) =>
+                RewardInterface('jigsaw puzzle')), //drag & drop
       );
     });
   }
@@ -185,137 +188,152 @@ class _JigsawState extends State<Jigsaw> {
     }
     //loadPuzzlePiece();
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Jigsaw Puzzle')),
+      appBar: AppBar(
+          centerTitle: true, title: const Text('ছবির ধাঁধা')), //'Jigsaw Puzzle'
       body: Center(
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'বামপাশ থেকে ড্র্যাগ করে ডানপাশের সাথে ম্যাচ করুন',
+              style: TextStyle(fontSize: 22),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Container(
-                    constraints: const BoxConstraints(
-                        minHeight: 350,
-                        maxHeight: 400,
-                        minWidth: 500,
-                        maxWidth: 550),
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Wrap(
-                        direction: Axis.horizontal,
-                        spacing: 2,
-                        runSpacing: 2,
-                        children: dragTargetObjects.map((item) {
-                          return DragTarget<ItemModel>(
-                            onAccept: (receivedItem) async {
-                              if (item.bytes == receivedItem.bytes) {
-                                setState(() {
-                                  item.accepting = false;
-                                  item.isSuccessful = true;
-                                  draggableObjects.remove(receivedItem);
-                                  score += 1;
-                                });
-                                player.play(); // await audioPlay();
-                              } else {
-                                setState(() {
-                                  item.accepting = false;
-                                  wrong_tries += 1;
-                                });
-                              }
-                            },
-                            onLeave: (receivedItem) {
-                              setState(() {
-                                item.accepting = false;
-                              });
-                            },
-                            onWillAccept: (receivedItem) {
-                              setState(() {
-                                if (!item.isSuccessful) item.accepting = true;
-                              });
-                              return true;
-                            },
-                            builder: (context, acceptedItem, rejectedItem) =>
-                                Container(
-                                    decoration: BoxDecoration(
-                                        color: item.accepting
-                                            ? Colors.red
-                                            : Colors.transparent,
-                                        border: Border.all(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        constraints: const BoxConstraints(
+                            minHeight: 350,
+                            maxHeight: 400,
+                            minWidth: 500,
+                            maxWidth: 550),
+                        color: draggableObjects.isNotEmpty
+                            ? Colors.grey[300]
+                            : Colors.transparent,
+                        child: Center(
+                            child: Wrap(
+                          direction: Axis.horizontal,
+                          spacing: 2,
+                          runSpacing: 2,
+                          children: draggableObjects.map((item) {
+                            return Draggable<ItemModel>(
+                              data: item,
+                              childWhenDragging: Container(
+                                  alignment: Alignment.center,
+                                  height: childWhenDraggingHeight * .99,
+                                  width: childWhenDraggingWidth * .99,
+                                  child: Image.memory(item.bytes,
+                                      fit: BoxFit.contain,
+                                      filterQuality: FilterQuality.high,
+                                      colorBlendMode: BlendMode.modulate,
+                                      color: Colors.white.withOpacity(0.4))),
+                              feedback: SizedBox(
+                                  //child that I drop....
+                                  height: height,
+                                  width: width,
+                                  child: Image.memory(
+                                    item.bytes,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.high,
+                                  )),
+                              child: SizedBox(
+                                  height: height,
+                                  width: width,
+                                  //alignment: Alignment.center,
+                                  child: Image.memory(
+                                    item.bytes,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.high,
+                                  )),
+                            );
+                          }).toList(),
+                        )))
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        constraints: const BoxConstraints(
+                            minHeight: 350,
+                            maxHeight: 400,
+                            minWidth: 500,
+                            maxWidth: 550),
+                        color: Colors.grey[300],
+                        child: Center(
+                          child: Wrap(
+                            direction: Axis.horizontal,
+                            spacing: 2,
+                            runSpacing: 2,
+                            children: dragTargetObjects.map((item) {
+                              return DragTarget<ItemModel>(
+                                onAccept: (receivedItem) async {
+                                  if (item.bytes == receivedItem.bytes) {
+                                    setState(() {
+                                      item.accepting = false;
+                                      item.isSuccessful = true;
+                                      draggableObjects.remove(receivedItem);
+                                      score += 1;
+                                    });
+                                    player.play(); // await audioPlay();
+                                  } else {
+                                    setState(() {
+                                      item.accepting = false;
+                                      wrong_tries += 1;
+                                    });
+                                  }
+                                },
+                                onLeave: (receivedItem) {
+                                  setState(() {
+                                    item.accepting = false;
+                                  });
+                                },
+                                onWillAccept: (receivedItem) {
+                                  setState(() {
+                                    if (!item.isSuccessful)
+                                      item.accepting = true;
+                                  });
+                                  return true;
+                                },
+                                builder: (context, acceptedItem,
+                                        rejectedItem) =>
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: item.accepting
+                                                ? Colors.red
+                                                : Colors.transparent,
+                                            border: Border.all(
+                                                color: item.isSuccessful
+                                                    ? Colors.black
+                                                    : Colors.black12,
+                                                width:
+                                                    item.isSuccessful ? 2 : 1)),
+                                        height: height,
+                                        width: width,
+                                        child: Image.memory(item.bytes,
+                                            fit: BoxFit.contain,
+                                            filterQuality: FilterQuality.high,
+                                            colorBlendMode: BlendMode.modulate,
                                             color: item.isSuccessful
-                                                ? Colors.black
-                                                : Colors.black12,
-                                            width: item.isSuccessful ? 2 : 1)),
-                                    height: height,
-                                    width: width,
-                                    child: Image.memory(item.bytes,
-                                        fit: BoxFit.contain,
-                                        filterQuality: FilterQuality.high,
-                                        colorBlendMode: BlendMode.modulate,
-                                        color: item.isSuccessful
-                                            ? Colors.white.withOpacity(1.0)
-                                            : item.accepting
-                                                ? Colors.white.withOpacity(0.1)
-                                                : Colors.white
-                                                    .withOpacity(0.6))),
-                          );
-                        }).toList(),
-                      ),
-                    )),
+                                                ? Colors.white.withOpacity(1.0)
+                                                : item.accepting
+                                                    ? Colors.white
+                                                        .withOpacity(0.1)
+                                                    : Colors.white
+                                                        .withOpacity(0.6))),
+                              );
+                            }).toList(),
+                          ),
+                        )),
+                  ],
+                ),
               ],
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                    constraints: const BoxConstraints(
-                        minHeight: 350,
-                        maxHeight: 400,
-                        minWidth: 500,
-                        maxWidth: 550),
-                    color: draggableObjects.isNotEmpty
-                        ? Colors.grey[300]
-                        : Colors.transparent,
-                    child: Center(
-                        child: Wrap(
-                      direction: Axis.horizontal,
-                      spacing: 2,
-                      runSpacing: 2,
-                      children: draggableObjects.map((item) {
-                        return Draggable<ItemModel>(
-                          data: item,
-                          childWhenDragging: Container(
-                              alignment: Alignment.center,
-                              height: childWhenDraggingHeight * .99,
-                              width: childWhenDraggingWidth * .99,
-                              child: Image.memory(item.bytes,
-                                  fit: BoxFit.contain,
-                                  filterQuality: FilterQuality.high,
-                                  colorBlendMode: BlendMode.modulate,
-                                  color: Colors.white.withOpacity(0.4))),
-                          feedback: SizedBox(
-                              //child that I drop....
-                              height: height,
-                              width: width,
-                              child: Image.memory(
-                                item.bytes,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.high,
-                              )),
-                          child: SizedBox(
-                              height: height,
-                              width: width,
-                              //alignment: Alignment.center,
-                              child: Image.memory(
-                                item.bytes,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.high,
-                              )),
-                        );
-                      }).toList(),
-                    )))
-              ],
-            )
+            const SizedBox(height: 100)
           ],
         ),
       ),
@@ -327,7 +345,7 @@ class _JigsawState extends State<Jigsaw> {
     // String puzzleLevel = jigsawList[currentIndex].level.split('X').last;
     final dateTime = DateTime.now();
     await file.writeAsString(
-        '$quizType; $time; $wrongTries; ${level-1} $dateTime; ${jigsawList[0].topic}\n',
+        '$quizType; $time; $wrongTries; ${level - 1} $dateTime; ${jigsawList[0].topic}\n',
         mode: FileMode.append);
   }
 }

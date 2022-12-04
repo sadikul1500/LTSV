@@ -161,8 +161,8 @@ class _AssociationState extends State<Association> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Association',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+            'সম্পর্ক', //'Association',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
           ),
           centerTitle: true,
           leading: InkWell(
@@ -235,36 +235,36 @@ class _AssociationState extends State<Association> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ElevatedButton.icon(
-                  onPressed: () {
-                    stop();
-                    setState(() {
-                      try {
-                        _index = (_index - 1) % len;
-                        activateIndex = 0;
-                        imageList.clear();
-                        checkVideo();
-                      } catch (e) {
-                        //print(e);
-                      }
-                    });
-                  },
-                  label: const Text(
-                    'Prev',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
-                  icon: const Icon(
-                    Icons.navigate_before,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    alignment: Alignment.center,
-                    minimumSize: const Size(100, 42),
-                  ),
-                ),
-                const SizedBox(width: 30),
+                // ElevatedButton.icon(
+                //   onPressed: () {
+                //     stop();
+                //     setState(() {
+                //       try {
+                //         _index = (_index - 1) % len;
+                //         activateIndex = 0;
+                //         imageList.clear();
+                //         checkVideo();
+                //       } catch (e) {
+                //         //print(e);
+                //       }
+                //     });
+                //   },
+                //   label: const Text(
+                //     'Prev',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 17,
+                //     ),
+                //   ),
+                //   icon: const Icon(
+                //     Icons.navigate_before,
+                //   ),
+                //   style: ElevatedButton.styleFrom(
+                //     alignment: Alignment.center,
+                //     minimumSize: const Size(100, 42),
+                //   ),
+                // ),
+                // const SizedBox(width: 30),
                 imageList.isNotEmpty
                     ? IconButton(
                         icon: (!_audioPlayer.playback.isPlaying) //_isPaused
@@ -281,40 +281,40 @@ class _AssociationState extends State<Association> {
                           }
                         })
                     : const SizedBox(width: 40), //Text('        '),
-                const SizedBox(width: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    stop();
-                    setState(() {
-                      try {
-                        _index = (_index + 1) % len;
-                        activateIndex = 0;
-                        imageList.clear();
-                        checkVideo();
-                      } catch (e) {
-                        //print(e);
-                      }
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    alignment: Alignment.center,
-                    minimumSize: const Size(100, 42),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const <Widget>[
-                      Text('Next',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                          )),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Icon(Icons.navigate_next_rounded),
-                    ],
-                  ),
-                ),
+                // const SizedBox(width: 30),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     stop();
+                //     setState(() {
+                //       try {
+                //         _index = (_index + 1) % len;
+                //         activateIndex = 0;
+                //         imageList.clear();
+                //         checkVideo();
+                //       } catch (e) {
+                //         //print(e);
+                //       }
+                //     });
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     alignment: Alignment.center,
+                //     minimumSize: const Size(100, 42),
+                //   ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: const <Widget>[
+                //       Text('Next',
+                //           style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 17,
+                //           )),
+                //       SizedBox(
+                //         width: 5,
+                //       ),
+                //       Icon(Icons.navigate_next_rounded),
+                //     ],
+                //   ),
+                // ),
               ],
             )
           ],
@@ -468,17 +468,17 @@ class _AssociationState extends State<Association> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const <Widget>[
                           Text(
-                            'Title: ',
+                            'ইংরেজিতে : ', //'Title: ',
                             style: TextStyle(
                               fontSize: 24,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           Text(
-                            'Meaning:',
+                            'বাংলায় : ', //'Meaning:',
                             style: TextStyle(
                               fontSize: 24,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],

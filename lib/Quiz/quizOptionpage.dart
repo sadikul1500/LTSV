@@ -14,7 +14,7 @@ class _QuizState extends State<Quiz> {
     //print('called');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz Test'),
+        title: const Text('কুইজ পরীক্ষা'), //'Quiz Test'),
         backgroundColor: Colors.amberAccent[800],
         centerTitle: true,
         elevation: 0,
@@ -40,7 +40,7 @@ class _QuizState extends State<Quiz> {
                           .pushNamed('/matching')
                           .then((value) => setState(() {}));
                     },
-                    child: const Text('Matching',
+                    child: const Text('MCQ কুইজ', //'Matching',
                         style: TextStyle(
                           fontSize: 24,
                         )),
@@ -55,7 +55,7 @@ class _QuizState extends State<Quiz> {
                           .then((value) => setState(() {}));
                     },
                     child: const Text(
-                      'Drag & Drop',
+                      'ড্র্যাগ ও ড্রপ', //'Drag & Drop',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -71,7 +71,7 @@ class _QuizState extends State<Quiz> {
                           .then((value) => setState(() {}));
                     },
                     child: const Text(
-                      'Activity Scheduling',
+                      'কর্মধারা পরীক্ষা', //'Activity Scheduling',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -87,7 +87,7 @@ class _QuizState extends State<Quiz> {
                           .then((value) => setState(() {}));
                     },
                     child: const Text(
-                      'Jigsaw Puzzle',
+                      'ছবির ধাঁধা', //'Jigsaw Puzzle',
                       style: TextStyle(
                         fontSize: 24,
                       ),

@@ -118,12 +118,17 @@ class _ActivityDragState extends State<ActivityScheduling> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Quiz'),
+        title: const Text('কর্মধারা পরীক্ষা'), //'Activity Quiz'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-          child: Row(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          const Text(
+            'বামপাশ থেকে ড্র্যাগ করে ডানপাশের সাথে ম্যাচ করুন',
+            style: TextStyle(fontSize: 22),
+          ),
+          Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -252,7 +257,10 @@ class _ActivityDragState extends State<ActivityScheduling> {
                 ),
               )
             ],
-          )),
+          ),
+          const SizedBox(height: 70)
+        ],
+      ),
     );
   }
 

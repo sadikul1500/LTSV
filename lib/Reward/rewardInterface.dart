@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:student/Reward/reward_list.dart';
 import 'package:student/Reward/reward.dart';
 // import 'package:student/globals.dart' as globals;
-import 'package:student/main.dart';
+// import 'package:student/main.dart';
 
 class RewardInterface extends StatefulWidget {
   // final List<RewardList> rewards = rewardds;
@@ -18,7 +18,7 @@ class RewardInterface extends StatefulWidget {
 }
 
 class _RewardInterfaceState extends State<RewardInterface> {
-  var rewardd;
+  late RewardList rewardd;
   String category = '';
   final List<RewardList> rewardds = Reward().rewards;
   bool isImage = false;
@@ -84,11 +84,12 @@ class _RewardInterfaceState extends State<RewardInterface> {
 
   void fixReward() {
     // print(rewardds.length);
-    for (var x in rewardds) {
+    for (RewardList x in rewardds) {
       if (x.category == category) {
         rewardd = x;
         break;
-      } else if (x.category == 'all') {
+      } else if (x.category == 'সব') {
+        //all
         rewardd = x;
       }
     }
@@ -103,7 +104,7 @@ class _RewardInterfaceState extends State<RewardInterface> {
         Playlist(
           medias: medias,
         ),
-        autoStart: false);
+        autoStart: true);
   }
 
   @override
@@ -120,6 +121,7 @@ class _RewardInterfaceState extends State<RewardInterface> {
           // setState(() {});
 
           Navigator.pop(context);
+          Navigator.pop(context);
 
           return Future.value(true);
         },
@@ -127,8 +129,8 @@ class _RewardInterfaceState extends State<RewardInterface> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               title: const Text(
-                'Reward',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+                'পুরস্কার', //'Reward',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
               ),
               centerTitle: true,
             ),

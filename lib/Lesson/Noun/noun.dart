@@ -56,12 +56,12 @@ class _NounState extends State<Noun> {
     if (imageList.isEmpty) {
       // _nounCard
 
-      print('calling from nouncard.. imageList empty');
+      // print('calling from nouncard.. imageList empty');
       loadData().then((data) {
         if (imageList.isEmpty) {
           //data.isEmpty
-          print('calling from nouncard.. data empty');
-          print(imageList.length);
+          // print('calling from nouncard.. data empty');
+          // print(imageList.length);
           loadData();
         } else {
           loadAudio();
@@ -116,7 +116,7 @@ class _NounState extends State<Noun> {
     // });
     // loadAudio();
     if (mounted) {
-      print('mounted');
+      // print('mounted');
       player.currentStream.listen((current) {
         setState(() => this.current = current);
       });
@@ -136,7 +136,7 @@ class _NounState extends State<Noun> {
         },
       );
       player.errorStream.listen((event) {
-        print('libvlc error.');
+        // print('libvlc error.');
       });
       // this.devices = Devices.all;
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
@@ -156,13 +156,13 @@ class _NounState extends State<Noun> {
 
     // len = names.length;
     if (imageList.isEmpty) {
-      print('call get image path from load data $count ${imageList.length}');
+      // print('call get image path from load data $count ${imageList.length}');
       count += 1;
       imageList = await names[_index].getImagePath(); //getImagePath();
     }
-    print('load  data noun.dart');
-    print(imageList);
-    print(imageList.length);
+    // print('load  data noun.dart');
+    // print(imageList);
+    // print(imageList.length);
     // if (imageList.length == 0) {
     //   load..Data();
     // }
@@ -178,8 +178,8 @@ class _NounState extends State<Noun> {
     // player.open(Playlist(medias: [media], playlistMode: PlaylistMode.repeat),
     //     autoStart: false);
     player.open(media, autoStart: false);
-    print('load audio');
-    print(names[_index].audio);
+    // print('load audio');
+    // print(names[_index].audio);
     //if (!mounted) return;
     // await _audioPlayer.setAudioSource(
     //     AudioSource.uri(Uri.file(names[_index].audio)),
@@ -210,8 +210,8 @@ class _NounState extends State<Noun> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text(
-            'Noun',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+            'নাম শিখন', //'Noun',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
           ),
           centerTitle: true,
           actions: [
@@ -243,37 +243,37 @@ class _NounState extends State<Noun> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      stop();
+                  // ElevatedButton.icon(
+                  //   onPressed: () {
+                  //     stop();
 
-                      setState(() {
-                        //_isPlaying = false;
+                  //     setState(() {
+                  //       //_isPlaying = false;
 
-                        try {
-                          _index = (_index - 1) % len;
-                          activateIndex = 0;
-                          imageList.clear();
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    label: const Text(
-                      'Prev',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.navigate_before,
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                  ),
+                  //       try {
+                  //         _index = (_index - 1) % len;
+                  //         activateIndex = 0;
+                  //         imageList.clear();
+                  //       } catch (e) {
+                  //         //print(e);
+                  //       }
+                  //     });
+                  //   },
+                  //   label: const Text(
+                  //     'পূর্ববর্তী',//'Prev',
+                  //     style: TextStyle(
+                  //       fontWeight: FontWeight.bold,
+                  //       fontSize: 17,
+                  //     ),
+                  //   ),
+                  //   icon: const Icon(
+                  //     Icons.navigate_before,
+                  //   ),
+                  //   style: ElevatedButton.styleFrom(
+                  //     alignment: Alignment.center,
+                  //     minimumSize: const Size(100, 42),
+                  //   ),
+                  // ),
                   const SizedBox(width: 30),
                   IconButton(
                       icon: (!player.playback.isPlaying) //_isPaused
@@ -291,38 +291,38 @@ class _NounState extends State<Noun> {
                         }
                       }),
                   const SizedBox(width: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      stop();
-                      setState(() {
-                        try {
-                          _index = (_index + 1) % len;
-                          activateIndex = 0;
-                          imageList.clear();
-                        } catch (e) {
-                          //print(e);
-                        }
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.center,
-                      minimumSize: const Size(100, 42),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const <Widget>[
-                        Text('Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            )),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Icon(Icons.navigate_next_rounded),
-                      ],
-                    ),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     stop();
+                  //     setState(() {
+                  //       try {
+                  //         _index = (_index + 1) % len;
+                  //         activateIndex = 0;
+                  //         imageList.clear();
+                  //       } catch (e) {
+                  //         //print(e);
+                  //       }
+                  //     });
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     alignment: Alignment.center,
+                  //     minimumSize: const Size(100, 42),
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: const <Widget>[
+                  //       Text('পরবর্তী',//'Next',
+                  //           style: TextStyle(
+                  //             fontWeight: FontWeight.bold,
+                  //             fontSize: 17,
+                  //           )),
+                  //       SizedBox(
+                  //         width: 5,
+                  //       ),
+                  //       Icon(Icons.navigate_next_rounded),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               )
             ],
@@ -458,31 +458,31 @@ class _NounState extends State<Noun> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      // Checkbox(
-                      //     value: name.isSelected,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         name.isSelected = !name.isSelected;
-                      //         if (name.isSelected) {
-                      //           assignToStudent.add(names[_index]);
-                      //         } else {
-                      //           assignToStudent.remove(names[_index]);
-                      //         }
-                      //       });
-                      //     }),
-                      // IconButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         nameList.removeItem(name);
-                      //         names.remove(name);
-                      //       });
-                      //     },
-                      //     icon: const Icon(Icons.delete_forever_rounded)),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: <Widget>[
+                  //     // Checkbox(
+                  //     //     value: name.isSelected,
+                  //     //     onChanged: (value) {
+                  //     //       setState(() {
+                  //     //         name.isSelected = !name.isSelected;
+                  //     //         if (name.isSelected) {
+                  //     //           assignToStudent.add(names[_index]);
+                  //     //         } else {
+                  //     //           assignToStudent.remove(names[_index]);
+                  //     //         }
+                  //     //       });
+                  //     //     }),
+                  //     // IconButton(
+                  //     //     onPressed: () {
+                  //     //       setState(() {
+                  //     //         nameList.removeItem(name);
+                  //     //         names.remove(name);
+                  //     //       });
+                  //     //     },
+                  //     //     icon: const Icon(Icons.delete_forever_rounded)),
+                  //   ],
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -498,17 +498,17 @@ class _NounState extends State<Noun> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: const <Widget>[
                                   Text(
-                                    'Noun: ',
+                                    'ইংরেজিতে : ', //'Noun: ',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   Text(
-                                    'Meaning:',
+                                    'বাংলায় : ', //'Meaning:',
                                     style: TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],

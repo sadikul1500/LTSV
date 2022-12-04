@@ -127,8 +127,8 @@ class _MatchingState extends State<Matching> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
             title: const Text(
-              'Activity',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+              'MCQ কুইজ', //'Activity',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
             ),
             centerTitle: true),
         body: SingleChildScrollView(
@@ -140,7 +140,7 @@ class _MatchingState extends State<Matching> {
                       height: 400,
                       child: Center(
                         child: Text(
-                          'No Data Found!!!',
+                          'কোনো ডাটা পাওয়া যায়নি', //'No Data Found!!!',
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -154,30 +154,30 @@ class _MatchingState extends State<Matching> {
                       child: Align(
                           alignment: const Alignment(0, 0),
                           child: Column(
-                            //mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              ElevatedButton(
-                                onPressed: () {
-                                  _timer.cancel();
-                                  _start = 0;
-                                  startTimer();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    padding: const EdgeInsets.all(24)),
-                                child: Text(
-                                  '$_start',
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
+                              // ElevatedButton(
+                              //   onPressed: () {
+                              //     _timer.cancel();
+                              //     _start = 0;
+                              //     startTimer();
+                              //   },
+                              //   style: ElevatedButton.styleFrom(
+                              //       shape: const CircleBorder(),
+                              //       padding: const EdgeInsets.all(24)),
+                              //   child: Text(
+                              //     '$_start',
+                              //     style: const TextStyle(
+                              //         fontSize: 20,
+                              //         fontWeight: FontWeight.w600),
+                              //   ),
+                              // ),
                               // Container(
                               //   decoration: const BoxDecoration(
                               //       color: Colors.blueAccent, shape: BoxShape.circle),
                               //   child: Text('$_start'),
                               // ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 80),
                               Row(
                                 children: <Widget>[
                                   Container(
@@ -193,10 +193,11 @@ class _MatchingState extends State<Matching> {
                                       )),
                                   const SizedBox(width: 100),
                                   Column(children: <Widget>[
-                                    Text('Q. ${matchinges[_index].question}',
+                                    Text(
+                                        'প্রশ্ন. ${matchinges[_index].question}',
                                         style: const TextStyle(
                                             fontSize: 22,
-                                            fontWeight: FontWeight.w700)),
+                                            fontWeight: FontWeight.w500)),
                                     const SizedBox(height: 20),
                                     Row(
                                       mainAxisAlignment:
@@ -218,8 +219,8 @@ class _MatchingState extends State<Matching> {
                                                     _timer.cancel();
                                                     isCorrect[0] = true;
                                                     score += 1;
-                                                    popup('Congratulations',
-                                                        'Wooha!!!! You have given correct answer');
+                                                    popup('অভিনন্দন',
+                                                        'আপনি সঠিক উত্তর দিয়েছেন');
                                                     Future.delayed(
                                                             const Duration(
                                                                 seconds: 3))
@@ -229,8 +230,8 @@ class _MatchingState extends State<Matching> {
                                                   });
                                                 } else {
                                                   wrong_tries += 1;
-                                                  popup('Wrong answer',
-                                                      'You have selected the wrong option $_start');
+                                                  popup('ভুল উত্তর',
+                                                      'আপনার উত্তরটি ভুল হয়েছে');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -257,7 +258,7 @@ class _MatchingState extends State<Matching> {
                                                 style: const TextStyle(
                                                     fontSize: 20,
                                                     fontWeight:
-                                                        FontWeight.w700)),
+                                                        FontWeight.w500)),
                                           ),
                                         ),
                                         const SizedBox(width: 100),
@@ -275,8 +276,8 @@ class _MatchingState extends State<Matching> {
                                                     score += 1;
                                                     isCorrect[1] = true;
                                                     _timer.cancel();
-                                                    popup('Congratulations',
-                                                        'Wooha!!!! You have given correct answer');
+                                                    popup('অভিনন্দন',
+                                                        'আপনি সঠিক উত্তর দিয়েছেন');
                                                     Future.delayed(
                                                             const Duration(
                                                                 seconds: 3))
@@ -286,8 +287,8 @@ class _MatchingState extends State<Matching> {
                                                   });
                                                 } else {
                                                   wrong_tries += 1;
-                                                  popup('Wrong answer',
-                                                      'You have selected the wrong option $_start');
+                                                  popup('ভুল উত্তর',
+                                                      'আপনার উত্তরটি ভুল হয়েছে');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -314,7 +315,7 @@ class _MatchingState extends State<Matching> {
                                                 style: const TextStyle(
                                                     fontSize: 20,
                                                     fontWeight:
-                                                        FontWeight.w700)),
+                                                        FontWeight.w500)),
                                           ),
                                         ),
                                       ],
@@ -339,8 +340,8 @@ class _MatchingState extends State<Matching> {
                                                     isCorrect[2] = true;
                                                     _timer.cancel();
                                                     score += 1;
-                                                    popup('Congratulations',
-                                                        'Wooha!!!! You have given correct answer');
+                                                    popup('অভিনন্দন',
+                                                        'আপনি সঠিক উত্তর দিয়েছেন');
                                                     Future.delayed(
                                                             const Duration(
                                                                 seconds: 3))
@@ -350,8 +351,8 @@ class _MatchingState extends State<Matching> {
                                                   });
                                                 } else {
                                                   wrong_tries += 1;
-                                                  popup('Wrong answer',
-                                                      'You have selected the wrong option $_start ');
+                                                  popup('ভুল উত্তর',
+                                                      'আপনার উত্তরটি ভুল হয়েছে');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -378,7 +379,7 @@ class _MatchingState extends State<Matching> {
                                                 style: const TextStyle(
                                                     fontSize: 20,
                                                     fontWeight:
-                                                        FontWeight.w700)),
+                                                        FontWeight.w500)),
                                           ),
                                         ),
                                         const SizedBox(width: 100),
@@ -397,8 +398,9 @@ class _MatchingState extends State<Matching> {
                                                     isCorrect[3] = true;
                                                     score += 1;
                                                     _timer.cancel();
-                                                    popup('Congratulations',
-                                                        'Wooha!!!! You have given correct answer');
+                                                    popup(
+                                                        'অভিনন্দন!!', //'Congratulations',
+                                                        'আপনি সঠিক উত্তর দিয়েছেন'); //'Wooha!!!! You have given correct answer');
                                                     Future.delayed(
                                                             const Duration(
                                                                 seconds: 3))
@@ -408,8 +410,9 @@ class _MatchingState extends State<Matching> {
                                                   });
                                                 } else {
                                                   wrong_tries += 1;
-                                                  popup('Wrong answer',
-                                                      'You have selected the wrong option $_start');
+                                                  popup('ভুল উত্তর',
+                                                      'আপনার উত্তরটি ভুল হয়েছে'); //'Wrong answer',
+                                                  //'//You have selected the wrong option $_start');
                                                   int index = matchinges[_index]
                                                           .answer
                                                           .codeUnits[0] -
@@ -437,7 +440,7 @@ class _MatchingState extends State<Matching> {
                                                 style: const TextStyle(
                                                     fontSize: 20,
                                                     fontWeight:
-                                                        FontWeight.w700)),
+                                                        FontWeight.w500)),
                                           ),
                                         ),
                                       ],
@@ -595,7 +598,8 @@ class _MatchingState extends State<Matching> {
   void writeInFile(String quizType, int time, int wrongTries) async {
     File file = File(globals.logFilePath);
     final dateTime = DateTime.now();
-    await file.writeAsString('$quizType; $time; $wrongTries; $dateTime; ${matchinges[0].topic}\n',
+    await file.writeAsString(
+        '$quizType; $time; $wrongTries; $dateTime; ${matchinges[0].topic}\n',
         mode: FileMode.append);
   }
 
