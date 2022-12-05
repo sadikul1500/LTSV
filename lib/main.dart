@@ -29,6 +29,18 @@ void main() async {
   // List<RewardList> rewards = reward.rewards;
 
   runApp(MaterialApp(
+    theme: ThemeData(
+        // scaffoldBackgroundColor: const Color.fromARGB(255, 226, 135, 67),
+        brightness: Brightness.light), // ThemeData(
+    //     brightness: Brightness.dark,
+    //     // backgroundColor: Colors.orange,
+    //     // scaffoldBackgroundColor: Colors.black12,
+
+    //     buttonTheme: const ButtonThemeData(
+    //         buttonColor: Colors.amber, disabledColor: Colors.black),
+    //     primaryColor: Colors.amber,
+    //     colorScheme:
+    //         ColorScheme.fromSwatch().copyWith(secondary: Colors.amber)),
     debugShowCheckedModeBanner: false,
     initialRoute: '/home',
     routes: {

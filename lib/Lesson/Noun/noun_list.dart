@@ -29,8 +29,8 @@ class NounList {
     // .then((data) {
     //   imagePath = data;
     // });
-    print('noun_list..assignvalues..');
-    print(imagePath.length);
+    // print('noun_list..assignvalues..');
+    // print(imagePath.length);
   }
 
   // Future setImagePaths(String folderName) async {
@@ -80,7 +80,7 @@ class NounList {
           in directory.list(recursive: false, followLinks: false)) {
         if (original is File) {
           //print(10000);
-          print(original.path);
+          // print(original.path);
           imagePath.add(original.path);
           // await original
           //     .copy('${newDir.path}/${original.path.split('\\').last}');
@@ -107,8 +107,8 @@ class NounList {
       await setImagePaths(values[2].split('/').last);
     }
 
-    print('get Method');
-    print(imagePath.length);
+    // print('get Method');
+    // print(imagePath.length);
     return imagePath;
   }
 }

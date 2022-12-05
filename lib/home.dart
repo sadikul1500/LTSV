@@ -17,9 +17,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Color(Colors.lightBlue),
       appBar: AppBar(
         title: const Text('শিখন টুল'), //'Learning Tool'
-        backgroundColor: Colors.amberAccent[800],
+        // backgroundColor: Colors.amberAccent[800],
         centerTitle: true,
         elevation: 0,
       ),
@@ -45,7 +46,7 @@ class _HomeState extends State<Home> {
                         //     MaterialStateProperty<Size>(const Size(200, 50)),
                       ),
                       child: const Text(
-                        'একটি ফোল্ডার নির্বাচন করুন',//'Select a folder',
+                        'একটি ফোল্ডার নির্বাচন করুন', //'Select a folder',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
@@ -72,7 +73,7 @@ class _HomeState extends State<Home> {
                       minimumSize: const Size(200, 50),
                     ),
                     child: const Text(
-                      'শুরু করুন',//'Start',
+                      'শুরু করুন', //'Start',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
@@ -86,7 +87,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           exit(0);
         },
-        label: const Text('প্রস্থান',//'Exit',
+        label: const Text('প্রস্থান', //'Exit',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         icon: const Icon(Icons.close),
       ),
@@ -94,8 +95,9 @@ class _HomeState extends State<Home> {
   }
 
   void selectAFolder() async {
-    String? selectedDirectory = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন');//'Choose student\'s folder');
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+        dialogTitle:
+            'শিক্ষার্থীর ফোল্ডার নির্বাচন করুন'); //'Choose student\'s folder');
 
     if (selectedDirectory == null) {
       // User canceled the picker
