@@ -22,7 +22,7 @@ class _QuizState extends State<Quiz> {
       body: Center(
         child: SizedBox(
           width: 400,
-          height: 300,
+          height: 350,
           //color: Colors.grey[700],
           child: Card(
             color: Colors.grey[500],

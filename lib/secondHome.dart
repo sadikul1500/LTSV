@@ -14,7 +14,7 @@ class _HomeOptionState extends State<HomeOption> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('পাঠসূচি'),//'Lesson Section'),
+        title: const Text('পাঠসূচি'), //'Lesson Section'),
         backgroundColor: Colors.amberAccent[800],
         centerTitle: true,
         elevation: 0,
@@ -24,7 +24,7 @@ class _HomeOptionState extends State<HomeOption> {
           // width: 400,
           // height: 300,
           //color: Colors.grey[700],
-          constraints: const BoxConstraints(maxHeight: 300, minWidth: 400),
+          constraints: const BoxConstraints(maxHeight: 350, minWidth: 400),
           child: Card(
             color: Colors.grey[500],
             child: Padding(
@@ -41,7 +41,7 @@ class _HomeOptionState extends State<HomeOption> {
                           .pushNamed('/noun')
                           .then((value) => setState(() {}));
                     },
-                    child: const Text('নাম',//'Noun',
+                    child: const Text('নাম', //'Noun',
                         style: TextStyle(
                           fontSize: 24,
                         )),
@@ -56,7 +56,7 @@ class _HomeOptionState extends State<HomeOption> {
                           .then((value) => setState(() {}));
                     },
                     child: const Text(
-                      'ক্রিয়া',//''Verb',
+                      'ক্রিয়া', //''Verb',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -74,7 +74,7 @@ class _HomeOptionState extends State<HomeOption> {
                           .then((value) => setState(() {}));
                     },
                     child: const Text(
-                      'সম্পর্ক',//'Association',
+                      'সম্পর্ক', //'Association',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -90,7 +90,7 @@ class _HomeOptionState extends State<HomeOption> {
                           .then((value) => setState(() {}));
                     },
                     child: const Text(
-                      'কর্মধারা',//'Activity',
+                      'কর্মধারা', //'Activity',
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -114,7 +114,7 @@ class _HomeOptionState extends State<HomeOption> {
                   .then((value) => setState(() {}));
             },
             icon: const Icon(Icons.quiz),
-            label: const Text('কুইজ পরীক্ষা',//'Quiz Test',
+            label: const Text('কুইজ পরীক্ষা', //'Quiz Test',
                 style: TextStyle(
                   fontSize: 18,
                 )),
@@ -125,7 +125,7 @@ class _HomeOptionState extends State<HomeOption> {
             onPressed: () {
               exit(0);
             },
-            label: const Text('প্রস্থান ',//'Exit',
+            label: const Text('প্রস্থান ', //'Exit',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             icon: const Icon(Icons.close),
           ),
