@@ -165,7 +165,7 @@ class _JigsawState extends State<Jigsaw> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                RewardInterface('jigsaw puzzle')), //drag & drop
+                RewardInterface('ছবির ধাঁধা')), //drag & drop
       );
     });
   }

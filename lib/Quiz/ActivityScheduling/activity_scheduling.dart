@@ -274,7 +274,7 @@ class _ActivityDragState extends State<ActivityScheduling> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => RewardInterface('activity scheduling')),
+            builder: (context) => RewardInterface('কর্মধারা পরীক্ষা')),
       );
     });
   }

@@ -40,12 +40,16 @@ class _RewardInterfaceState extends State<RewardInterface> {
   Media? metasMedia;
 
   _RewardInterfaceState() {
-    fixReward();
+    // initState();
+    // fixReward();
   }
 
   @override
   void initState() {
+    // print('....  ${widget.category}');
     category = widget.category;
+    fixReward();
+    // print(',,,, $category');
     super.initState();
     if (!isImage) {
       if (mounted) {
@@ -83,8 +87,9 @@ class _RewardInterfaceState extends State<RewardInterface> {
   }
 
   void fixReward() {
-    // print(rewardds.length);
+    // print('123  $category');
     for (RewardList x in rewardds) {
+      // print('${x.category} zz $category');
       if (x.category == category) {
         rewardd = x;
         break;

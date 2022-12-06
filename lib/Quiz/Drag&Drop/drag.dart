@@ -158,7 +158,8 @@ class _DragState extends State<Drag> {
     Future.delayed(const Duration(milliseconds: 200)).then((_) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RewardInterface('drag & drop')),
+        MaterialPageRoute(
+            builder: (context) => RewardInterface('ড্র্যাগ ও ড্রপ')),
       );
     });
   }

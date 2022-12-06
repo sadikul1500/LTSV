@@ -568,7 +568,7 @@ class _MatchingState extends State<Matching> {
       writeInFile('matching', _start, wrong_tries);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RewardInterface('matching')),
+        MaterialPageRoute(builder: (context) => RewardInterface('MCQ কুইজ')),
       );
     } else {
       setState(() {
